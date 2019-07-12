@@ -1,0 +1,99 @@
+server:
+  port: 8010
+  tomcat:
+    accept-count: 100
+    max-connections: 10000
+    max-threads: 2000
+    min-spare-threads: 10
+
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  jackson:
+    default-property-inclusion: non_null # 配置json处理时忽略空值
+
+  application:
+    name: cshop-user-service
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      url: jdbc:mysql://192.168.56.100:3306/user?useUnicode=true&characterEncoding=UTF-8
+      username: root
+      password: 123456
+      max-active: 30 #最大连接数
+      min-idle: 5 #最小连接数
+      max-wait: 10000 #获取连接的最大等待时间
+      validation-query: select 'x'  #解决mysql 8小时问题
+      time-between-eviction-runs-millis: 60000 #空闲连接检查时间间隔
+      min-evictable-idle-time-millis: 300000 #空闲连接最小空闲时间
+
+  rabbitmq:
+    virtual-host: /cshop
+    username: cshop
+    password: cshop
+    host: 192.168.56.100
+    port: 5672
+    publisher-confirms: true #生产者确认机制，确保消息会正确发送，如果发送失败会有错误回执，从而触发重试
+    template:
+      retry:
+        enabled: true #开启失败重试
+        max-interval: 210000ms #最长重试间隔，超过这个间隔将不再重试
+        initial-interval: 10000ms #第一次重试的间隔时长
+        multiplier: 2 #下次重试间隔的倍数，此处是2即下次重试间隔是上次的2倍
+      exchange: cshop.item.exchange  #缺省的交换机名称，此处配置后，发送消息如果不指定交换机就会使用这个
+
+
+  redis:
+    host: 192.168.56.100
+    username: root
+    password: 123456
+    port: 6379
+
+  mail:
+    host: smtp.163.com
+    username: junezchen@163.com
+    password: C617163
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+
+  cloud:
+    loadbalancer:
+      retry:
+        enabled: true
+
+    inetutils:
+      ignoredInterfaces:  #禁用网卡
+        - docker0
+        - veth.*
+        - en0
+        -
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka
+    registry-fetch-interval-seconds: 5
+  instance:
+    lease-renewal-interval-in-seconds: 5 # 每隔5秒发送一次心跳
+    lease-expiration-duration-in-seconds: 10 # 10秒不发送就过期
+    prefer-ip-address: true
+    ip-address: 127.0.0.1
+    instance-id: ${spring.application.name}:${server.port}
+
+cshop:
+  jwt:
+    cookieName: CS_TOKEN
+    publicKeyPath: /Users/june/share/rsa.pub # 公钥地址

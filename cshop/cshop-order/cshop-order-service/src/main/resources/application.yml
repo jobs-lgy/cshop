@@ -1,0 +1,63 @@
+server:
+  port: 8030
+
+
+spring:
+  application:
+    name: cshop-order-service
+
+  main:
+    allow-bean-definition-overriding: true
+  jackson:
+    default-property-inclusion: non_null # 配置json处理时忽略空值
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      url: jdbc:mysql://192.168.56.100:3306/orders?useUnicode=true&characterEncoding=UTF-8
+      username: root
+      password: 123456
+      max-active: 30 #最大连接数
+      min-idle: 5 #最小连接数
+      max-wait: 10000 #获取连接的最大等待时间
+      validation-query: select 'x'  #解决mysql 8小时问题
+      time-between-eviction-runs-millis: 60000 #空闲连接检查时间间隔
+      min-evictable-idle-time-millis: 300000 #空闲连接最小空闲时间
+  cloud:
+    inetutils:
+      ignoredInterfaces:  #禁用网卡
+        - docker0
+        - veth.*
+        - en0
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka
+    registry-fetch-interval-seconds: 5
+  instance:
+    lease-renewal-interval-in-seconds: 5 # 每隔5秒发送一次心跳
+    lease-expiration-duration-in-seconds: 10 # 10秒不发送就过期
+    prefer-ip-address: true
+    ip-address: 127.0.0.1
+    instance-id: ${spring.application.name}:${server.port}
+
+cshop:
+  worker:
+    workerId: 1
+    dataCenterId: 1
+  jwt:
+    cookieName: CS_TOKEN
+    publicKeyPath: /Users/june/share/rsa.pub # 公钥地址
+  wxpay:
+    appID: wx8397f8696b538317
+    mchID: 1473426802
+    key: T6m9iK73b0kn9g5v426MKfHQH7X8rKwb
+    httpConnectTimeoutMs: 5000
+    httpReadTimeoutMs: 10000
