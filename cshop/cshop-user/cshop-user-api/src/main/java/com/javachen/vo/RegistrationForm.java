@@ -1,4 +1,4 @@
-package com.javachen.model;
+package com.javachen.vo;
 
 import com.javachen.entity.User;
 import lombok.Data;

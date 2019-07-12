@@ -2,7 +2,7 @@ package com.javachen;
 
 import com.javachen.common.response.PageResponse;
 import com.javachen.feign.SpuClient;
-import com.javachen.model.SpuBo;
+import com.javachen.vo.SpuBo;
 import com.javachen.repository.ItemRepository;
 import com.javachen.service.SearchServiceImpl;
 import org.elasticsearch.index.query.QueryBuilders;

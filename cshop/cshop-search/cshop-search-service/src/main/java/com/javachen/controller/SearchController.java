@@ -5,7 +5,7 @@ import com.javachen.domain.Item;
 import com.javachen.domain.SearchRequest;
 import com.javachen.domain.SearchResult;
 import com.javachen.feign.SpuClient;
-import com.javachen.model.SpuBo;
+import com.javachen.vo.SpuBo;
 import com.javachen.repository.ItemRepository;
 import com.javachen.service.SearchService;
 import org.springframework.beans.factory.InitializingBean;

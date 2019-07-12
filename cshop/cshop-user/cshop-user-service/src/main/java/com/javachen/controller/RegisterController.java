@@ -4,7 +4,7 @@ import com.javachen.common.exception.BusinessException;
 import com.javachen.common.response.CommonResponse;
 import com.javachen.email.service.EmailService;
 import com.javachen.entity.User;
-import com.javachen.model.RegistrationForm;
+import com.javachen.vo.RegistrationForm;
 import com.javachen.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

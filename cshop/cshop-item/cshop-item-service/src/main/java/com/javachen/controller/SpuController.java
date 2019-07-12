@@ -3,7 +3,7 @@ package com.javachen.controller;
 import com.javachen.common.response.CommonResponse;
 import com.javachen.common.response.PageResponse;
 import com.javachen.entity.Spu;
-import com.javachen.model.SpuBo;
+import com.javachen.vo.SpuBo;
 import com.javachen.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

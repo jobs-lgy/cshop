@@ -73,11 +73,6 @@ public class JsonUtils {
         return toJson(pojo, false,getObjectMapper(), filterNames);
     }
 
-    public static String toJsonFull(Object pojo, boolean prettyPrint,
-                                String... filterNames) throws Exception {
-        return toJson(pojo, false, getObjectMapper(), filterNames);
-    }
-
     private static String toJson(Object pojo, boolean prettyPrint,ObjectMapper objectMapper,
                                 String... filterNames) throws IOException {
         StringWriter sw = new StringWriter();

@@ -1,4 +1,4 @@
-package com.javachen.model;
+package com.javachen.vo;
 
 import lombok.Data;
 import org.hibernate.annotations.UpdateTimestamp;

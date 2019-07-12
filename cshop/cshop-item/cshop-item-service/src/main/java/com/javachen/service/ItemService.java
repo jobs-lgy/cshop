@@ -4,7 +4,7 @@ import com.javachen.common.response.PageResponse;
 import com.javachen.entity.Sku;
 import com.javachen.entity.Spu;
 import com.javachen.entity.SpuDetail;
-import com.javachen.model.SpuBo;
+import com.javachen.vo.SpuBo;
 
 import java.util.List;
 import java.util.Map;
