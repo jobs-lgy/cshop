@@ -1,6 +1,6 @@
 package com.javachen.kafka;
 
-import com.alibaba.fastjson.JSON;
+import com.javachen.common.util.JsonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -17,7 +17,7 @@ public class KafkaSender<T> {
     private KafkaTemplate<String, Object> kafkaTemplate;
 
     public void send(T obj) {
-        String jsonObj = JSON.toJSONString(obj);
+        String jsonObj = JsonUtils.toJson(obj);
         log.info("------------ message = {}", jsonObj);
 
         // 发送消息

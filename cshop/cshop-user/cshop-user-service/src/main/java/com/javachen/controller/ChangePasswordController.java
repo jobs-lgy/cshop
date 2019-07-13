@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
 
@@ -20,13 +19,12 @@ import javax.validation.Valid;
  * @since
  */
 @Controller
-@RequestMapping("/account/password")
 public class ChangePasswordController {
     @Autowired
     private AccountService accountService;
 
-    @PostMapping
-    public CommonResponse processChangePassword(@Valid @PathVariable PasswordChange passwordChange) {
+    @PostMapping("/account/password")
+    public CommonResponse processChangePassword(@Valid PasswordChange passwordChange) {
         return CommonResponse.success(accountService.changePassword(passwordChange));
     }
 }

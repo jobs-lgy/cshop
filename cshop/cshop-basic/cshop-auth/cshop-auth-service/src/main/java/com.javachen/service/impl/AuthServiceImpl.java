@@ -24,7 +24,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String authentication(UserLogin userLogin) {
-        CommonResponse<User> commonResponse= userClient.login(userLogin);
+        CommonResponse<User> commonResponse= userClient.processLogin(userLogin);
 
         //登陆失败，抛出异常信息
         if(commonResponse.getStatus().equals("success")){
