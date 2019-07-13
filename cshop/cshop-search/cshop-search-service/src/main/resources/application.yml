@@ -5,8 +5,6 @@ server:
 spring:
   main:
     allow-bean-definition-overriding: true
-  jackson:
-    default-property-inclusion: non_null # 配置json处理时忽略空值
 
   application:
     name: cshop-search-service

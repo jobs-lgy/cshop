@@ -1,6 +1,5 @@
 package com.javachen.cshop.model.form;
 
-import com.javachen.cshop.entity.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
@@ -38,12 +37,4 @@ public class UserRegister {
 
     @NotNull(message = "手机验证码不能为空")
     private String code;
-
-    public User getUser() {
-        User user = new User();
-        user.setEmail(this.email);
-        user.setPhone(this.phone);
-        user.setUsername(this.username);
-        return user;
-    }
 }

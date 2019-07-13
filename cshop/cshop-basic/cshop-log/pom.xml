@@ -12,7 +12,7 @@
         <dependency>
             <groupId>com.javachen.cshop</groupId>
             <artifactId>cshop-common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <!-- springboot 整合Kafka -->
         <dependency>

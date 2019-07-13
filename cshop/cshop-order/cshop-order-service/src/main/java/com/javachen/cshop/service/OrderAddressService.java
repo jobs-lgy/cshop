@@ -1,6 +1,6 @@
 package com.javachen.cshop.service;
 
-import com.javachen.cshop.entity.Address;
+import com.javachen.cshop.entity.OrderAddress;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import java.util.List;
  * @Time: 2018-10-31 09:43
  * @Feature:
  */
-public interface AddressService {
+public interface OrderAddressService {
     /**
      * 删除地址
      *
@@ -20,23 +20,23 @@ public interface AddressService {
     /**
      * 更新地址
      *
-     * @param address
+     * @param orderAddress
      */
-    void update(Address address);
+    void update(OrderAddress orderAddress);
 
     /**
      * 查询地址
      *
      * @return
      */
-    List<Address> findAllByUserId();
+    List<OrderAddress> findAllByUserId();
 
     /**
      * 新增收货地址
      *
-     * @param address
+     * @param orderAddress
      */
-    void add(Address address);
+    void add(OrderAddress orderAddress);
 
     /**
      * 根据地址id查询地址
@@ -44,5 +44,5 @@ public interface AddressService {
      * @param id
      * @return
      */
-    Address findByIdAndUserId(Long id);
+    OrderAddress findByIdAndUserId(Long id);
 }

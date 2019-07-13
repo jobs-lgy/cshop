@@ -1,8 +1,9 @@
-package com.javachen.cshop.config;
+package com.javachen.cshop.common.config;
 
 import com.alibaba.druid.filter.stat.StatFilter;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.http.StatViewServlet;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +18,7 @@ import java.util.Arrays;
  * @since
  */
 @Component
+@ConditionalOnProperty("spring.datasource.druid")
 public class DruidConfig {
     @Bean(initMethod = "init", destroyMethod = "close")
     @ConfigurationProperties("spring.datasource.druid")

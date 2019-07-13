@@ -54,9 +54,8 @@ cshop:
     workerId: 1
     dataCenterId: 1
   jwt:
-    client:
-      cookieName: CS_TOKEN
-      publicKeyPath: /Users/june/share/rsa.pub # 公钥地址
+    cookieName: CS_TOKEN
+    publicKeyPath: /Users/june/share/rsa.pub # 公钥地址
 
   filter:
     allowPaths:

@@ -1,7 +1,7 @@
 package com.javachen.cshop.zuul;
 
 import com.javachen.cshop.common.auth.AuthUser;
-import com.javachen.cshop.common.auth.JwtClientHelper;
+import com.javachen.cshop.common.auth.JwtHelper;
 import com.javachen.cshop.common.util.CookieUtils;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
@@ -20,7 +20,7 @@ import java.util.List;
 @Slf4j
 public class LoginFilter extends ZuulFilter {
     @Autowired
-    private JwtClientHelper jwtClientHelper;
+    private JwtHelper jwtHelper;
 
     @Value("${cshop.filter.allowPaths}")
     private String allowPaths;
@@ -70,11 +70,11 @@ public class LoginFilter extends ZuulFilter {
         //2.获取request
         HttpServletRequest request = context.getRequest();
         //3.获取token
-        String token = CookieUtils.getCookieValue(request, this.jwtClientHelper.getCookieName());
+        String token = CookieUtils.getCookieValue(request, this.jwtHelper.getCookieName());
         //4.校验
         try {
             //4.1 校验通过，放行
-            AuthUser authUser = jwtClientHelper.getAuthUserFromToken(token);
+            AuthUser authUser = jwtHelper.getAuthUserFromToken(token);
         } catch (Exception e) {
             //4.2 校验不通过，返回403
             context.setSendZuulResponse(false);

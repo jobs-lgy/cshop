@@ -9,8 +9,6 @@ server:
 spring:
   main:
     allow-bean-definition-overriding: true
-  jackson:
-    default-property-inclusion: non_null # 配置json处理时忽略空值
 
   application:
     name: cshop-user-service
@@ -93,7 +91,8 @@ eureka:
     ip-address: 127.0.0.1
     instance-id: ${spring.application.name}:${server.port}
 
-cshop:
-  jwt:
-    cookieName: CS_TOKEN
-    publicKeyPath: /Users/june/share/rsa.pub # 公钥地址
+#cshop:
+#  jwt:
+#    client:
+#      cookieName: CS_TOKEN
+#      publicKeyPath: /Users/june/share/rsa.pub # 公钥地址

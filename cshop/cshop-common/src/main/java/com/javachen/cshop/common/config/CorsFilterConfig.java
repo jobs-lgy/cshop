@@ -1,4 +1,4 @@
-package com.javachen.cshop.config;
+package com.javachen.cshop.common.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -7,7 +7,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 @Configuration
-public class FilterBeanConfig {
+public class CorsFilterConfig {
 
     @Bean
     public CorsFilter corsFilter() {

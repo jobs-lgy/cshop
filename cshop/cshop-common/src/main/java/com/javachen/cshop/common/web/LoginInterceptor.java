@@ -1,7 +1,7 @@
 package com.javachen.cshop.common.web;
 
 import com.javachen.cshop.common.auth.AuthUser;
-import com.javachen.cshop.common.auth.JwtClientHelper;
+import com.javachen.cshop.common.auth.JwtHelper;
 import com.javachen.cshop.common.exception.ErrorCode;
 import com.javachen.cshop.common.response.CommonResponse;
 import com.javachen.cshop.common.util.CookieUtils;
@@ -24,7 +24,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
      */
     private static final ThreadLocal<AuthUser> t1 = new ThreadLocal<>();
     @Autowired
-    private JwtClientHelper jwtClientHelper;
+    private JwtHelper jwtHelper;
 
     public static AuthUser getLoginUser() {
         return t1.get();
@@ -49,7 +49,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //1.查询token
-        String token = CookieUtils.getCookieValue(request, jwtClientHelper.getCookieName());
+        String token = CookieUtils.getCookieValue(request, jwtHelper.getCookieName());
         if (StringUtils.isEmpty(token)) {
             //2.未登录，返回401
             log.warn("没有授权访问");
@@ -60,7 +60,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         //3.有token，查询用户信息
         try {
             //4.解析成功，说明已经登录
-            AuthUser userInfo = jwtClientHelper.getAuthUserFromToken(token);
+            AuthUser userInfo = jwtHelper.getAuthUserFromToken(token);
             //5.放入线程域
             t1.set(userInfo);
             return true;

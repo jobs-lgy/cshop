@@ -7,15 +7,14 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>cshop-gateway</artifactId>
-    <dependencies>
 
+    <dependencies>
         <dependency>
             <groupId>com.javachen.cshop</groupId>
             <artifactId>cshop-common</artifactId>
             <version>${project.version}</version>
         </dependency>
 
-        <!-- swagger-spring-boot -->
         <dependency>
             <groupId>com.spring4all</groupId>
             <artifactId>swagger-spring-boot-starter</artifactId>

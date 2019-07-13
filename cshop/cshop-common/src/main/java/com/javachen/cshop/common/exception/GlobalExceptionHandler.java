@@ -9,10 +9,9 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
@@ -26,10 +25,9 @@ import java.util.stream.Collectors;
  * @since
  */
 @Slf4j
-@ControllerAdvice
+@RestControllerAdvice
 public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public CommonResponse handleValidationExceptions(MethodArgumentNotValidException ex) {
         log.error("handleValidationExceptions", ex);
@@ -37,7 +35,6 @@ public class GlobalExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
     @ExceptionHandler(BindException.class)
     public CommonResponse handleBindExceptions(BindException ex) {
         log.error(ErrorCode.PARAMETER_INVALID_ERROR.getErrorMsg(), ex);
@@ -58,7 +55,6 @@ public class GlobalExceptionHandler {
 
 
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
     @ExceptionHandler(ConstraintViolationException.class)
     public CommonResponse handleConstraintViolationException(ConstraintViolationException ex) {
         log.error(ErrorCode.PARAMETER_INVALID_ERROR.getErrorMsg(), ex);
@@ -73,7 +69,6 @@ public class GlobalExceptionHandler {
 
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(value = Exception.class)
-    @ResponseBody
     public CommonResponse<?> handleException(HttpServletRequest req, Exception ex) {
         ErrorCode errorCode = null;
 

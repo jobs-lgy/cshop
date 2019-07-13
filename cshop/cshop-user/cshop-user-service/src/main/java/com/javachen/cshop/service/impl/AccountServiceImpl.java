@@ -165,7 +165,10 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional
     public User register(UserRegister userRegister) {
-        User newUser = userRegister.getUser();
+        User newUser = new User();
+        newUser.setEmail(userRegister.getEmail());
+        newUser.setPhone(userRegister.getPhone());
+        newUser.setUsername(userRegister.getUsername());
 
         if (userRepository.findByPhone(newUser.getPhone()) != null) {
             throw new BusinessException(ErrorCode.USER_PHONE_ALREADY_EXIST);

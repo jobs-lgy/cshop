@@ -10,18 +10,18 @@ public class PageResponse<T> implements Serializable {
 
     private Long total;// 总条数
     private Integer totalPage;// 总页数
-    private List<T> data;// 当前页数据
+    private List<T> list;// 当前页数据
 
     public PageResponse() {
     }
 
-    public PageResponse(Long total, Integer totalPage, List<T> data) {
+    public PageResponse(Long total, Integer totalPage, List<T> list) {
         this.total = total;
         this.totalPage = totalPage;
-        this.data = data;
+        this.list = list;
     }
 
-    public PageResponse(Long total, List<T> data) {
-        this(total, 10, data);
+    public PageResponse(Long total, List<T> list) {
+        this(total, 10, list);
     }
 }

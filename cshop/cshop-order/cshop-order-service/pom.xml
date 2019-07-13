@@ -14,11 +14,6 @@
     <dependencies>
         <dependency>
             <groupId>com.javachen.cshop</groupId>
-            <artifactId>cshop-common</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.javachen.cshop</groupId>
             <artifactId>cshop-order-api</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -30,11 +25,6 @@
         <dependency>
             <groupId>com.javachen.cshop</groupId>
             <artifactId>cshop-user-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.javachen.cshop</groupId>
-            <artifactId>cshop-auth-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 
