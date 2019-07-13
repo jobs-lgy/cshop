@@ -13,6 +13,7 @@ public enum ErrorCode implements ErrorCodeAware {
 	USER_PHONE_ALREADY_EXIST(20003,"手机号重复"),
 	USER_EMAIL_ALREADY_EXIST(20003,"邮箱重复"),
 	USER_LOGIN_ERROR(20004,"用户名或密码错误"),
+	USER_PASSWORD_ERROR(20004,"密码错误"),
 	USER_NOT_ACTIVE(20005,"用户未激活"),
 	USER_PASSWORD_NOT_EQUAL(20006,"两次输入密码不一样"),
 

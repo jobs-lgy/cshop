@@ -25,9 +25,9 @@ public class RedissonManager {
     @PostConstruct
     private void init(){
         try {
-            config.useSingleServer().setAddress(new StringBuilder().append(redis1Ip).append(":").append(redis1Port).toString());
-
-            redisson = (Redisson) Redisson.create(config);
+//            config.useSingleServer().setAddress(new StringBuilder().append(redis1Ip).append(":").append(redis1Port).toString());
+//
+//            redisson = (Redisson) Redisson.create(config);
 
             log.info("初始化Redisson结束");
         } catch (Exception e) {

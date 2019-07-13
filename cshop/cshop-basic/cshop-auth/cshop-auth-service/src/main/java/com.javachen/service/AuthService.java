@@ -1,10 +1,10 @@
 package com.javachen.service;
 
 import com.javachen.common.auth.AuthUser;
-import com.javachen.form.LoginForm;
+import com.javachen.model.form.UserLogin;
 
 public interface AuthService {
-    String authentication(LoginForm loginForm);
+    String authentication(UserLogin userLogin);
 
     AuthUser verifyToken(String token);
 }

@@ -8,7 +8,7 @@ import com.javachen.common.exception.ErrorCode;
 import com.javachen.common.response.CommonResponse;
 import com.javachen.entity.User;
 import com.javachen.feign.UserClient;
-import com.javachen.form.LoginForm;
+import com.javachen.model.form.UserLogin;
 import com.javachen.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,8 +23,8 @@ public class AuthServiceImpl implements AuthService {
     private JwtServerHelper jwtServerHelper;
 
     @Override
-    public String authentication(LoginForm loginForm) {
-        CommonResponse<User> commonResponse= userClient.login(loginForm);
+    public String authentication(UserLogin userLogin) {
+        CommonResponse<User> commonResponse= userClient.login(userLogin);
 
         //登陆失败，抛出异常信息
         if(commonResponse.getStatus().equals("success")){

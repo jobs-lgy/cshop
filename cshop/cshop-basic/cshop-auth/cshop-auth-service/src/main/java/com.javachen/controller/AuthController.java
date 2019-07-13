@@ -7,7 +7,7 @@ import com.javachen.common.exception.BusinessException;
 import com.javachen.common.exception.ErrorCode;
 import com.javachen.common.response.CommonResponse;
 import com.javachen.common.util.CookieUtils;
-import com.javachen.form.LoginForm;
+import com.javachen.model.form.UserLogin;
 import com.javachen.service.AuthService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,12 +37,12 @@ public class AuthController {
      * @return
      */
     @PostMapping("auth")
-    public CommonResponse authentication(@Valid LoginForm loginForm,
+    public CommonResponse authentication(@Valid UserLogin userLogin,
             HttpServletRequest request,
             HttpServletResponse response
     ) {
         //1.登录校验
-        String token = this.authService.authentication(loginForm);
+        String token = this.authService.authentication(userLogin);
         if (StringUtils.isBlank(token)) {
             throw new BusinessException(ErrorCode.UNAUTHORIZED);
         }

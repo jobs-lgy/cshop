@@ -11,7 +11,7 @@ import com.javachen.entity.Category;
 import com.javachen.entity.Sku;
 import com.javachen.entity.SpuDetail;
 import com.javachen.feign.*;
-import com.javachen.vo.SpuBo;
+import com.javachen.model.vo.SpuBo;
 import com.javachen.repository.ItemRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.search.SearchResponse;

@@ -1,4 +1,4 @@
-package com.javachen.vo;
+package com.javachen.model.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

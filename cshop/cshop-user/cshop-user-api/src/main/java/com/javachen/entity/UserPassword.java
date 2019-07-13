@@ -2,9 +2,11 @@ package com.javachen.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 /**
  * @author june
@@ -13,9 +15,8 @@ import javax.persistence.*;
  * @since
  */
 @Data
-@RequiredArgsConstructor
+@NoArgsConstructor
 @Entity
-@Table(name = "tb_user_password")
 public class UserPassword {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

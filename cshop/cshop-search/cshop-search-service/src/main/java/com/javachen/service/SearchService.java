@@ -3,7 +3,7 @@ package com.javachen.service;
 import com.javachen.domain.Item;
 import com.javachen.domain.SearchRequest;
 import com.javachen.domain.SearchResult;
-import com.javachen.vo.SpuBo;
+import com.javachen.model.vo.SpuBo;
 
 import java.io.IOException;
 

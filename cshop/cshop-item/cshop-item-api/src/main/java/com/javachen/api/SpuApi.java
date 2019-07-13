@@ -2,7 +2,7 @@ package com.javachen.api;
 
 import com.javachen.common.response.CommonResponse;
 import com.javachen.common.response.PageResponse;
-import com.javachen.vo.SpuBo;
+import com.javachen.model.vo.SpuBo;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;

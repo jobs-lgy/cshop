@@ -15,7 +15,7 @@
  * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
  * #L%
  */
-package com.javachen.form;
+package com.javachen.model.form;
 
 import lombok.Data;
 

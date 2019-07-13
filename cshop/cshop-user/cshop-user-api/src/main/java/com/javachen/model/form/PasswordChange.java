@@ -15,19 +15,34 @@
  * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
  * #L%
  */
-package com.javachen.form;
+package com.javachen.model.form;
 
 
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
 @Data
-public class ChangePasswordForm implements Serializable {
+public class PasswordChange implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    @NotNull(message = "邮箱不能为空")
+    @Pattern(regexp = "^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$", message = "邮箱格式不正确")
+    private String email;
+
+    @NotNull(message = "密码不能为空")
+    @Length(min = 6,max = 25,message = "密码长度需要在6和25之间")
     private String currentPassword;
+
+    @NotNull(message = "新密码不能为空")
+    @Length(min = 6,max = 25,message = "新密码长度需要在6和25之间")
     private String newPassword;
+
+    @NotNull(message = "确认密码不能为空")
+    @Length(min = 6,max = 25,message = "确认密码长度需要在6和25之间")
     private String newPasswordConfirm;
 
 }

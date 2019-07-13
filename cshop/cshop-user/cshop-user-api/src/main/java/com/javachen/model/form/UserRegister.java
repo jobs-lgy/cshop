@@ -1,4 +1,4 @@
-package com.javachen.vo;
+package com.javachen.model.form;
 
 import com.javachen.entity.User;
 import lombok.Data;
@@ -16,8 +16,8 @@ import javax.validation.constraints.Pattern;
  */
 @Data
 @NoArgsConstructor
-public class RegistrationForm {
-    @NotNull(message = "名称不能为空")
+public class UserRegister {
+    @NotNull(message = "用户名不能为空")
     private String username;
 
     @NotNull(message = "手机号不能为空")

@@ -38,7 +38,15 @@ public class CoreEmailConfig {
         return info;
     }
 
-    @Bean
+    @Bean(name="changePasswordEmailInfo")
+    public EmailInfo changePasswordEmailInfo() {
+        EmailInfo info = emailInfo();
+        info.setSubject("You have changed your password!");
+        info.setTemplate("changePassword-email");
+        return info;
+    }
+
+    @Bean(name="forgotPasswordEmailInfo")
     public EmailInfo forgotPasswordEmailInfo() {
         EmailInfo info = emailInfo();
         info.setSubject("Reset password request");
@@ -46,7 +54,6 @@ public class CoreEmailConfig {
         return info;
     }
 
-    //FIXME 不能安装名称注入
     @Bean(name="registrationEmailInfo")
     public EmailInfo registrationEmailInfo() {
         EmailInfo info = emailInfo();

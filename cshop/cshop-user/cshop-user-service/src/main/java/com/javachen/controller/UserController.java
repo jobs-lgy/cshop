@@ -25,6 +25,18 @@ public class UserController {
         return CommonResponse.success();
     }
 
+    @PutMapping
+    public CommonResponse update(@RequestBody @Valid User user) {
+        userService.save(user);
+        return CommonResponse.success();
+    }
+
+    @DeleteMapping("/{id}")
+    public CommonResponse delete(@Valid @PathVariable Long id) {
+        userService.delete(id);
+        return CommonResponse.success();
+    }
+
     @GetMapping
     public CommonResponse<PageResponse<User>> findAll(
             @ApiParam("第几页")

@@ -17,7 +17,7 @@ import javax.persistence.Id;
  * @since
  */
 @Data
-@RequiredArgsConstructor
+@NoArgsConstructor
 @Entity
 public class City {
     @Id

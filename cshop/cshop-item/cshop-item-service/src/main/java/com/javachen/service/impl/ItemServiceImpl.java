@@ -6,7 +6,7 @@ import com.javachen.common.exception.ErrorCode;
 import com.javachen.common.response.PageResponse;
 import com.javachen.common.util.JsonUtils;
 import com.javachen.entity.*;
-import com.javachen.vo.SpuBo;
+import com.javachen.model.vo.SpuBo;
 import com.javachen.reposity.*;
 import com.javachen.service.ItemService;
 import lombok.extern.slf4j.Slf4j;
