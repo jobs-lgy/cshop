@@ -9,6 +9,6 @@ import org.springframework.cloud.openfeign.FeignClient;
  * @see
  * @since
  */
-@FeignClient(name="cshop-cshop-service")
+@FeignClient(name = "cshop-cshop-service")
 public interface CategoryClient extends CategoryApi {
 }

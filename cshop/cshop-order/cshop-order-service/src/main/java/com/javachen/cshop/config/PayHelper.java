@@ -1,8 +1,8 @@
 package com.javachen.cshop.config;
 
 import com.github.wxpay.sdk.WXPay;
-import com.javachen.cshop.utils.PayState;
 import com.javachen.cshop.service.OrderStatusService;
+import com.javachen.cshop.utils.PayState;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

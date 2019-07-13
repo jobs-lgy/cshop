@@ -32,7 +32,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public CommonResponse handleValidationExceptions(MethodArgumentNotValidException ex) {
-        log.error("handleValidationExceptions",ex);
+        log.error("handleValidationExceptions", ex);
         return handleBindResult(ex.getBindingResult());
     }
 
@@ -40,20 +40,20 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ExceptionHandler(BindException.class)
     public CommonResponse handleBindExceptions(BindException ex) {
-        log.error(ErrorCode.PARAMETER_INVALID_ERROR.getErrorMsg(),ex);
+        log.error(ErrorCode.PARAMETER_INVALID_ERROR.getErrorMsg(), ex);
 
         return handleBindResult(ex.getBindingResult());
     }
 
-    private CommonResponse handleBindResult(BindingResult bindingResult){
+    private CommonResponse handleBindResult(BindingResult bindingResult) {
         //name-->用户名不能为空
         List<ImmutableMap> errors = bindingResult
                 .getAllErrors().stream()
-                .map(err -> ImmutableMap.of(((FieldError)err).getField(),err.getDefaultMessage()))
+                .map(err -> ImmutableMap.of(((FieldError) err).getField(), err.getDefaultMessage()))
                 .collect(Collectors.toList());
 
         //{"status":"fail","code":10001,"data":[{"email":"邮箱格式不正确"},{"password":"长度需要在6和25之间"},{"phone":"手机号格式不正确"}]}
-        return CommonResponse.error(ErrorCode.PARAMETER_INVALID_ERROR,errors);
+        return CommonResponse.error(ErrorCode.PARAMETER_INVALID_ERROR, errors);
     }
 
 
@@ -61,13 +61,13 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ExceptionHandler(ConstraintViolationException.class)
     public CommonResponse handleConstraintViolationException(ConstraintViolationException ex) {
-        log.error(ErrorCode.PARAMETER_INVALID_ERROR.getErrorMsg(),ex);
+        log.error(ErrorCode.PARAMETER_INVALID_ERROR.getErrorMsg(), ex);
 
         List<ErrorMessage> errors = ex.getConstraintViolations()
                 .stream()
                 .map(err -> new ErrorMessage(err.getPropertyPath().toString(), err.getMessage()))
                 .collect(Collectors.toList());
-        return CommonResponse.error(ErrorCode.PARAMETER_INVALID_ERROR,errors);
+        return CommonResponse.error(ErrorCode.PARAMETER_INVALID_ERROR, errors);
     }
 
 
@@ -78,17 +78,17 @@ public class GlobalExceptionHandler {
         ErrorCode errorCode = null;
 
         //业务异常
-        if(ex instanceof BusinessException){
-            BusinessException businessException=(BusinessException)ex;
+        if (ex instanceof BusinessException) {
+            BusinessException businessException = (BusinessException) ex;
             errorCode = (ErrorCode) businessException.getErrorCodeAware();
 
-            log.error(errorCode.getErrorMsg(),ex);
-            return CommonResponse.error(errorCode,businessException.getErrorMsg());
-        }else{
+            log.error(errorCode.getErrorMsg(), ex);
+            return CommonResponse.error(errorCode, businessException.getErrorMsg());
+        } else {
             errorCode = ExceptionToErrorCodeHelper.getErrorCode(ex);
 
 
-            log.error(errorCode.getErrorMsg(),ex);
+            log.error(errorCode.getErrorMsg(), ex);
             return CommonResponse.error(errorCode);
         }
     }

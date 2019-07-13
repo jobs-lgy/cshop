@@ -10,7 +10,7 @@
  * the Broadleaf End User License Agreement (EULA), Version 1.1
  * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
  * shall apply.
- * 
+ *
  * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
  * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
  * #L%
@@ -34,15 +34,15 @@ public class PasswordChange implements Serializable {
     private String email;
 
     @NotNull(message = "密码不能为空")
-    @Length(min = 6,max = 25,message = "密码长度需要在6和25之间")
+    @Length(min = 6, max = 25, message = "密码长度需要在6和25之间")
     private String currentPassword;
 
     @NotNull(message = "新密码不能为空")
-    @Length(min = 6,max = 25,message = "新密码长度需要在6和25之间")
+    @Length(min = 6, max = 25, message = "新密码长度需要在6和25之间")
     private String newPassword;
 
     @NotNull(message = "确认密码不能为空")
-    @Length(min = 6,max = 25,message = "确认密码长度需要在6和25之间")
+    @Length(min = 6, max = 25, message = "确认密码长度需要在6和25之间")
     private String newPasswordConfirm;
 
 }

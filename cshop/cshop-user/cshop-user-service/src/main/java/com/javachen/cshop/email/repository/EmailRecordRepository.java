@@ -9,5 +9,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @see
  * @since
  */
-public interface EmailRecordRepository extends JpaRepository<EmailRecord,Long> {
+public interface EmailRecordRepository extends JpaRepository<EmailRecord, Long> {
 }

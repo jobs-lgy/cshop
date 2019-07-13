@@ -24,24 +24,24 @@ public class SmsListener {
     private SmsProperties smsProperties;
 
     @RabbitListener(bindings = @QueueBinding(
-            value = @Queue(value = "cshop.sms.queue",durable = "true"),
-            exchange = @Exchange(value = "cshop.sms.exchange",ignoreDeclarationExceptions = "true"),
+            value = @Queue(value = "cshop.sms.queue", durable = "true"),
+            exchange = @Exchange(value = "cshop.sms.exchange", ignoreDeclarationExceptions = "true"),
             key = {"cshop.verify.code"}
     ))
-    public void listenSms(Map<String,String> msg){
-        if (msg == null || msg.size() <= 0){
+    public void listenSms(Map<String, String> msg) {
+        if (msg == null || msg.size() <= 0) {
             //不做处理
             return;
         }
         String phone = msg.get("phone");
         String code = msg.get("code");
 
-        if (StringUtils.isEmpty(phone) || StringUtils.isEmpty(code)){
+        if (StringUtils.isEmpty(phone) || StringUtils.isEmpty(code)) {
             //不做处理
             return;
         }
 
-        log.info("短信发送成功：phone：{},code:{}",phone,code);
+        log.info("短信发送成功：phone：{},code:{}", phone, code);
         //FIXME 调用短信接口的配置不正确，需要去阿里云申请
 //        try {
 //            SendSmsResponse response = this.smsUtils.sendSms(phone, code, smsProperties.getSignName(), smsProperties.getVerifyCodeTemplate());

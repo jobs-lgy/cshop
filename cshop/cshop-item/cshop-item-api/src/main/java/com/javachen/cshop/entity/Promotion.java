@@ -28,7 +28,7 @@ public class Promotion {
     private String name;
     private String description;  //促销活动说明
     private Byte type; //活动类型，目前可选的有：0没有促销，1满减，2满额送抵扣券，3秒杀
-//    private Long condition; //满减条件，秒杀的话设置为0
+    //    private Long condition; //满减条件，秒杀的话设置为0
     private Long reducePrice;//满减后的折扣金额
     private BigDecimal seckillPrice; //秒杀价格，如果是秒杀活动，需要填写
 

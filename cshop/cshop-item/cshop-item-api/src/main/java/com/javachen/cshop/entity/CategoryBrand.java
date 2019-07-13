@@ -4,7 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
@@ -19,7 +22,7 @@ import java.io.Serializable;
 @IdClass(CategoryBrand.CategoryBrandPk.class)
 @Table(name = "tb_category_brand")
 @Entity
-public class CategoryBrand implements Serializable{
+public class CategoryBrand implements Serializable {
     @Id
     private Long categoryId;
 

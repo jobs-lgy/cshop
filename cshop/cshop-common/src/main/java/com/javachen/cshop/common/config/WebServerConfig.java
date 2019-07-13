@@ -12,8 +12,8 @@ import org.springframework.stereotype.Component;
 public class WebServerConfig implements WebServerFactoryCustomizer<ConfigurableWebServerFactory> {
     @Override
     public void customize(ConfigurableWebServerFactory configurableWebServerFactory) {
-            //使用对应工厂类提供给我们的接口定制化我们的tomcat connector
-        ((TomcatServletWebServerFactory)configurableWebServerFactory).addConnectorCustomizers(new TomcatConnectorCustomizer() {
+        //使用对应工厂类提供给我们的接口定制化我们的tomcat connector
+        ((TomcatServletWebServerFactory) configurableWebServerFactory).addConnectorCustomizers(new TomcatConnectorCustomizer() {
             @Override
             public void customize(Connector connector) {
                 Http11NioProtocol protocol = (Http11NioProtocol) connector.getProtocolHandler();

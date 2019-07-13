@@ -22,7 +22,34 @@ public class SearchResult<Item> extends PageResponse<Item> {
     /**
      * 规格参数的过滤条件
      */
-    private List<Map<String,Object>> specs;
+    private List<Map<String, Object>> specs;
+
+    public SearchResult(List<Category> categories, List<Brand> brands, List<Map<String, Object>> specs) {
+        this.categories = categories;
+        this.brands = brands;
+        this.specs = specs;
+    }
+
+    public SearchResult(Long total, List<Item> item, List<Category> categories, List<Brand> brands, List<Map<String, Object>> specs) {
+        super(total, item);
+        this.categories = categories;
+        this.brands = brands;
+        this.specs = specs;
+    }
+
+    public SearchResult(Long total, Integer totalPage, List<Item> item, List<Category> categories, List<Brand> brands) {
+        super(total, totalPage, item);
+        this.categories = categories;
+        this.brands = brands;
+    }
+
+    public SearchResult(Long total, Integer totalPage, List<Item> item, List<Category> categories,
+                        List<Brand> brands, List<Map<String, Object>> specs) {
+        super(total, totalPage, item);
+        this.categories = categories;
+        this.brands = brands;
+        this.specs = specs;
+    }
 
     public List<Category> getCategories() {
         return categories;
@@ -45,33 +72,6 @@ public class SearchResult<Item> extends PageResponse<Item> {
     }
 
     public void setSpecs(List<Map<String, Object>> specs) {
-        this.specs = specs;
-    }
-
-    public SearchResult(List<Category> categories, List<Brand> brands, List<Map<String,Object>> specs){
-        this.categories = categories;
-        this.brands = brands;
-        this.specs = specs;
-    }
-
-    public SearchResult(Long total, List<Item> item, List<Category> categories, List<Brand> brands, List<Map<String,Object>> specs){
-        super(total,item);
-        this.categories = categories;
-        this.brands = brands;
-        this.specs = specs;
-    }
-
-    public SearchResult(Long total,Integer totalPage, List<Item> item,List<Category> categories, List<Brand> brands){
-        super(total,totalPage,item);
-        this.categories = categories;
-        this.brands = brands;
-    }
-
-    public SearchResult(Long total,Integer totalPage, List<Item> item,List<Category> categories,
-                        List<Brand> brands, List<Map<String,Object>> specs){
-        super(total,totalPage,item);
-        this.categories = categories;
-        this.brands = brands;
         this.specs = specs;
     }
 }

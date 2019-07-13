@@ -25,10 +25,8 @@ import java.util.List;
 
 @Data
 public class EmailInfo implements Serializable {
-    public static Integer REGISTER_TYPE=1;
-
     private static final long serialVersionUID = 1L;
-
+    public static Integer REGISTER_TYPE = 1;
     private Integer type;
     private String template;
     private String subject;

@@ -24,23 +24,25 @@ public class CartController {
 
     /**
      * 添加购物车
+     *
      * @param cart
      * @return
      */
     @PostMapping
-    public CommonResponse addCart(@RequestBody Cart cart){
+    public CommonResponse addCart(@RequestBody Cart cart) {
         this.cartService.add(cart);
         return CommonResponse.success();
     }
 
     /**
      * 查询购物车
+     *
      * @return
      */
     @GetMapping
-    public CommonResponse<List<Cart>> queryCartList(){
+    public CommonResponse<List<Cart>> queryCartList() {
         List<Cart> carts = this.cartService.findAllCart();
-        if(carts == null){
+        if (carts == null) {
             throw new BusinessException(ErrorCode.CART_NOT_EXIST);
         }
         return CommonResponse.success(carts);
@@ -48,21 +50,23 @@ public class CartController {
 
     /**
      * 修改购物车中商品数量
+     *
      * @return
      */
     @PutMapping
-    public CommonResponse updateNum(@RequestParam("skuId") Long skuId, @RequestParam("num") Integer num){
-        this.cartService.updateNum(skuId,num);
+    public CommonResponse updateNum(@RequestParam("skuId") Long skuId, @RequestParam("num") Integer num) {
+        this.cartService.updateNum(skuId, num);
         return CommonResponse.success();
     }
 
     /**
      * 删除购物车中的商品
+     *
      * @param skuId
      * @return
      */
     @DeleteMapping("{skuId}")
-    public CommonResponse deleteCart(@PathVariable("skuId") String skuId){
+    public CommonResponse deleteCart(@PathVariable("skuId") String skuId) {
         this.cartService.delete(skuId);
         return CommonResponse.success();
     }

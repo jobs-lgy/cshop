@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
     <property name="LOG_HOME" value="logs"></property>
-    <property name="FILESIZE" value="50MB" />
-    <property name="MAXHISTORY" value="10" />
-    <timestamp key="DATETIME" datePattern="yyyy-MM-dd HH:mm:ss" />
+    <property name="FILESIZE" value="50MB"/>
+    <property name="MAXHISTORY" value="10"/>
+    <timestamp key="DATETIME" datePattern="yyyy-MM-dd HH:mm:ss"/>
 
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder charset="utf-8">
@@ -48,9 +48,8 @@
     </appender>
 
 
-
-    <logger name="com.javachen" additivity="false" level="INFO" >
-        <appender-ref ref="all" />
+    <logger name="com.javachen" additivity="false" level="INFO">
+        <appender-ref ref="all"/>
         <appender-ref ref="console"/>
         <appender-ref ref="error"/>
     </logger>

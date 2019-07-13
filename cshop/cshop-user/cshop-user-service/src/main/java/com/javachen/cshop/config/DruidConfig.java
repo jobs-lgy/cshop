@@ -18,17 +18,17 @@ import java.util.Arrays;
  */
 @Component
 public class DruidConfig {
-    @Bean(initMethod = "init",destroyMethod = "close")
+    @Bean(initMethod = "init", destroyMethod = "close")
     @ConfigurationProperties("spring.datasource.druid")
-    public DruidDataSource dataSource(){
-        DruidDataSource dataSource=new DruidDataSource();
+    public DruidDataSource dataSource() {
+        DruidDataSource dataSource = new DruidDataSource();
         dataSource.setProxyFilters(Arrays.asList(statFilter()));
         return dataSource;
     }
 
     @Bean
-    public StatFilter statFilter(){
-        StatFilter statFilter=new StatFilter();
+    public StatFilter statFilter() {
+        StatFilter statFilter = new StatFilter();
         statFilter.setSlowSqlMillis(5000);
         statFilter.setLogSlowSql(true);
         statFilter.setMergeSql(true);
@@ -36,8 +36,8 @@ public class DruidConfig {
     }
 
     @Bean
-    public ServletRegistrationBean servletRegistrationBean(){
-        return new ServletRegistrationBean(new StatViewServlet(),"/druid/*");
+    public ServletRegistrationBean servletRegistrationBean() {
+        return new ServletRegistrationBean(new StatViewServlet(), "/druid/*");
     }
 
 }

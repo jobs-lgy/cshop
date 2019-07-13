@@ -20,10 +20,10 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @Entity
 public class Permission {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     protected String name;
     protected String description;
     protected String type;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 }

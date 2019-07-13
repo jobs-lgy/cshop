@@ -37,7 +37,9 @@ public class JwtClientHelper {
         } catch (Exception e) {
             throw new RuntimeException();
         }
-    };
+    }
+
+    ;
 
     /**
      * 公钥解析token
@@ -59,8 +61,8 @@ public class JwtClientHelper {
      * @return
      * @throws Exception
      */
-    private Jws<Claims> parserToken(String token, byte[] publicKey)  {
-        return parserToken(token,RsaUtils.getPublicKey(publicKey));
+    private Jws<Claims> parserToken(String token, byte[] publicKey) {
+        return parserToken(token, RsaUtils.getPublicKey(publicKey));
     }
 
     /**
@@ -71,7 +73,7 @@ public class JwtClientHelper {
      * @return 用户信息
      * @throws Exception
      */
-    public AuthUser getAuthUserFromToken(String token, PublicKey publicKey)  {
+    public AuthUser getAuthUserFromToken(String token, PublicKey publicKey) {
         Jws<Claims> claimsJws = parserToken(token, publicKey);
         Claims body = claimsJws.getBody();
         return new AuthUser(
@@ -88,11 +90,11 @@ public class JwtClientHelper {
      * @return 用户信息
      * @throws Exception
      */
-    public AuthUser getAuthUserFromToken(String token, byte[] publicKey){
-        return getAuthUserFromToken(token,RsaUtils.getPublicKey(publicKey));
+    public AuthUser getAuthUserFromToken(String token, byte[] publicKey) {
+        return getAuthUserFromToken(token, RsaUtils.getPublicKey(publicKey));
     }
 
-    public AuthUser getAuthUserFromToken(String token){
+    public AuthUser getAuthUserFromToken(String token) {
         return getAuthUserFromToken(token, publicKey);
     }
 }

@@ -22,8 +22,8 @@ public class AccountServiceTest {
     private AccountService accountService;
 
     @Test
-    public void testRegister(){
-        UserRegister userRegister=new UserRegister();
+    public void testRegister() {
+        UserRegister userRegister = new UserRegister();
         userRegister.setEmail("junecloud@163.com");
         userRegister.setUsername("javachen");
         userRegister.setPhone("17602538617");
@@ -33,8 +33,8 @@ public class AccountServiceTest {
     }
 
     @Test
-    public void testChangePassword(){
-        PasswordChange passwordChange=new PasswordChange();
+    public void testChangePassword() {
+        PasswordChange passwordChange = new PasswordChange();
         passwordChange.setEmail("junecloud@163.com");
         passwordChange.setCurrentPassword("123456");
         passwordChange.setNewPassword("654321");
@@ -43,18 +43,18 @@ public class AccountServiceTest {
     }
 
     @Test
-    public void testSendForgotPasswordNotification(){
-        accountService.sendForgotPasswordNotification("junecloud@163.com","http://XXX.com/restPassword");
+    public void testSendForgotPasswordNotification() {
+        accountService.sendForgotPasswordNotification("junecloud@163.com", "http://XXX.com/restPassword");
     }
 
     @Test
-    public void sendVerifyCode(){
+    public void sendVerifyCode() {
         accountService.sendVerifyCode("17602538617");
     }
 
     @Test
-    public void login(){
-        UserLogin userLogin=new UserLogin();
+    public void login() {
+        UserLogin userLogin = new UserLogin();
         userLogin.setPhone("1");
         userLogin.setPassword("1");
         accountService.login(userLogin);

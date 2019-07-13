@@ -38,8 +38,8 @@ public class AuthController {
      */
     @PostMapping("auth")
     public CommonResponse authentication(@Valid UserLogin userLogin,
-            HttpServletRequest request,
-            HttpServletResponse response
+                                         HttpServletRequest request,
+                                         HttpServletResponse response
     ) {
         //1.登录校验
         String token = this.authService.authentication(userLogin);

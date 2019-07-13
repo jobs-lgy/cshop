@@ -15,6 +15,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableConfigurationProperties
 public class AppOrder {
     public static void main(String[] args) {
-        SpringApplication.run(AppOrder.class,args);
+        SpringApplication.run(AppOrder.class, args);
     }
 }

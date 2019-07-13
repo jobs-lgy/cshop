@@ -12,30 +12,35 @@ import java.util.List;
 public interface AddressService {
     /**
      * 删除地址
+     *
      * @param id
      */
     void delete(Long id);
 
     /**
      * 更新地址
+     *
      * @param address
      */
     void update(Address address);
 
     /**
      * 查询地址
+     *
      * @return
      */
     List<Address> findAllByUserId();
 
     /**
      * 新增收货地址
+     *
      * @param address
      */
     void add(Address address);
 
     /**
      * 根据地址id查询地址
+     *
      * @param id
      * @return
      */

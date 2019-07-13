@@ -10,5 +10,5 @@ public interface SpuRepository extends JpaRepository<Spu, Long> {
 
     @Query(value = "SELECT u FROM Spu u WHERE u.title like %?1% or u.saleable =?2 and u.enable =1",
             countQuery = "SELECT count(u) FROM Spu u WHERE u.title like %?1% or u.saleable =?2 and u.enable =1")
-    Page<Spu> findAllByTitleLikeOrSaleable(String title,Boolean saleable, PageRequest pageRequest);
+    Page<Spu> findAllByTitleLikeOrSaleable(String title, Boolean saleable, PageRequest pageRequest);
 }

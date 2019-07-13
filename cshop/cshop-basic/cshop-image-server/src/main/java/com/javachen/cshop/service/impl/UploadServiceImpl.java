@@ -18,14 +18,12 @@ import java.util.List;
 @Slf4j
 public class UploadServiceImpl implements UploadService {
 
+    /**
+     * 支持上传的文件类型
+     */
+    private static final List<String> suffixes = Arrays.asList("image/png", "image/jpeg", "image/jpg");
     @Autowired
     private FastFileStorageClient storageClient;
-
-    /**
-     *     支持上传的文件类型
-     */
-    private static final List<String> suffixes = Arrays.asList("image/png","image/jpeg","image/jpg");
-
 
     @Override
     public String upload(MultipartFile file) {
@@ -51,15 +49,15 @@ public class UploadServiceImpl implements UploadService {
             }
 
             StorePath storePath = this.storageClient.uploadFile(
-                  file.getInputStream(), file.getSize(), getExtension(file.getOriginalFilename()), null);
+                    file.getInputStream(), file.getSize(), getExtension(file.getOriginalFilename()), null);
 
-            return "http://image.cshop.com/"+storePath.getFullPath();
-        }catch (Exception e){
+            return "http://image.cshop.com/" + storePath.getFullPath();
+        } catch (Exception e) {
             return null;
         }
     }
 
-    public String getExtension(String fileName){
-        return StringUtils.substringAfterLast(fileName,".");
+    public String getExtension(String fileName) {
+        return StringUtils.substringAfterLast(fileName, ".");
     }
 }

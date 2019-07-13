@@ -9,31 +9,31 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 public class RateLimiterFilter extends ZuulFilter {
-  
-  private static final RateLimiter RATE_LIMITER = RateLimiter.create(100, 1, TimeUnit.SECONDS);
-  
 
-  @Override
-  public boolean shouldFilter() {
-    return true;
-  }
+    private static final RateLimiter RATE_LIMITER = RateLimiter.create(100, 1, TimeUnit.SECONDS);
 
-  @Override
-  public Object run() {
-    if (!RATE_LIMITER.tryAcquire(1)) {
-      throw new RateLimiterException();
+
+    @Override
+    public boolean shouldFilter() {
+        return true;
     }
-    return null;
-  }
-  
 
-  @Override
-  public String filterType() {
-      return "pre";
-  }
+    @Override
+    public Object run() {
+        if (!RATE_LIMITER.tryAcquire(1)) {
+            throw new RateLimiterException();
+        }
+        return null;
+    }
 
-  @Override
-  public int filterOrder() {
-      return -100;
-  }
+
+    @Override
+    public String filterType() {
+        return "pre";
+    }
+
+    @Override
+    public int filterOrder() {
+        return -100;
+    }
 }

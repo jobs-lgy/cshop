@@ -16,11 +16,11 @@ public class SwaggerConfig {
     @Bean
     public Docket docket(ApiInfo apiInfo) {
         return new Docket(DocumentationType.SWAGGER_2)
-            .groupName("user-api")
-            .useDefaultResponseMessages(false)
-            .apiInfo(apiInfo)
-            .select().paths(regex("/user/.*"))
-            .build();
+                .groupName("user-api")
+                .useDefaultResponseMessages(false)
+                .apiInfo(apiInfo)
+                .select().paths(regex("/user/.*"))
+                .build();
     }
 
     @Bean
@@ -35,9 +35,9 @@ public class SwaggerConfig {
     @Bean
     public UiConfiguration uiConfiguration() {
         return UiConfigurationBuilder.builder()
-            .deepLinking(true)
-            .validatorUrl(null)
-            .build();
+                .deepLinking(true)
+                .validatorUrl(null)
+                .build();
     }
 
 }

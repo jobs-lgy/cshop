@@ -11,6 +11,6 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 public class AppCart {
 
     public static void main(String[] args) {
-        SpringApplication.run(AppCart.class,args);
+        SpringApplication.run(AppCart.class, args);
     }
 }

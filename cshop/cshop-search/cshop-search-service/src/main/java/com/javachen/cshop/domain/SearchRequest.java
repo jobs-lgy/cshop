@@ -15,9 +15,9 @@ public class SearchRequest {
     /**
      * 当前页
      */
-    private Integer page=1;
+    private Integer page = 1;
 
-    private  Integer size = 20;
+    private Integer size = 20;
 
     /**
      * 排序字段
@@ -32,5 +32,5 @@ public class SearchRequest {
     /**
      * 过滤字段
      */
-    private Map<String,String> filter;
+    private Map<String, String> filter;
 }

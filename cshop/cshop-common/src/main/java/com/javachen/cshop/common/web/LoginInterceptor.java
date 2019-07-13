@@ -19,13 +19,16 @@ import java.io.IOException;
 @Slf4j
 public class LoginInterceptor extends HandlerInterceptorAdapter {
 
-    @Autowired
-    private JwtClientHelper jwtClientHelper;
-
     /**
      * 定义一个线程域，存放登录用户
      */
     private static final ThreadLocal<AuthUser> t1 = new ThreadLocal<>();
+    @Autowired
+    private JwtClientHelper jwtClientHelper;
+
+    public static AuthUser getLoginUser() {
+        return t1.get();
+    }
 
     /**
      * * 在业务处理器处理请求之前被调用
@@ -47,7 +50,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //1.查询token
         String token = CookieUtils.getCookieValue(request, jwtClientHelper.getCookieName());
-        if (StringUtils.isEmpty(token)){
+        if (StringUtils.isEmpty(token)) {
             //2.未登录，返回401
             log.warn("没有授权访问");
 
@@ -55,21 +58,21 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
             return false;
         }
         //3.有token，查询用户信息
-        try{
+        try {
             //4.解析成功，说明已经登录
             AuthUser userInfo = jwtClientHelper.getAuthUserFromToken(token);
             //5.放入线程域
             t1.set(userInfo);
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             //6.抛出异常，证明未登录，返回401
-            log.error("登陆异常",e);
+            log.error("登陆异常", e);
             unauthorized(response);
             return false;
         }
     }
 
-    private void unauthorized( HttpServletResponse response) throws IOException {
+    private void unauthorized(HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(JsonUtils.toJson(CommonResponse.error(ErrorCode.UNAUTHORIZED)));
@@ -93,9 +96,5 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
         t1.remove();
-    }
-
-    public static AuthUser getLoginUser() {
-        return t1.get();
     }
 }

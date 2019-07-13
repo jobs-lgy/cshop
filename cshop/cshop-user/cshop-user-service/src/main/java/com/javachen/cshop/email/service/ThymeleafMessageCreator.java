@@ -25,16 +25,16 @@ public class ThymeleafMessageCreator extends MessageCreator {
     }
 
     @Override
-    public String buildMessageBody(EmailInfo info, Map<String,Object> props) {
+    public String buildMessageBody(EmailInfo info, Map<String, Object> props) {
         final Context thymeleafContext = new Context();
         if (props != null) {
             Iterator<String> propsIterator = props.keySet().iterator();
-            while(propsIterator.hasNext()) {
+            while (propsIterator.hasNext()) {
                 String key = propsIterator.next();
                 thymeleafContext.setVariable(key, props.get(key));
             }
         }
 
-        return this.templateEngine.process( info.getTemplate(), thymeleafContext);
+        return this.templateEngine.process(info.getTemplate(), thymeleafContext);
     }
 }

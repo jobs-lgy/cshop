@@ -1,6 +1,5 @@
 package com.javachen.cshop.email.service;
 
-import com.javachen.email.domain.*;
 import com.javachen.cshop.email.domain.*;
 import com.javachen.cshop.email.exception.EmailException;
 import com.javachen.cshop.email.repository.EmailClickRepository;

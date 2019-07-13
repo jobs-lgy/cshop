@@ -22,7 +22,7 @@ public class JsonUtils {
     private static final String JSON_DATE_FROMATE = "yyyy-MM-dd HH:mm:ss";
     private static ObjectMapper objectMapper;
 
-    static{
+    static {
         objectMapper = new ObjectMapper();
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL); //不输出value=null的属性
         objectMapper.setDateFormat(new SimpleDateFormat(JSON_DATE_FROMATE));
@@ -42,7 +42,7 @@ public class JsonUtils {
      * @return
      * @throws Exception
      */
-    public static <T> T fromJson(String jsonAsString, Class<T> pojoClass){
+    public static <T> T fromJson(String jsonAsString, Class<T> pojoClass) {
         try {
             return (T) getObjectMapper().readValue(jsonAsString, pojoClass);
         } catch (IOException e) {
@@ -71,11 +71,11 @@ public class JsonUtils {
     }
 
     public static String toJson(Object pojo, String... filterNames) {
-        return toJson(pojo,getObjectMapper(), filterNames);
+        return toJson(pojo, getObjectMapper(), filterNames);
     }
 
     private static String toJson(Object pojo, ObjectMapper objectMapper,
-                                String... filterNames)  {
+                                 String... filterNames) {
         StringWriter sw = new StringWriter();
         JsonFactory jsonFactory = new JsonFactory();
         try {
@@ -83,13 +83,13 @@ public class JsonUtils {
             jg.useDefaultPrettyPrinter();
             SimpleFilterProvider fp = new SimpleFilterProvider();
             if (filterNames != null && filterNames.length > 0) {
-                fp.addFilter(FILTER_NAME,SimpleBeanPropertyFilter.serializeAllExcept(filterNames));
+                fp.addFilter(FILTER_NAME, SimpleBeanPropertyFilter.serializeAllExcept(filterNames));
             } else {
-                fp.addFilter(FILTER_NAME,SimpleBeanPropertyFilter.serializeAllExcept(new String[]{}));
+                fp.addFilter(FILTER_NAME, SimpleBeanPropertyFilter.serializeAllExcept(new String[]{}));
             }
             objectMapper.writer(fp).writeValue(jg, pojo);
         } catch (IOException e) {
-            log.error("json解析出错：{}",e.toString());
+            log.error("json解析出错：{}", e.toString());
             return "";
         }
         return sw.toString();

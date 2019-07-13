@@ -51,7 +51,7 @@ public class EmailOpenServlet extends HttpServlet {
             Map<String, String> extraValues = new HashMap<String, String>();
             extraValues.put("userAgent", userAgent);
 
-            EmailOpen emailOpen=new EmailOpen();
+            EmailOpen emailOpen = new EmailOpen();
             emailOpen.setOpenTime(new Date());
             emailOpen.setEmailRecordId(emailId);
             emailOpen.setUserAgent(userAgent);
@@ -73,7 +73,9 @@ public class EmailOpenServlet extends HttpServlet {
             }
         } finally {
             if (bis != null) {
-                try{ bis.close(); } catch (Throwable e) {
+                try {
+                    bis.close();
+                } catch (Throwable e) {
                     log.error("Unable to close output stream in EmailOpenServlet", e);
                 }
             }

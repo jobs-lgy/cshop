@@ -29,8 +29,8 @@ zuul:
     cshop-auth-service: /auth/**
     cshop-order-service: /order/**
     cshop-cart-service: /cart/**
-#  ignored-services:
-#    - cshop-upload-service # 忽略upload-service服务
+  #  ignored-services:
+  #    - cshop-upload-service # 忽略upload-service服务
   add-host-header: true #携带请求本身的head头信息
   sensitive-headers: #匹配禁止使用的头信息，这里设置为null，否则set-cookie无效
 

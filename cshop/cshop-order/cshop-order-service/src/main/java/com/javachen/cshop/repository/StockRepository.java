@@ -5,11 +5,12 @@ import com.javachen.cshop.entity.Stock;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-public interface StockRepository extends JpaRepository<Stock,Long> {
+public interface StockRepository extends JpaRepository<Stock, Long> {
 
 
     /**
      * 更新对应商品的库存,且库存必须大于0，否则回滚。
+     *
      * @param skuId
      * @param num
      */
@@ -18,6 +19,7 @@ public interface StockRepository extends JpaRepository<Stock,Long> {
 
     /**
      * 更新对应商品的秒杀库存,且库存必须大于0，否则回滚。
+     *
      * @param skuId
      * @param num
      */

@@ -19,7 +19,7 @@ public class RsaUtils {
      * @return 公钥对象
      * @throws Exception
      */
-    public static PublicKey getPublicKey(String filename)  {
+    public static PublicKey getPublicKey(String filename) {
         byte[] bytes = readFile(filename);
         return getPublicKey(bytes);
     }
@@ -43,7 +43,7 @@ public class RsaUtils {
      * @return
      * @throws Exception
      */
-    public static PublicKey getPublicKey(byte[] bytes)  {
+    public static PublicKey getPublicKey(byte[] bytes) {
         try {
             X509EncodedKeySpec spec = new X509EncodedKeySpec(bytes);
             KeyFactory factory = KeyFactory.getInstance("RSA");
@@ -62,19 +62,19 @@ public class RsaUtils {
      * @return
      * @throws Exception
      */
-    public static PrivateKey getPrivateKey(byte[] bytes)  {
+    public static PrivateKey getPrivateKey(byte[] bytes) {
         try {
             PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(bytes);
             KeyFactory factory = KeyFactory.getInstance("RSA");
             return factory.generatePrivate(spec);
         } catch (NoSuchAlgorithmException e) {
-            throw  new AuthFailedException();
+            throw new AuthFailedException();
         } catch (InvalidKeySpecException e) {
             throw new AuthFailedException();
         }
     }
 
-    public static void generateKey(String publicKeyFilename,String privateKeyFilename, String secret)  {
+    public static void generateKey(String publicKeyFilename, String privateKeyFilename, String secret) {
         KeyPair keyPair = generateKey(secret);
         byte[] publicKeyBytes = keyPair.getPublic().getEncoded();
         writeFile(publicKeyFilename, publicKeyBytes);
@@ -83,7 +83,7 @@ public class RsaUtils {
         writeFile(privateKeyFilename, privateKeyBytes);
     }
 
-    private static KeyPair generateKey(String secret)  {
+    private static KeyPair generateKey(String secret) {
         KeyPairGenerator keyPairGenerator = null;
         try {
             keyPairGenerator = KeyPairGenerator.getInstance("RSA");
@@ -101,7 +101,7 @@ public class RsaUtils {
         try {
             return Files.readAllBytes(new File(fileName).toPath());
         } catch (IOException e) {
-            throw  new AuthFailedException();
+            throw new AuthFailedException();
         }
     }
 

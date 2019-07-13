@@ -19,13 +19,14 @@ public class UploadController {
 
     /**
      * 图片上传
+     *
      * @param file
      * @return
      */
     @PostMapping("image")
-    public ResponseEntity<String> uploadImage(@RequestParam("file")MultipartFile file){
-        String url= this.uploadServiceImpl.upload(file);
-        if(StringUtils.isBlank(url)){
+    public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) {
+        String url = this.uploadServiceImpl.upload(file);
+        if (StringUtils.isBlank(url)) {
             //url为空，证明上传失败
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }

@@ -1,8 +1,8 @@
 package com.javachen.cshop.service.impl;
 
 import com.javachen.cshop.common.auth.AuthUser;
-import com.javachen.cshop.entity.Address;
 import com.javachen.cshop.common.web.LoginInterceptor;
+import com.javachen.cshop.entity.Address;
 import com.javachen.cshop.repository.AddressRepository;
 import com.javachen.cshop.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;

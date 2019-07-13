@@ -39,35 +39,26 @@ import java.util.concurrent.TimeUnit;
 @Service
 @Slf4j
 public class AccountServiceImpl implements AccountService {
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private UserPasswordRepository userPasswordRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Resource(name = "registrationEmailInfo")
-    protected EmailInfo registrationEmailInfo;
-
-    @Resource(name = "forgotPasswordEmailInfo")
-    protected EmailInfo forgotPasswordEmailInfo;
-
-    @Resource(name = "changePasswordEmailInfo")
-    protected EmailInfo changePasswordEmailInfo;
-
-    @Autowired
-    private EmailService emailService;
-
-    @Autowired
-    private AmqpTemplate amqpTemplate;
-
-    @Autowired
-    private StringRedisTemplate stringRedisTemplate;
-
     private static final String REGISTER_KEY_PREFIX = "cshop:register:";
     private static final String RESET_KEY_PREFIX = "cshop:reset:";
+    @Resource(name = "registrationEmailInfo")
+    protected EmailInfo registrationEmailInfo;
+    @Resource(name = "forgotPasswordEmailInfo")
+    protected EmailInfo forgotPasswordEmailInfo;
+    @Resource(name = "changePasswordEmailInfo")
+    protected EmailInfo changePasswordEmailInfo;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private UserPasswordRepository userPasswordRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private EmailService emailService;
+    @Autowired
+    private AmqpTemplate amqpTemplate;
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     @Override
     @Transactional
@@ -174,7 +165,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional
     public User register(UserRegister userRegister) {
-        User newUser=userRegister.getUser();
+        User newUser = userRegister.getUser();
 
         if (userRepository.findByPhone(newUser.getPhone()) != null) {
             throw new BusinessException(ErrorCode.USER_PHONE_ALREADY_EXIST);

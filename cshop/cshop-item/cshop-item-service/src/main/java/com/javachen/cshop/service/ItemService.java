@@ -55,7 +55,7 @@ public interface ItemService {
      * @param spuId 商品ID
      * @return Spu
      */
-    Map<String,Object> findSpuMapById(Long spuId);
+    Map<String, Object> findSpuMapById(Long spuId);
 
     SpuBo findSpuById(Long spuId);
 

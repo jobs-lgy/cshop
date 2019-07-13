@@ -12,15 +12,13 @@
         <dependency>
             <groupId>com.javachen.cshop</groupId>
             <artifactId>cshop-common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
-
 
         <!-- swagger-spring-boot -->
         <dependency>
             <groupId>com.spring4all</groupId>
             <artifactId>swagger-spring-boot-starter</artifactId>
-            <version>1.7.0.RELEASE</version>
         </dependency>
 
         <!--  阿波罗整合 SpringBoot-->
@@ -35,12 +33,10 @@
             <version>1.0.0</version>
         </dependency>
 
-        <!--SpringCloud eureka-server -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
         </dependency>
-        <!-- springcloud feign组件 -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
@@ -51,7 +47,6 @@
             <artifactId>spring-cloud-starter-netflix-zuul</artifactId>
         </dependency>
 
-        <!--是springboot提供的微服务检测接口，默认对外提供几个接口：/info-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>

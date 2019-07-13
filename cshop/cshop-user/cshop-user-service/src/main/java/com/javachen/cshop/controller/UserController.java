@@ -44,8 +44,8 @@ public class UserController {
             @ApiParam("每页记录数")
             @Valid @Positive @RequestParam(required = false, defaultValue = "10") int size) {
 
-        Page<User> result= userService.findAll(PageRequest.of(page, size));
-        return CommonResponse.success(new PageResponse<User>(result.getTotalElements(),result.getTotalPages(),result.getContent()));
+        Page<User> result = userService.findAll(PageRequest.of(page, size));
+        return CommonResponse.success(new PageResponse<User>(result.getTotalElements(), result.getTotalPages(), result.getContent()));
     }
 
     //FIXME 1、校验没有起作用   2、/user/getotp 的get请求映射到这里出现类型转换异常

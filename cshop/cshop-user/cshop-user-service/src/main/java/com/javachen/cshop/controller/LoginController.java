@@ -5,7 +5,10 @@ import com.javachen.cshop.model.form.PasswordReset;
 import com.javachen.cshop.model.form.UserLogin;
 import com.javachen.cshop.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
@@ -26,13 +29,13 @@ public class LoginController {
      * @return
      */
     @GetMapping(value = "/login/forgotPassword")
-    public CommonResponse processForgotPassword(@RequestParam("email") String email){
-        accountService.sendForgotPasswordNotification(email,this.getResetPasswordUrl());
+    public CommonResponse processForgotPassword(@RequestParam("email") String email) {
+        accountService.sendForgotPasswordNotification(email, this.getResetPasswordUrl());
         return CommonResponse.success();
     }
 
     @PostMapping(value = "/login/resetPassword")
-    public CommonResponse processResetPassword(PasswordReset passwordReset){
+    public CommonResponse processResetPassword(PasswordReset passwordReset) {
         accountService.resetPassword(passwordReset);
         return CommonResponse.success();
     }

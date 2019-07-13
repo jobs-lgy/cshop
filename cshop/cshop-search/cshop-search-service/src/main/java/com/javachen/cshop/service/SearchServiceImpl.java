@@ -10,7 +10,6 @@ import com.javachen.cshop.entity.Brand;
 import com.javachen.cshop.entity.Category;
 import com.javachen.cshop.entity.Sku;
 import com.javachen.cshop.entity.SpuDetail;
-import com.javachen.feign.*;
 import com.javachen.cshop.feign.*;
 import com.javachen.cshop.model.vo.SpuBo;
 import com.javachen.cshop.repository.ItemRepository;
@@ -48,7 +47,7 @@ import java.util.stream.Collectors;
  * @since
  */
 @Service
-public class SearchServiceImpl implements SearchService{
+public class SearchServiceImpl implements SearchService {
     @Autowired
     private CategoryClient categoryClient;
 
@@ -77,22 +76,22 @@ public class SearchServiceImpl implements SearchService{
         Item item = new Item();
 
         //1.查询商品分类名称
-       String names = spuBo.getCname();
+        String names = spuBo.getCname();
         //2.查询sku
         List<Sku> skus = this.skuClient.findAllSkuBySpuId(spuBo.getId()).getData();
 
         //4.处理sku,仅封装id，价格、标题、图片、并获得价格集合
         List<Long> prices = new ArrayList<>();
-        List<Map<String,Object>> skuLists = new ArrayList<>();
-        if(skus!=null && skus.size()>0){
+        List<Map<String, Object>> skuLists = new ArrayList<>();
+        if (skus != null && skus.size() > 0) {
             skus.forEach(sku -> {
                 prices.add(sku.getPrice());
-                Map<String,Object> skuMap = new HashMap<>();
-                skuMap.put("id",sku.getId());
-                skuMap.put("title",sku.getTitle());
-                skuMap.put("price",sku.getPrice());
+                Map<String, Object> skuMap = new HashMap<>();
+                skuMap.put("id", sku.getId());
+                skuMap.put("title", sku.getTitle());
+                skuMap.put("price", sku.getPrice());
                 //取第一张图片
-                skuMap.put("image", StringUtils.isBlank(sku.getImages()) ? "" : StringUtils.split(sku.getImages(),",")[0]);
+                skuMap.put("image", StringUtils.isBlank(sku.getImages()) ? "" : StringUtils.split(sku.getImages(), ",")[0]);
                 skuLists.add(skuMap);
             });
         }
@@ -100,10 +99,11 @@ public class SearchServiceImpl implements SearchService{
         SpuDetail spuDetail = this.spuDetailClient.findSpuDetailById(spuBo.getId()).getData();
 
         //过滤规格模板，把所有可搜索的信息保存到Map中
-        Map<String,Object> specMap = new HashMap<>();
-        if(spuDetail!=null){
+        Map<String, Object> specMap = new HashMap<>();
+        if (spuDetail != null) {
             //提取公共属性
-            List<Map<String,Object>> genericSpecs = JsonUtils.fromJson(spuDetail.getSpecifications(),new TypeReference<List<Map<String,Object>>>(){});
+            List<Map<String, Object>> genericSpecs = JsonUtils.fromJson(spuDetail.getSpecifications(), new TypeReference<List<Map<String, Object>>>() {
+            });
 
             String searchable = "searchable";
             String v = "v";
@@ -112,11 +112,11 @@ public class SearchServiceImpl implements SearchService{
 
             genericSpecs.forEach(m -> {
                 List<Map<String, Object>> params = (List<Map<String, Object>>) m.get("params");
-                params.forEach(spe ->{
-                    if ((boolean)spe.get(searchable)){
-                        if (spe.get(v) != null){
+                params.forEach(spe -> {
+                    if ((boolean) spe.get(searchable)) {
+                        if (spe.get(v) != null) {
                             specMap.put(spe.get(k).toString(), spe.get(v));
-                        }else if (spe.get(options) != null){
+                        } else if (spe.get(options) != null) {
                             specMap.put(spe.get(k).toString(), spe.get(options));
                         }
                     }
@@ -131,7 +131,7 @@ public class SearchServiceImpl implements SearchService{
         item.setCid2(spuBo.getCid2());
         item.setCid3(spuBo.getCid3());
         item.setCreateTime(spuBo.getCreateTime());
-        item.setAll(spuBo.getTitle() + " " + names.replaceAll("/"," "));
+        item.setAll(spuBo.getTitle() + " " + names.replaceAll("/", " "));
         item.setPrice(prices);
         item.setSkus(JsonUtils.toJson(skuLists));
         item.setSpecs(specMap);
@@ -145,7 +145,7 @@ public class SearchServiceImpl implements SearchService{
         /**
          * 判断是否有搜索条件，如果没有，直接返回null。不允许搜索全部商品
          */
-        if (StringUtils.isBlank(key)){
+        if (StringUtils.isBlank(key)) {
             return null;
         }
         //创建查询构建器
@@ -155,9 +155,9 @@ public class SearchServiceImpl implements SearchService{
         QueryBuilder basicQuery = this.buildBasicQueryWithFilter(searchRequest);
         queryBuilder.withQuery(basicQuery);
         //1.2.通过sourceFilter设置返回的结果字段，只需要id,skus,subTitle
-        queryBuilder.withSourceFilter(new FetchSourceFilter(new String[]{"id","skus","subTitle"},null));
+        queryBuilder.withSourceFilter(new FetchSourceFilter(new String[]{"id", "skus", "subTitle"}, null));
         //1.3.分页和排序
-        searchWithPageAndSort(queryBuilder,searchRequest);
+        searchWithPageAndSort(queryBuilder, searchRequest);
         //1.4.聚合
         /**
          * 商品分类聚合名称
@@ -182,20 +182,20 @@ public class SearchServiceImpl implements SearchService{
         //3.3 品牌的聚合结果
         List<Brand> brands = getBrandAggResult(pageInfo.getAggregation(brandAggName));
         //3.4 处理规格参数
-        List<Map<String,Object>> specs = null;
-        if (categories.size() == 1){
+        List<Map<String, Object>> specs = null;
+        if (categories.size() == 1) {
             //如果商品分类只有一个进行聚合，并根据分类与基本查询条件聚合
-            specs = getSpec(categories.get(0).getId(),basicQuery);
+            specs = getSpec(categories.get(0).getId(), basicQuery);
         }
         //4.封装结果，返回
-        return new SearchResult<Item>(total, totalPage,pageInfo.getContent(),categories,brands,specs);
+        return new SearchResult<Item>(total, totalPage, pageInfo.getContent(), categories, brands, specs);
     }
 
     @Override
     public void createIndex(Long id) throws IOException {
         SpuBo spuBo = this.spuClient.findSpuById(id).getData();
 
-        if(spuBo!=null){
+        if (spuBo != null) {
             //构建商品
             Item item = this.buildItem(spuBo);
             //保存数据到索引库中
@@ -210,31 +210,32 @@ public class SearchServiceImpl implements SearchService{
 
     /**
      * 构建带过滤条件的基本查询
+     *
      * @param searchRequest
      * @return
      */
     private QueryBuilder buildBasicQueryWithFilter(SearchRequest searchRequest) {
         BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
         //基本查询条件
-        queryBuilder.must(QueryBuilders.matchQuery("all",searchRequest.getKey()).operator(Operator.AND));
+        queryBuilder.must(QueryBuilders.matchQuery("all", searchRequest.getKey()).operator(Operator.AND));
         //过滤条件构造器
         BoolQueryBuilder filterQueryBuilder = QueryBuilders.boolQuery();
         //整理过滤条件
-        Map<String,String> filter = searchRequest.getFilter();
-        for (Map.Entry<String,String> entry : filter.entrySet()) {
+        Map<String, String> filter = searchRequest.getFilter();
+        for (Map.Entry<String, String> entry : filter.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
             String regex = "^(\\d+\\.?\\d*)-(\\d+\\.?\\d*)$";
             if (!"key".equals(key)) {
-                if ("price".equals(key)){
+                if ("price".equals(key)) {
                     if (!value.contains("元以上")) {
                         String[] nums = StringUtils.substringBefore(value, "元").split("-");
                         filterQueryBuilder.must(QueryBuilders.rangeQuery(key).gte(Double.valueOf(nums[0]) * 100).lt(Double.valueOf(nums[1]) * 100));
-                    }else {
-                        String num = StringUtils.substringBefore(value,"元以上");
-                        filterQueryBuilder.must(QueryBuilders.rangeQuery(key).gte(Double.valueOf(num)*100));
+                    } else {
+                        String num = StringUtils.substringBefore(value, "元以上");
+                        filterQueryBuilder.must(QueryBuilders.rangeQuery(key).gte(Double.valueOf(num) * 100));
                     }
-                }else {
+                } else {
                     if (value.matches(regex)) {
                         Double[] nums = NumberUtils.searchNumber(value, regex);
                         //数值类型进行范围查询   lt:小于  gte:大于等于
@@ -259,6 +260,7 @@ public class SearchServiceImpl implements SearchService{
 
     /**
      * 聚合规格参数
+     *
      * @param id
      * @param basicQuery
      * @return
@@ -267,64 +269,66 @@ public class SearchServiceImpl implements SearchService{
         //不管是全局参数还是sku参数，只要是搜索参数，都根据分类id查询出来
         String specsJSONStr = this.specClient.querySpecificationByCategoryId(id).getData();
         //1.将规格反序列化为集合
-        List<Map<String,Object>> specs = null;
+        List<Map<String, Object>> specs = null;
         specs = JsonUtils.fromJson(specsJSONStr, new TypeReference<List<Map<String, Object>>>() {
         });
         //2.过滤出可以搜索的规格参数名称，分成数值类型、字符串类型
         Set<String> strSpec = new HashSet<>();
         //准备map，用来保存数值规格参数名及单位
-        Map<String,String> numericalUnits = new HashMap<>();
+        Map<String, String> numericalUnits = new HashMap<>();
         //解析规格
         String searchable = "searchable";
         String numerical = "numerical";
         String k = "k";
         String unit = "unit";
-        for (Map<String,Object> spec :specs){
+        for (Map<String, Object> spec : specs) {
             List<Map<String, Object>> params = (List<Map<String, Object>>) spec.get("params");
-            params.forEach(param ->{
-                if ((boolean)param.get(searchable)){
-                    if (param.containsKey(numerical) && (boolean)param.get(numerical)){
-                        numericalUnits.put(param.get(k).toString(),param.get(unit).toString());
-                    }else {
+            params.forEach(param -> {
+                if ((boolean) param.get(searchable)) {
+                    if (param.containsKey(numerical) && (boolean) param.get(numerical)) {
+                        numericalUnits.put(param.get(k).toString(), param.get(unit).toString());
+                    } else {
                         strSpec.add(param.get(k).toString());
                     }
                 }
             });
         }
         //3.聚合计算数值类型的interval
-        Map<String,Double> numericalInterval = getNumberInterval(id,numericalUnits.keySet());
-        return this.aggForSpec(strSpec,numericalInterval,numericalUnits,basicQuery);
+        Map<String, Double> numericalInterval = getNumberInterval(id, numericalUnits.keySet());
+        return this.aggForSpec(strSpec, numericalInterval, numericalUnits, basicQuery);
     }
 
     /**
      * 聚合得到interval
+     *
      * @param id
      * @param keySet
      * @return
      */
     private Map<String, Double> getNumberInterval(Long id, Set<String> keySet) {
-        Map<String,Double> numbericalSpecs = new HashMap<>();
+        Map<String, Double> numbericalSpecs = new HashMap<>();
         //准备查询条件
         NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
         //不查询任何数据
-        queryBuilder.withQuery(QueryBuilders.termQuery("cid3",id.toString())).withSourceFilter(new FetchSourceFilter(new String[]{""},null)).withPageable(PageRequest.of(0,1));
+        queryBuilder.withQuery(QueryBuilders.termQuery("cid3", id.toString())).withSourceFilter(new FetchSourceFilter(new String[]{""}, null)).withPageable(PageRequest.of(0, 1));
         //添加stats类型的聚合,同时返回avg、max、min、sum、count等
-        for (String key : keySet){
+        for (String key : keySet) {
             queryBuilder.addAggregation(AggregationBuilders.stats(key).field("specs." + key));
         }
-        Map<String,Aggregation> aggregationMap = this.elasticsearchTemplate.query(queryBuilder.build(),
+        Map<String, Aggregation> aggregationMap = this.elasticsearchTemplate.query(queryBuilder.build(),
                 searchResponse -> searchResponse.getAggregations().asMap()
         );
-        for (String key : keySet){
+        for (String key : keySet) {
             InternalStats stats = (InternalStats) aggregationMap.get(key);
-            double interval = this.getInterval(stats.getMin(),stats.getMax(),stats.getSum());
-            numbericalSpecs.put(key,interval);
+            double interval = this.getInterval(stats.getMin(), stats.getMax(), stats.getSum());
+            numbericalSpecs.put(key, interval);
         }
         return numbericalSpecs;
     }
 
     /**
      * 根据最小值，最大值，sum计算interval
+     *
      * @param min
      * @param max
      * @param sum
@@ -334,19 +338,20 @@ public class SearchServiceImpl implements SearchService{
         //显示7个区间
         double interval = (max - min) / 6.0d;
         //判断是否是小数
-        if (sum.intValue() == sum){
+        if (sum.intValue() == sum) {
             //不是小数，要取整十、整百
-            int length = StringUtils.substringBefore(String.valueOf(interval),".").length();
-            double factor = Math.pow(10.0,length - 1);
-            return Math.round(interval / factor)*factor;
-        }else {
+            int length = StringUtils.substringBefore(String.valueOf(interval), ".").length();
+            double factor = Math.pow(10.0, length - 1);
+            return Math.round(interval / factor) * factor;
+        } else {
             //是小数的话就保留一位小数
-            return NumberUtils.scale(interval,1);
+            return NumberUtils.scale(interval, 1);
         }
     }
 
     /**
      * 根据规格参数，聚合得到过滤属性值
+     *
      * @param strSpec
      * @param numericalInterval
      * @param numericalUnits
@@ -354,41 +359,41 @@ public class SearchServiceImpl implements SearchService{
      * @return
      */
     private List<Map<String, Object>> aggForSpec(Set<String> strSpec, Map<String, Double> numericalInterval, Map<String, String> numericalUnits, QueryBuilder basicQuery) {
-        List<Map<String,Object>> specs = new ArrayList<>();
+        List<Map<String, Object>> specs = new ArrayList<>();
         //准备查询条件
         NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
         queryBuilder.withQuery(basicQuery);
         //聚合数值类型
-        for (Map.Entry<String,Double> entry : numericalInterval.entrySet()) {
+        for (Map.Entry<String, Double> entry : numericalInterval.entrySet()) {
             queryBuilder.addAggregation(AggregationBuilders.histogram(entry.getKey()).field("specs." + entry.getKey()).interval(entry.getValue()).minDocCount(1));
         }
         //聚合字符串
-        for (String key :strSpec){
-            queryBuilder.addAggregation(AggregationBuilders.terms(key).field("specs."+key+".keyword"));
+        for (String key : strSpec) {
+            queryBuilder.addAggregation(AggregationBuilders.terms(key).field("specs." + key + ".keyword"));
         }
 
         //解析聚合结果
-        Map<String,Aggregation> aggregationMap = this.elasticsearchTemplate.query(queryBuilder.build(), SearchResponse:: getAggregations).asMap();
+        Map<String, Aggregation> aggregationMap = this.elasticsearchTemplate.query(queryBuilder.build(), SearchResponse::getAggregations).asMap();
 
         //解析数值类型
-        for (Map.Entry<String,Double> entry :numericalInterval.entrySet()){
-            Map<String,Object> spec = new HashMap<>();
+        for (Map.Entry<String, Double> entry : numericalInterval.entrySet()) {
+            Map<String, Object> spec = new HashMap<>();
             String key = entry.getKey();
-            spec.put("k",key);
-            spec.put("unit",numericalUnits.get(key));
+            spec.put("k", key);
+            spec.put("unit", numericalUnits.get(key));
             //获取聚合结果
             InternalHistogram histogram = (InternalHistogram) aggregationMap.get(key);
-            spec.put("options",histogram.getBuckets().stream().map(bucket -> {
+            spec.put("options", histogram.getBuckets().stream().map(bucket -> {
                 Double begin = (Double) bucket.getKey();
                 Double end = begin + numericalInterval.get(key);
                 //对begin和end取整
-                if (NumberUtils.isInt(begin) && NumberUtils.isInt(end)){
+                if (NumberUtils.isInt(begin) && NumberUtils.isInt(end)) {
                     //确实是整数，直接取整
                     return begin.intValue() + "-" + end.intValue();
-                }else {
+                } else {
                     //小数，取2位小数
-                    begin = NumberUtils.scale(begin,2);
-                    end = NumberUtils.scale(end,2);
+                    begin = NumberUtils.scale(begin, 2);
+                    end = NumberUtils.scale(end, 2);
                     return begin + "-" + end;
                 }
             }).collect(Collectors.toList()));
@@ -397,10 +402,10 @@ public class SearchServiceImpl implements SearchService{
 
         //解析字符串类型
         strSpec.forEach(key -> {
-            Map<String,Object> spec = new HashMap<>();
-            spec.put("k",key);
+            Map<String, Object> spec = new HashMap<>();
+            spec.put("k", key);
             StringTerms terms = (StringTerms) aggregationMap.get(key);
-            spec.put("options",terms.getBuckets().stream().map((Function<StringTerms.Bucket, Object>) StringTerms.Bucket::getKeyAsString).collect(Collectors.toList()));
+            spec.put("options", terms.getBuckets().stream().map((Function<StringTerms.Bucket, Object>) StringTerms.Bucket::getKeyAsString).collect(Collectors.toList()));
             specs.add(spec);
         });
         return specs;
@@ -408,13 +413,14 @@ public class SearchServiceImpl implements SearchService{
 
     /**
      * 解析品牌聚合结果
+     *
      * @param aggregation
      * @return
      */
     private List<Brand> getBrandAggResult(Aggregation aggregation) {
         LongTerms brandAgg = (LongTerms) aggregation;
         List<Long> bids = new ArrayList<>();
-        for (LongTerms.Bucket bucket : brandAgg.getBuckets()){
+        for (LongTerms.Bucket bucket : brandAgg.getBuckets()) {
             bids.add(bucket.getKeyAsNumber().longValue());
         }
         //根据品牌id查询品牌
@@ -423,13 +429,14 @@ public class SearchServiceImpl implements SearchService{
 
     /**
      * 解析商品分类聚合结果，其中都是三级分类
+     *
      * @param aggregation
      * @return
      */
     private List<Category> getCategoryAggResult(Aggregation aggregation) {
         LongTerms brandAgg = (LongTerms) aggregation;
         List<Long> cids = new ArrayList<>();
-        for (LongTerms.Bucket bucket : brandAgg.getBuckets()){
+        for (LongTerms.Bucket bucket : brandAgg.getBuckets()) {
             cids.add(bucket.getKeyAsNumber().longValue());
         }
         //根据id查询分类名称
@@ -438,6 +445,7 @@ public class SearchServiceImpl implements SearchService{
 
     /**
      * 构建基本查询条件
+     *
      * @param queryBuilder
      * @param request
      */

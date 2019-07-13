@@ -5,12 +5,10 @@ import com.javachen.cshop.common.exception.BusinessException;
 import com.javachen.cshop.common.exception.ErrorCode;
 import com.javachen.cshop.common.response.PageResponse;
 import com.javachen.cshop.common.util.JsonUtils;
-import com.javachen.entity.*;
 import com.javachen.cshop.entity.*;
+import com.javachen.cshop.model.vo.SpuBo;
 import com.javachen.cshop.reposity.*;
 import com.javachen.cshop.service.ItemService;
-import com.javachen.cshop.model.vo.SpuBo;
-import com.javachen.reposity.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -166,7 +164,7 @@ public class ItemServiceImpl implements ItemService {
      * @param spuId spuid
      * @return 商品信息
      */
-    public Map<String,Object> findSpuMapById(Long spuId) {
+    public Map<String, Object> findSpuMapById(Long spuId) {
         Spu spu = findSpuById(spuId);
         List<Category> categoryList = categoryReposity.findAllById(Arrays.asList(spu.getCid1(), spu.getCid2(), spu.getCid3()));
         Brand brand = brandReposity.findById(spu.getBrandId())
@@ -187,34 +185,34 @@ public class ItemServiceImpl implements ItemService {
 
         //获取所有规格参数，然后封装成为id和name形式的数据
         String allSpecJson = spuDetail.getSpecifications();
-        List<Map<String,Object>> allSpecs = JsonUtils.fromJson(allSpecJson, new TypeReference<List<Map<String, Object>>>() {
+        List<Map<String, Object>> allSpecs = JsonUtils.fromJson(allSpecJson, new TypeReference<List<Map<String, Object>>>() {
         });
-        Map<Integer,String> specName = new HashMap<>();
-        Map<Integer,Object> specValue = new HashMap<>();
-        this.getAllSpecifications(allSpecs,specName,specValue);
+        Map<Integer, String> specName = new HashMap<>();
+        Map<Integer, Object> specValue = new HashMap<>();
+        this.getAllSpecifications(allSpecs, specName, specValue);
 
         //获取特有规格参数
         String specTJson = spuDetail.getSpecTemplate();
-        Map<String,String[]> specs = JsonUtils.fromJson(specTJson, new TypeReference<Map<String, String[]>>() {
+        Map<String, String[]> specs = JsonUtils.fromJson(specTJson, new TypeReference<Map<String, String[]>>() {
         });
-        Map<Integer,String> specialParamName = new HashMap<>();
-        Map<Integer,String[]> specialParamValue = new HashMap<>();
-        this.getSpecialSpec(specs,specName,specValue,specialParamName,specialParamValue);
+        Map<Integer, String> specialParamName = new HashMap<>();
+        Map<Integer, String[]> specialParamValue = new HashMap<>();
+        this.getSpecialSpec(specs, specName, specValue, specialParamName, specialParamValue);
 
         //按照组构造规格参数
-        List<Map<String,Object>> groups = this.getGroupsSpec(allSpecs,specName,specValue);
+        List<Map<String, Object>> groups = this.getGroupsSpec(allSpecs, specName, specValue);
 
-        Map<String,Object> map = new HashMap<>();
-        map.put("spu",spu);
-        map.put("spuDetail",spuDetail);
-        map.put("skuList",skuList);
-        map.put("brand",brand);
-        map.put("categoryList",categoryList);
-        map.put("specName",specName);
-        map.put("specValue",specValue);
-        map.put("groups",groups);
-        map.put("specialParamName",specialParamName);
-        map.put("specialParamValue",specialParamValue);
+        Map<String, Object> map = new HashMap<>();
+        map.put("spu", spu);
+        map.put("spuDetail", spuDetail);
+        map.put("skuList", skuList);
+        map.put("brand", brand);
+        map.put("categoryList", categoryList);
+        map.put("specName", specName);
+        map.put("specValue", specValue);
+        map.put("groups", groups);
+        map.put("specialParamName", specialParamName);
+        map.put("specialParamValue", specialParamValue);
 
         return map;
     }
@@ -228,9 +226,9 @@ public class ItemServiceImpl implements ItemService {
 
         List<Stock> stocks = stockRepository.findAllBySkuIdIn(skuList.stream().map(Sku::getId).collect(Collectors.toList()));
 
-        for (Sku sku:skuList){
-            for (Stock stock : stocks){
-                if (sku.getId().equals(stock.getSkuId())){
+        for (Sku sku : skuList) {
+            for (Stock stock : stocks) {
+                if (sku.getId().equals(stock.getSkuId())) {
                     sku.setStock(stock.getStock());
                 }
             }
@@ -247,10 +245,10 @@ public class ItemServiceImpl implements ItemService {
         List<Map<String, Object>> groups = new ArrayList<>();
         int i = 0;
         int j = 0;
-        for (Map<String,Object> spec :allSpecs){
+        for (Map<String, Object> spec : allSpecs) {
             List<Map<String, Object>> params = (List<Map<String, Object>>) spec.get("params");
-            List<Map<String,Object>> temp = new ArrayList<>();
-            for (Map<String,Object> param :params) {
+            List<Map<String, Object>> temp = new ArrayList<>();
+            for (Map<String, Object> param : params) {
                 for (Map.Entry<Integer, String> entry : specName.entrySet()) {
                     if (entry.getValue().equals(param.get("k").toString())) {
                         String value = specValue.get(entry.getKey()) != null ? specValue.get(entry.getKey()).toString() : "无";
@@ -262,10 +260,10 @@ public class ItemServiceImpl implements ItemService {
                     }
                 }
             }
-            Map<String,Object> temp2 = new HashMap<>(16);
-            temp2.put("params",temp);
-            temp2.put("id",++i);
-            temp2.put("name",spec.get("group"));
+            Map<String, Object> temp2 = new HashMap<>(16);
+            temp2.put("params", temp);
+            temp2.put("id", ++i);
+            temp2.put("name", spec.get("group"));
             groups.add(temp2);
         }
         return groups;
@@ -275,12 +273,12 @@ public class ItemServiceImpl implements ItemService {
         if (specs != null) {
             for (Map.Entry<String, String[]> entry : specs.entrySet()) {
                 String key = entry.getKey();
-                for (Map.Entry<Integer,String> e : specName.entrySet()) {
-                    if (e.getValue().equals(key)){
-                        specialParamName.put(e.getKey(),e.getValue());
+                for (Map.Entry<Integer, String> e : specName.entrySet()) {
+                    if (e.getValue().equals(key)) {
+                        specialParamName.put(e.getKey(), e.getValue());
                         //因为是放在数组里面，所以要先去除两个方括号，然后再以逗号分割成数组
-                        String  s = specValue.get(e.getKey()).toString();
-                        String result = org.apache.commons.lang3.StringUtils.substring(s,1,s.length()-1);
+                        String s = specValue.get(e.getKey()).toString();
+                        String result = org.apache.commons.lang3.StringUtils.substring(s, 1, s.length() - 1);
                         specialParamValue.put(e.getKey(), result.split(","));
                     }
                 }
@@ -293,36 +291,36 @@ public class ItemServiceImpl implements ItemService {
         String v = "v";
         String unit = "unit";
         String numerical = "numerical";
-        String options ="options";
+        String options = "options";
         int i = 0;
-        if (allSpecs != null){
-            for (Map<String,Object> s : allSpecs){
+        if (allSpecs != null) {
+            for (Map<String, Object> s : allSpecs) {
                 List<Map<String, Object>> params = (List<Map<String, Object>>) s.get("params");
-                for (Map<String,Object> param :params){
+                for (Map<String, Object> param : params) {
                     String result;
-                    if (param.get(v) == null){
+                    if (param.get(v) == null) {
                         result = "无";
-                    }else{
+                    } else {
                         result = param.get(v).toString();
                     }
                     if (param.containsKey(numerical) && (boolean) param.get(numerical)) {
-                        if (result.contains(".")){
+                        if (result.contains(".")) {
                             Double d = Double.valueOf(result);
-                            if (d.intValue() == d){
-                                result = d.intValue()+"";
+                            if (d.intValue() == d) {
+                                result = d.intValue() + "";
                             }
                         }
                         i++;
-                        specName.put(i,param.get(k).toString());
-                        specValue.put(i,result+param.get(unit).toString());
-                    } else if (param.containsKey(options)){
+                        specName.put(i, param.get(k).toString());
+                        specValue.put(i, result + param.get(unit).toString());
+                    } else if (param.containsKey(options)) {
                         i++;
-                        specName.put(i,param.get(k).toString());
-                        specValue.put(i,param.get(options));
-                    }else {
+                        specName.put(i, param.get(k).toString());
+                        specValue.put(i, param.get(options));
+                    } else {
                         i++;
-                        specName.put(i,param.get(k).toString());
-                        specValue.put(i,param.get(v));
+                        specName.put(i, param.get(k).toString());
+                        specValue.put(i, param.get(v));
                     }
                 }
             }

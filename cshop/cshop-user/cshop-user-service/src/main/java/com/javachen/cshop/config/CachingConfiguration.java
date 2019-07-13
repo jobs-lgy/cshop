@@ -27,11 +27,11 @@ import java.util.Arrays;
 @EnableCaching
 class CachingConfiguration {
 
-	@Bean
-	public CacheManager cacheManager() {
-		Cache cache = new ConcurrentMapCache("byPhone");
-		SimpleCacheManager manager = new SimpleCacheManager();
-		manager.setCaches(Arrays.asList(cache));
-		return manager;
-	}
+    @Bean
+    public CacheManager cacheManager() {
+        Cache cache = new ConcurrentMapCache("byPhone");
+        SimpleCacheManager manager = new SimpleCacheManager();
+        manager.setCaches(Arrays.asList(cache));
+        return manager;
+    }
 }

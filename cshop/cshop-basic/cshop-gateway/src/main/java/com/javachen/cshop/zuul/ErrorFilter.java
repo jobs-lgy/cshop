@@ -1,7 +1,7 @@
 package com.javachen.cshop.zuul;
 
 
-import com.alibaba.fastjson.JSON;
+import com.javachen.cshop.common.util.JsonUtils;
 import com.javachen.cshop.exception.RateLimiterException;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
@@ -34,7 +34,7 @@ public class ErrorFilter extends ZuulFilter {
 
         try {
             if (throwable instanceof RateLimiterException || throwable.getCause() instanceof RateLimiterException) {
-                response.getWriter().write(JSON.toJSONString("系统繁忙,稍后重试"));
+                response.getWriter().write(JsonUtils.toJson("系统繁忙,稍后重试"));
             }
         } catch (IOException e) {
             log.error(e.getMessage(), e);

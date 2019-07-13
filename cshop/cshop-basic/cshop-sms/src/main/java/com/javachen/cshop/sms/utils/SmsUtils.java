@@ -18,9 +18,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class SmsUtils {
 
-    @Autowired
-    private SmsProperties properties;
-
     /**
      * 产品名称:云通信短信API产品,开发者无需替换
      */
@@ -29,10 +26,11 @@ public class SmsUtils {
      * 产品域名,开发者无需替换
      */
     static final String domain = "dysmsapi.aliyuncs.com";
-
     static final Logger logger = LoggerFactory.getLogger(SmsUtils.class);
+    @Autowired
+    private SmsProperties properties;
 
-    public  SendSmsResponse sendSms(String phone,String code,String signName,String template) throws ClientException {
+    public SendSmsResponse sendSms(String phone, String code, String signName, String template) throws ClientException {
 
         //可自助调整超时时间
         System.setProperty("sun.net.client.defaultConnectTimeout", "10000");

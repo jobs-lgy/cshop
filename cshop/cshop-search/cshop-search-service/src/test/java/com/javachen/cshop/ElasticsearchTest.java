@@ -1,11 +1,11 @@
 package com.javachen.cshop;
 
 import com.javachen.cshop.common.response.PageResponse;
-import com.javachen.cshop.feign.SpuClient;
 import com.javachen.cshop.domain.Item;
-import com.javachen.cshop.service.SearchServiceImpl;
+import com.javachen.cshop.feign.SpuClient;
 import com.javachen.cshop.model.vo.SpuBo;
 import com.javachen.cshop.repository.ItemRepository;
+import com.javachen.cshop.service.SearchServiceImpl;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,7 +38,7 @@ public class ElasticsearchTest {
     private SearchServiceImpl searchService;
 
     @Test
-    public void createIndex(){
+    public void createIndex() {
         // 创建索引
         this.elasticsearchTemplate.createIndex(Item.class);
         // 配置映射
@@ -56,9 +56,9 @@ public class ElasticsearchTest {
             PageResponse<SpuBo> result = this.spuClient.findAllSpuByPage(page, row, null, true, null).getData();
             List<SpuBo> spus = result.getData();
             size = spus.size();
-            page ++;
+            page++;
             list.addAll(spus);
-        }while (size == 100);
+        } while (size == 100);
 
         //创建Goods集合
         List<Item> goodsList = new ArrayList<>();
@@ -76,16 +76,16 @@ public class ElasticsearchTest {
     }
 
     @Test
-    public void testAgg(){
+    public void testAgg() {
         NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
         // 不查询任何结果
-        queryBuilder.withQuery(QueryBuilders.termQuery("cid3",76)).withSourceFilter(new FetchSourceFilter(new String[]{""},null)).withPageable(PageRequest.of(0,1));
+        queryBuilder.withQuery(QueryBuilders.termQuery("cid3", 76)).withSourceFilter(new FetchSourceFilter(new String[]{""}, null)).withPageable(PageRequest.of(0, 1));
         Page<Item> goodsPage = this.goodsRepository.search(queryBuilder.build());
         goodsPage.forEach(System.out::println);
     }
 
     @Test
-    public void testDelete(){
+    public void testDelete() {
         this.goodsRepository.deleteById((long) 2);
     }
 

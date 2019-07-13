@@ -16,19 +16,18 @@ import javax.validation.Valid;
 @RestController
 public class RegisterController {
     @Autowired
+    protected EmailService emailService;
+    @Autowired
     private AccountService accountService;
 
-    @Autowired
-    protected EmailService emailService;
-
     @GetMapping("/register/code")
-    public CommonResponse senVerifyCode(@RequestParam("phone") String phone){
+    public CommonResponse senVerifyCode(@RequestParam("phone") String phone) {
         this.accountService.sendVerifyCode(phone);
         return CommonResponse.success();
     }
 
     @PostMapping("/register")
-    public CommonResponse<User> register(@Valid UserRegister userRegister)  {
+    public CommonResponse<User> register(@Valid UserRegister userRegister) {
         return CommonResponse.success(accountService.register(userRegister));
     }
 }

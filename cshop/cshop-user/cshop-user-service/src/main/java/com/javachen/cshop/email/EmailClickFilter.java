@@ -28,8 +28,8 @@ public class EmailClickFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
                          FilterChain chain) throws IOException, ServletException {
         String emailId = request.getParameter("emailId");
-        if ( emailId != null ) {
-            EmailClick emailClick=new EmailClick();
+        if (emailId != null) {
+            EmailClick emailClick = new EmailClick();
             emailClick.setEmailRecordId(Long.valueOf(emailId));
             emailClick.setClickedTime(new Date());
             emailClick.setUrl(((HttpServletRequest) request).getRequestURI());

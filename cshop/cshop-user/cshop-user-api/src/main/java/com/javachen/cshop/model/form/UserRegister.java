@@ -29,18 +29,18 @@ public class UserRegister {
     private String email;
 
     @NotNull(message = "密码不能为空")
-    @Length(min = 6,max = 25,message = "密码长度需要在6和25之间")
+    @Length(min = 6, max = 25, message = "密码长度需要在6和25之间")
     private String password;
 
     @NotNull(message = "密码不能为空")
-    @Length(min = 6,max = 25,message = "密码长度需要在6和25之间")
+    @Length(min = 6, max = 25, message = "密码长度需要在6和25之间")
     private String passwordConfirm;
 
     @NotNull(message = "手机验证码不能为空")
     private String code;
 
-    public User getUser(){
-        User user=new User();
+    public User getUser() {
+        User user = new User();
         user.setEmail(this.email);
         user.setPhone(this.phone);
         user.setUsername(this.username);

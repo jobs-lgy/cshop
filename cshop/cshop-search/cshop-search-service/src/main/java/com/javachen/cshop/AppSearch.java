@@ -20,6 +20,6 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableFeignClients
 public class AppSearch {
     public static void main(String[] args) {
-        SpringApplication.run(AppSearch.class,args);
+        SpringApplication.run(AppSearch.class, args);
     }
 }

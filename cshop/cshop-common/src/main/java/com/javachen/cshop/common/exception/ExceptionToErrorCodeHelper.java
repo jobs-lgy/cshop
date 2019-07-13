@@ -14,11 +14,11 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
  */
 public class ExceptionToErrorCodeHelper {
     private static final ImmutableMap<Object, ErrorCode> MAP = ImmutableMap.<Object, ErrorCode>builder()
-            .put(HttpMediaTypeNotSupportedException.class,ErrorCode.REQUEST_INVALID_ERROR)
-            .put(HttpRequestMethodNotSupportedException.class,ErrorCode.REQUEST_INVALID_ERROR)
-            .put(IllegalStateException.class,ErrorCode.PARAMETER_INVALID_ERROR)
-            .put(AuthFailedException.class,ErrorCode.AUTHORIZED_FAIL)
-            .put(NumberFormatException.class,ErrorCode.PARAMETER_INVALID_ERROR).build();
+            .put(HttpMediaTypeNotSupportedException.class, ErrorCode.REQUEST_INVALID_ERROR)
+            .put(HttpRequestMethodNotSupportedException.class, ErrorCode.REQUEST_INVALID_ERROR)
+            .put(IllegalStateException.class, ErrorCode.PARAMETER_INVALID_ERROR)
+            .put(AuthFailedException.class, ErrorCode.AUTHORIZED_FAIL)
+            .put(NumberFormatException.class, ErrorCode.PARAMETER_INVALID_ERROR).build();
 
     public static ErrorCode getErrorCode(Throwable throwable) {
         ErrorCode errorCode = ErrorCode.SYSTEM_INTERNAL_ERROR;
@@ -27,8 +27,8 @@ public class ExceptionToErrorCodeHelper {
         }
         if (throwable instanceof BusinessException) {
             return (ErrorCode) ((BusinessException) throwable).getErrorCodeAware();
-        }else{
-            errorCode =  MAP.get(throwable.getClass());
+        } else {
+            errorCode = MAP.get(throwable.getClass());
         }
         //没有定义
         if (errorCode == null) {
@@ -38,6 +38,6 @@ public class ExceptionToErrorCodeHelper {
             }
         }
 
-        return errorCode ==null? ErrorCode.SYSTEM_INTERNAL_ERROR:errorCode;
+        return errorCode == null ? ErrorCode.SYSTEM_INTERNAL_ERROR : errorCode;
     }
 }

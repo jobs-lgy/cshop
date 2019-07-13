@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 @Slf4j
 public class CloseOrderTask {
-    private static final String CLOSE_ORDER_TASK_LOCK="close_order_task_lock";
+    private static final String CLOSE_ORDER_TASK_LOCK = "close_order_task_lock";
 
     @Autowired
     private RedissonManager redissonManager;

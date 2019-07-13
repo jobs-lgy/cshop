@@ -40,7 +40,7 @@ public class JwtServerHelper {
     /**
      * token过期时间
      */
-    private int expireMinutes=JwtConstants.EXPIRE_MINUTES;
+    private int expireMinutes = JwtConstants.EXPIRE_MINUTES;
 
     /**
      * 公钥
@@ -55,12 +55,12 @@ public class JwtServerHelper {
     /**
      * cookie名字
      */
-    private String cookieName= JwtConstants.COOKIE_NAME;
+    private String cookieName = JwtConstants.COOKIE_NAME;
 
     /**
      * cookie生命周期
      */
-    private Integer cookieMaxAge=JwtConstants.COOKIE_MAX_AGE;
+    private Integer cookieMaxAge = JwtConstants.COOKIE_MAX_AGE;
 
 
     @PostConstruct
@@ -83,11 +83,11 @@ public class JwtServerHelper {
     /**
      * 私钥加密token
      *
-     * @param authUser      载荷中的数据
+     * @param authUser 载荷中的数据
      * @return
      * @throws Exception
      */
-    public String generateToken(AuthUser authUser)  {
+    public String generateToken(AuthUser authUser) {
         return Jwts.builder()
                 .claim(JwtConstants.JWT_KEY_ID, authUser.getId())
                 .claim(JwtConstants.JWT_KEY_USER_NAME, authUser.getUsername())
@@ -99,12 +99,12 @@ public class JwtServerHelper {
     /**
      * 私钥加密token
      *
-     * @param authUser      载荷中的数据
-     * @param privateKey    私钥字节数组
+     * @param authUser   载荷中的数据
+     * @param privateKey 私钥字节数组
      * @return
      * @throws Exception
      */
-    public String generateToken(AuthUser authUser, byte[] privateKey)  {
+    public String generateToken(AuthUser authUser, byte[] privateKey) {
         return Jwts.builder()
                 .claim(JwtConstants.JWT_KEY_ID, authUser.getId())
                 .claim(JwtConstants.JWT_KEY_USER_NAME, authUser.getUsername())
@@ -113,7 +113,7 @@ public class JwtServerHelper {
                 .compact();
     }
 
-    public AuthUser getAuthUserFromToken(String token)  {
+    public AuthUser getAuthUserFromToken(String token) {
         Jws<Claims> claimsJws = Jwts.parser().setSigningKey(this.getPublicKey()).parseClaimsJws(token);
         Claims body = claimsJws.getBody();
         return new AuthUser(

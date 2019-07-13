@@ -25,7 +25,7 @@ public class User {
 
     private String email;
 
-    private Boolean active=false;
+    private Boolean active = false;
 
     @CreationTimestamp
     private Date createTime;// 创建时间

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-@CrossOrigin(allowCredentials="true", allowedHeaders = "*")
+@CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
 @RestController
 public class SpuController {
     @Autowired
@@ -35,7 +35,7 @@ public class SpuController {
      */
     @PostMapping("spu")
     public CommonResponse addSpu(@RequestBody SpuBo goods) {
-         itemService.addSpu(goods);
+        itemService.addSpu(goods);
         return CommonResponse.success();
     }
 
@@ -97,7 +97,7 @@ public class SpuController {
      * @return Spu
      */
     @GetMapping("spu/map/{spuId}")
-    public CommonResponse<Map<String,Object>> findSpuMapById(@PathVariable("spuId") Long spuId) {
+    public CommonResponse<Map<String, Object>> findSpuMapById(@PathVariable("spuId") Long spuId) {
         return CommonResponse.success(itemService.findSpuMapById(spuId));
     }
 

@@ -16,6 +16,7 @@ public interface SkuApi {
      */
     @GetMapping("sku/{skuId}")
     public CommonResponse<Sku> findSkuById(@PathVariable("skuId") Long skuId);
+
     /**
      * 根据Spu的id查询其下所有的sku
      *

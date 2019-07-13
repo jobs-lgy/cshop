@@ -54,8 +54,8 @@ public class LoginFilter extends ZuulFilter {
 
         //2.遍历允许访问的路径
         List<String> paths = Arrays.asList(allowPaths.split(" "));
-        for (String path : paths){
-            if (requestUri.startsWith(path)){
+        for (String path : paths) {
+            if (requestUri.startsWith(path)) {
                 flag = true;
                 break;
             }
@@ -70,12 +70,12 @@ public class LoginFilter extends ZuulFilter {
         //2.获取request
         HttpServletRequest request = context.getRequest();
         //3.获取token
-        String token = CookieUtils.getCookieValue(request,this.jwtClientHelper.getCookieName());
+        String token = CookieUtils.getCookieValue(request, this.jwtClientHelper.getCookieName());
         //4.校验
-        try{
+        try {
             //4.1 校验通过，放行
-            AuthUser authUser=jwtClientHelper.getAuthUserFromToken(token);
-        }catch (Exception e){
+            AuthUser authUser = jwtClientHelper.getAuthUserFromToken(token);
+        } catch (Exception e) {
             //4.2 校验不通过，返回403
             context.setSendZuulResponse(false);
             context.setResponseStatusCode(HttpStatus.FORBIDDEN.value());

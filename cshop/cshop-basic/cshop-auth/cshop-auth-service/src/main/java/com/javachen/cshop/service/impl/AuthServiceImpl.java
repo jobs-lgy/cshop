@@ -24,13 +24,13 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String authentication(UserLogin userLogin) {
-        CommonResponse<User> commonResponse= userClient.processLogin(userLogin);
+        CommonResponse<User> commonResponse = userClient.processLogin(userLogin);
 
         //登陆失败，抛出异常信息
-        if(commonResponse.getStatus().equals("success")){
-            throw new BusinessException(ErrorCode.AUTHORIZED_FAIL,commonResponse.getData().toString());
+        if (commonResponse.getStatus().equals("success")) {
+            throw new BusinessException(ErrorCode.AUTHORIZED_FAIL, commonResponse.getData().toString());
         }
-        User user=commonResponse.getData();
+        User user = commonResponse.getData();
         return jwtServerHelper.generateToken(new AuthUser(user.getId(), user.getUsername()));
     }
 
@@ -38,7 +38,7 @@ public class AuthServiceImpl implements AuthService {
     public AuthUser verifyToken(String token) {
         //1.从token中解析token信息
         AuthUser userInfo = jwtServerHelper.getAuthUserFromToken(token);
-        if(userInfo ==null){
+        if (userInfo == null) {
             throw new AuthFailedException();
         }
         //2.解析成功要重新刷新token

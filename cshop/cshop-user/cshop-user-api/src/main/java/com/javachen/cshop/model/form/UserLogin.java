@@ -27,6 +27,6 @@ public class UserLogin implements Serializable {
     private String phone;
 
     @NotNull(message = "密码不能为空")
-    @Length(min = 6,max = 25,message = "密码长度需要在6和25之间")
+    @Length(min = 6, max = 25, message = "密码长度需要在6和25之间")
     private String password;
 }

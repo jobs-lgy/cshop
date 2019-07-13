@@ -23,19 +23,19 @@ public class BrandController {
                                                                 @RequestParam(value = "sortBy", defaultValue = "id") String sortBy,
                                                                 @RequestParam(value = "desc", defaultValue = "false") Boolean desc,
                                                                 @RequestParam(value = "key", required = false) String key) {
-        Page<Brand> result= brandService.findAllByPage(page, rows, sortBy, desc, key);
-        return CommonResponse.success(new PageResponse<Brand>(result.getTotalElements(),result.getTotalPages(),result.getContent()));
+        Page<Brand> result = brandService.findAllByPage(page, rows, sortBy, desc, key);
+        return CommonResponse.success(new PageResponse<Brand>(result.getTotalElements(), result.getTotalPages(), result.getContent()));
     }
 
     @PostMapping()
     public CommonResponse<Brand> addBrand(@RequestBody Brand brand,
-                          @RequestParam("cids") List<Long> categories) {
+                                          @RequestParam("cids") List<Long> categories) {
         return CommonResponse.success(brandService.add(brand, categories));
     }
 
     @PutMapping()
     public CommonResponse<Brand> updateBrand(@RequestBody Brand brand,
-                             @RequestParam("cids") List<Long> categories) {
+                                             @RequestParam("cids") List<Long> categories) {
         return CommonResponse.success(brandService.update(brand, categories));
     }
 

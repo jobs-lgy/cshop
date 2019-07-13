@@ -24,7 +24,7 @@ public class CategoryController {
 
     @GetMapping("/list")
     public List<Category> findAllByParentId(@RequestParam(value = "pid", defaultValue = "0") Long pid) {
-        if (pid == -1){
+        if (pid == -1) {
             return Arrays.asList(this.categoryService.findTop());
         }
         return this.categoryService.findAllByParentId(pid);

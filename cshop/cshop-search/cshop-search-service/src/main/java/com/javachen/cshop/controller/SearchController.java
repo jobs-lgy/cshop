@@ -5,9 +5,9 @@ import com.javachen.cshop.domain.Item;
 import com.javachen.cshop.domain.SearchRequest;
 import com.javachen.cshop.domain.SearchResult;
 import com.javachen.cshop.feign.SpuClient;
+import com.javachen.cshop.model.vo.SpuBo;
 import com.javachen.cshop.repository.ItemRepository;
 import com.javachen.cshop.service.SearchService;
-import com.javachen.cshop.model.vo.SpuBo;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
@@ -38,7 +38,7 @@ public class SearchController implements InitializingBean {
     private ElasticsearchTemplate elasticsearchTemplate;
 
     @PostMapping("page")
-    public ResponseEntity<PageResponse<Item>> search(@RequestBody SearchRequest searchRequest){
+    public ResponseEntity<PageResponse<Item>> search(@RequestBody SearchRequest searchRequest) {
         SearchResult<Item> result = this.searchService.search(searchRequest);
         return ResponseEntity.ok(result);
     }
@@ -60,9 +60,9 @@ public class SearchController implements InitializingBean {
             PageResponse<SpuBo> result = this.spuClient.findAllSpuByPage(page, row, null, true, null).getData();
             List<SpuBo> spus = result.getData();
             size = spus.size();
-            page ++;
+            page++;
             list.addAll(spus);
-        }while (size == 100);
+        } while (size == 100);
 
         List<Item> itemList = new ArrayList<>();
         //遍历spu

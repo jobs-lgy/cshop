@@ -9,5 +9,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @see
  * @since
  */
-public interface EmailClickRepository extends JpaRepository<EmailClick,Long> {
+public interface EmailClickRepository extends JpaRepository<EmailClick, Long> {
 }

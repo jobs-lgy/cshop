@@ -9,5 +9,5 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
  * @see
  * @since
  */
-public interface ItemRepository extends ElasticsearchRepository<Item,Long> {
+public interface ItemRepository extends ElasticsearchRepository<Item, Long> {
 }

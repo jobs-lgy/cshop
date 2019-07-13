@@ -38,7 +38,7 @@ public class CoreEmailConfig {
         return info;
     }
 
-    @Bean(name="changePasswordEmailInfo")
+    @Bean(name = "changePasswordEmailInfo")
     public EmailInfo changePasswordEmailInfo() {
         EmailInfo info = emailInfo();
         info.setSubject("You have changed your password!");
@@ -46,7 +46,7 @@ public class CoreEmailConfig {
         return info;
     }
 
-    @Bean(name="forgotPasswordEmailInfo")
+    @Bean(name = "forgotPasswordEmailInfo")
     public EmailInfo forgotPasswordEmailInfo() {
         EmailInfo info = emailInfo();
         info.setSubject("Reset password request");
@@ -54,7 +54,7 @@ public class CoreEmailConfig {
         return info;
     }
 
-    @Bean(name="registrationEmailInfo")
+    @Bean(name = "registrationEmailInfo")
     public EmailInfo registrationEmailInfo() {
         EmailInfo info = emailInfo();
         info.setType(EmailInfo.REGISTER_TYPE);

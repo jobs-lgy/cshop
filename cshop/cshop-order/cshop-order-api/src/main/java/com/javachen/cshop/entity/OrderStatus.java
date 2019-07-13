@@ -1,7 +1,6 @@
 package com.javachen.cshop.entity;
 
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -41,7 +40,7 @@ public class OrderStatus {
     private Date paymentTime;
 
     /**
-     *  发货时间
+     * 发货时间
      */
     private Date consignTime;
 

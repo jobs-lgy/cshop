@@ -26,7 +26,7 @@ public interface SpuApi {
      * @return
      */
     @GetMapping("spu/map/{spuId}")
-    public CommonResponse<Map<String,Object>> findSpuMapById(@PathVariable("spuId") Long spuId);
+    public CommonResponse<Map<String, Object>> findSpuMapById(@PathVariable("spuId") Long spuId);
 
     @GetMapping("spu/{spuId}")
     public CommonResponse<SpuBo> findSpuById(@PathVariable("spuId") Long spuId);
