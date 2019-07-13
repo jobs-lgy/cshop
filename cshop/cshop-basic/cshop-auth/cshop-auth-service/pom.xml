@@ -15,19 +15,19 @@
         <dependency>
             <groupId>com.javachen.cshop</groupId>
             <artifactId>cshop-common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.javachen.cshop</groupId>
             <artifactId>cshop-user-api</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.javachen.cshop</groupId>
             <artifactId>cshop-auth-api</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
 
         <!-- sso core -->

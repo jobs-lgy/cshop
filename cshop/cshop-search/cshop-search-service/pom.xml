@@ -17,7 +17,7 @@
         <dependency>
             <groupId>com.javachen.cshop</groupId>
             <artifactId>cshop-item-api</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
 
         <!-- web -->
