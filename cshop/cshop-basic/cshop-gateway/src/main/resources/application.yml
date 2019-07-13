@@ -24,7 +24,7 @@ zuul:
   prefix: /api # 添加路由前缀
   retryable: true
   routes:
-    cshop-item-service: /item/** # 将商品微服务映射到/item/**
+    cshop-item-service: /cshop/** # 将商品微服务映射到/cshop/**
     cshop-user-service: /user/**
     cshop-auth-service: /auth/**
     cshop-order-service: /order/**
@@ -63,5 +63,5 @@ cshop:
       /api/auth
       /api/search
       /api/user/account
-      /api/item
+      /api/cshop
       /api/order

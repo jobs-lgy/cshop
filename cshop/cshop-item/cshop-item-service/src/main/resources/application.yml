@@ -4,7 +4,7 @@ server:
 
 spring:
   application:
-    name: cshop-item-service
+    name: cshop-cshop-service
 
   main:
     allow-bean-definition-overriding: true
@@ -15,7 +15,7 @@ spring:
     show-sql: true
   datasource:
     druid:
-      url: jdbc:mysql://192.168.56.100:3306/item?useUnicode=true&characterEncoding=UTF-8
+      url: jdbc:mysql://192.168.56.100:3306/cshop?useUnicode=true&characterEncoding=UTF-8
       username: root
       password: 123456
       max-active: 30 #最大连接数
