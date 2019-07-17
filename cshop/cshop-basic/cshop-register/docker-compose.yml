@@ -1,0 +1,14 @@
+version: '3.1'
+services:
+  cshop-register:
+    restart: always
+    image: 192.168.56.100:5000/cshop-register
+    ports:
+      - 8761:8761
+    networks:
+      - cloud
+
+networks:
+  cloud:
+    external:
+      name: spring_cloud

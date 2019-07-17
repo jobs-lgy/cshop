@@ -1,0 +1,30 @@
+stages:
+  - build
+  - push
+  - run
+  - clean
+
+build:
+  stage: build
+  script:
+    - /usr/bin/mvn clean package
+    - cp target/cshop-register-0.0.1-SNAPSHOT.jar docker
+    - cd docker
+    - docker build -t 192.168.56.100:5000/cshop-register .
+
+push:
+  stage: push
+  script:
+    - docker push 192.168.56.100:5000/cshop-register
+
+run:
+  stage: run
+  script:
+    - cd docker
+    - docker-compose down
+    - docker-compose up -d
+
+clean:
+  stage: clean
+  script:
+    - docker rmi $(docker images -q -f dangling=true)
