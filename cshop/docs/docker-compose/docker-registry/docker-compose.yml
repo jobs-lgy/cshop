@@ -1,0 +1,22 @@
+version: '3.1'
+services:
+  registry:
+    image: registry
+    container_name: registry
+    restart: always
+    ports:
+      - 5000:5000
+    volumes:
+      - /data/docker/registry/data:/var/lib/registry
+
+  frontend:
+    image: konradkleine/docker-registry-frontend:v2
+    restart: always
+    ports:
+      - 5080:80
+    volumes:
+      - /data/docker/registry/certs/frontend.crt:/etc/apache2/server.crt:ro
+      - /data/docker/registry/certs/frontend.key:/etc/apache2/server.key:ro
+    environment:
+      - ENV_DOCKER_REGISTRY_HOST=192.168.56.100
+      - ENV_DOCKER_REGISTRY_PORT=5000

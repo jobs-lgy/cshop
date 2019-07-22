@@ -1,0 +1,17 @@
+version: '3.1'
+services:
+  cshop-gateway:
+    restart: always
+    image: 192.168.56.100:5000/cshop-gateway
+    container_name: cshop-gateway
+    environment:
+      - EUREKA_INSTANCE_IP-ADDRESS=192.168.56.100
+    ports:
+      - 7777:7777
+    networks:
+      - cloud
+
+networks:
+  cloud:
+    external:
+      name: spring-cloud

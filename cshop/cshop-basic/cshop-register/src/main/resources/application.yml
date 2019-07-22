@@ -4,23 +4,34 @@ server:
 spring:
   application:
     name: cshop-registry
-
-eureka:
-  client:
-    service-url:
-      defaultZone: http://127.0.0.1:8761/eureka
-    registry-fetch-interval-seconds: 5
-  instance:
-    ip-address: 127.0.0.1
-    prefer-ip-address: true
-    instance-id: ${spring.application.name}:${server.port}
-    lease-renewal-interval-in-seconds: 5 #每隔5秒剔除一次失效的服务
-    lease-expiration-duration-in-seconds: 10 # 10秒不发送就过期
-    enable-self-preservation: false #关闭自我保护
-
   cloud:
     inetutils:
       ignoredInterfaces:  #禁用网卡
         - docker0
-        - veth.*
+        - veth*
         - en0
+        - br*
+
+eureka:
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka/
+    registry-fetch-interval-seconds: 5
+  instance:
+    hostname: ${spring.application.name}
+    instance-id: ${spring.application.name}:${server.port}
+    lease-renewal-interval-in-seconds: 5 #每隔5秒剔除一次失效的服务，默认30秒
+    lease-expiration-duration-in-seconds: 10 # 10秒不发送就过期，默认90秒
+    enable-self-preservation: false #关闭自我保护
+
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: health,info

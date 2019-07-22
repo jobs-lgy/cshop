@@ -11,6 +11,7 @@ spring:
 
   jpa:
     show-sql: true
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:

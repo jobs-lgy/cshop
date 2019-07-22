@@ -1,8 +1,8 @@
 package com.javachen.cshop.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.javachen.cshop.common.util.JsonUtils;
-import com.javachen.cshop.common.util.NumberUtils;
+import com.javachen.cshop.common.utils.json.ObjectMapperUtils;
+import com.javachen.cshop.common.utils.NumberUtils;
 import com.javachen.cshop.domain.Item;
 import com.javachen.cshop.domain.SearchRequest;
 import com.javachen.cshop.domain.SearchResult;
@@ -102,7 +102,7 @@ public class SearchServiceImpl implements SearchService {
         Map<String, Object> specMap = new HashMap<>();
         if (spuDetail != null) {
             //提取公共属性
-            List<Map<String, Object>> genericSpecs = JsonUtils.fromJson(spuDetail.getSpecifications(), new TypeReference<List<Map<String, Object>>>() {
+            List<Map<String, Object>> genericSpecs = ObjectMapperUtils.json2pojo(spuDetail.getSpecifications(), new TypeReference<List<Map<String, Object>>>() {
             });
 
             String searchable = "searchable";
@@ -133,7 +133,7 @@ public class SearchServiceImpl implements SearchService {
         item.setCreateTime(spuBo.getCreateTime());
         item.setAll(spuBo.getTitle() + " " + names.replaceAll("/", " "));
         item.setPrice(prices);
-        item.setSkus(JsonUtils.toJson(skuLists));
+        item.setSkus(ObjectMapperUtils.obj2json(skuLists));
         item.setSpecs(specMap);
         return item;
     }
@@ -270,7 +270,7 @@ public class SearchServiceImpl implements SearchService {
         String specsJSONStr = this.specClient.querySpecificationByCategoryId(id).getData();
         //1.将规格反序列化为集合
         List<Map<String, Object>> specs = null;
-        specs = JsonUtils.fromJson(specsJSONStr, new TypeReference<List<Map<String, Object>>>() {
+        specs = ObjectMapperUtils.json2pojo(specsJSONStr, new TypeReference<List<Map<String, Object>>>() {
         });
         //2.过滤出可以搜索的规格参数名称，分成数值类型、字符串类型
         Set<String> strSpec = new HashSet<>();

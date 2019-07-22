@@ -32,9 +32,10 @@ public class ExceptionToErrorCodeHelper {
         }
         //没有定义
         if (errorCode == null) {
+            //根异常
             Throwable rootCause = ExceptionUtils.getRootCause(throwable);
             if (!rootCause.equals(throwable) && rootCause != null) {
-                errorCode = getErrorCode(rootCause);
+                errorCode =MAP.get(rootCause.getClass());
             }
         }
 

@@ -3,8 +3,8 @@ package com.javachen.cshop.service.impl;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.javachen.cshop.common.exception.BusinessException;
 import com.javachen.cshop.common.exception.ErrorCode;
-import com.javachen.cshop.common.response.PageResponse;
-import com.javachen.cshop.common.util.JsonUtils;
+import com.javachen.cshop.common.model.response.PageResponse;
+import com.javachen.cshop.common.utils.json.ObjectMapperUtils;
 import com.javachen.cshop.entity.*;
 import com.javachen.cshop.model.vo.SpuBo;
 import com.javachen.cshop.reposity.*;
@@ -185,7 +185,7 @@ public class ItemServiceImpl implements ItemService {
 
         //获取所有规格参数，然后封装成为id和name形式的数据
         String allSpecJson = spuDetail.getSpecifications();
-        List<Map<String, Object>> allSpecs = JsonUtils.fromJson(allSpecJson, new TypeReference<List<Map<String, Object>>>() {
+        List<Map<String, Object>> allSpecs = ObjectMapperUtils.json2pojo(allSpecJson, new TypeReference<List<Map<String, Object>>>() {
         });
         Map<Integer, String> specName = new HashMap<>();
         Map<Integer, Object> specValue = new HashMap<>();
@@ -193,7 +193,7 @@ public class ItemServiceImpl implements ItemService {
 
         //获取特有规格参数
         String specTJson = spuDetail.getSpecTemplate();
-        Map<String, String[]> specs = JsonUtils.fromJson(specTJson, new TypeReference<Map<String, String[]>>() {
+        Map<String, String[]> specs = ObjectMapperUtils.json2pojo(specTJson, new TypeReference<Map<String, String[]>>() {
         });
         Map<Integer, String> specialParamName = new HashMap<>();
         Map<Integer, String[]> specialParamValue = new HashMap<>();

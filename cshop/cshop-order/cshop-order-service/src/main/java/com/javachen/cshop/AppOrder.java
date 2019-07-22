@@ -11,7 +11,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients
-@EnableSwagger2
 @EnableConfigurationProperties
 public class AppOrder {
     public static void main(String[] args) {

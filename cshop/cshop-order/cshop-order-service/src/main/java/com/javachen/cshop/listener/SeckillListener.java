@@ -1,17 +1,17 @@
 //package com.leyou.order.listener;
 //
 //import com.leyou.auth.entity.UserResponse;
-//import com.leyou.cshop.pojo.SeckillGoods;
-//import com.leyou.cshop.pojo.Stock;
+//import com.leyou.cshop.domain.SeckillGoods;
+//import com.leyou.cshop.domain.Stock;
 //import com.leyou.order.mapper.*;
-//import com.leyou.order.pojo.Order;
-//import com.leyou.order.pojo.OrderDetail;
-//import com.leyou.order.pojo.OrderStatus;
-//import com.leyou.order.pojo.SeckillOrder;
+//import com.leyou.order.domain.Order;
+//import com.leyou.order.domain.OrderDetail;
+//import com.leyou.order.domain.OrderStatus;
+//import com.leyou.order.domain.SeckillOrder;
 //import com.leyou.order.service.OrderService;
 //import com.leyou.seckill.vo.SeckillMessage;
 //import com.leyou.utils.IdWorker;
-//import com.leyou.utils.JsonUtils;
+//import com.leyou.utils.ObjectMapperUtils;
 //import org.springframework.amqp.core.ExchangeTypes;
 //import org.springframework.amqp.rabbit.annotation.Exchange;
 //import org.springframework.amqp.rabbit.annotation.Queue;
@@ -22,9 +22,9 @@
 //import org.springframework.transaction.annotation.Transactional;
 //import tk.mybatis.mapper.entity.Example;
 //
-//import java.util.Arrays;
-//import java.util.Date;
-//import java.util.List;
+//import java.utils.Arrays;
+//import java.utils.Date;
+//import java.utils.List;
 //
 ///**
 // * @Author: 98050
@@ -77,7 +77,7 @@
 //    @Transactional(rollbackFor = Exception.class)
 //    public void listenSeckill(String seck){
 //
-//        SeckillMessage seckillMessage = JsonUtils.parse(seck,SeckillMessage.class);
+//        SeckillMessage seckillMessage = ObjectMapperUtils.parse(seck,SeckillMessage.class);
 //        UserResponse userInfo = seckillMessage.getUserInfo();
 //        SeckillGoods seckillGoods = seckillMessage.getSeckillGoods();
 //

@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: cshop-email
+  cloud:
+    config:
+      uri: http://localhost:7000
+      profile: dev
+      label: master
+      name: ${spring.application.name}
+

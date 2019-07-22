@@ -1,6 +1,6 @@
 package com.javachen.cshop.common.config;
 
-import com.javachen.cshop.common.util.IdWorker;
+import com.javachen.cshop.common.utils.IdWorker;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;

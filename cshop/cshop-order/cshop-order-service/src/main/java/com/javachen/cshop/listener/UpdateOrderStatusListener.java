@@ -1,13 +1,13 @@
 //package com.leyou.order.listener;
 //
-//import com.leyou.comments.pojo.Review;
+//import com.leyou.comments.domain.Review;
 //import com.leyou.order.mapper.OrderStatusRepository;
-//import com.leyou.order.pojo.OrderStatus;
+//import com.leyou.order.domain.OrderStatus;
 //import com.leyou.order.service.OrderService;
 //import com.leyou.order.service.OrderStatusService;
 //import com.leyou.order.vo.CommentsParameter;
 //import com.leyou.order.vo.OrderStatusMessage;
-//import com.leyou.utils.JsonUtils;
+//import com.leyou.utils.ObjectMapperUtils;
 //import org.springframework.amqp.core.ExchangeTypes;
 //import org.springframework.amqp.rabbit.annotation.Exchange;
 //import org.springframework.amqp.rabbit.annotation.Queue;
@@ -16,9 +16,9 @@
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.stereotype.Component;
 //
-//import java.util.ArrayList;
-//import java.util.Date;
-//import java.util.List;
+//import java.utils.ArrayList;
+//import java.utils.Date;
+//import java.utils.List;
 //
 ///**
 // * @Author: 98050
@@ -48,7 +48,7 @@
 //            key = {"leyou_ttl_orderStatus"}
 //    ))
 //    public void listenOrderDelayMessage(byte[] str){
-//        OrderStatusMessage orderStatusMessage = JsonUtils.parse(new String(str), OrderStatusMessage.class);
+//        OrderStatusMessage orderStatusMessage = ObjectMapperUtils.parse(new String(str), OrderStatusMessage.class);
 //        if (orderStatusMessage == null){
 //            return;
 //        }

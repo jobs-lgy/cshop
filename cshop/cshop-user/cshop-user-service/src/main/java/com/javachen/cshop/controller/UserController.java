@@ -1,7 +1,7 @@
 package com.javachen.cshop.controller;
 
-import com.javachen.cshop.common.response.CommonResponse;
-import com.javachen.cshop.common.response.PageResponse;
+import com.javachen.cshop.common.model.response.CommonResponse;
+import com.javachen.cshop.common.model.response.PageResponse;
 import com.javachen.cshop.entity.User;
 import com.javachen.cshop.model.vo.UserVo;
 import com.javachen.cshop.service.UserService;

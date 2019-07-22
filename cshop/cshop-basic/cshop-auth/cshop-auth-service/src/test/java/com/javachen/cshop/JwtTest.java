@@ -1,7 +1,7 @@
 package com.javachen.cshop;
 
-import com.javachen.cshop.auth.JwtServerHelper;
 import com.javachen.cshop.common.auth.AuthUser;
+import com.javachen.cshop.common.auth.JwtHelper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class JwtTest {
 //    }
 
     @Autowired
-    private JwtServerHelper jwtServerHelper;
+    private JwtHelper jwtServerHelper;
 
     @Test
     public void testGenerateToken() throws Exception {

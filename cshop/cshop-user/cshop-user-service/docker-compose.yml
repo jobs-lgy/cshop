@@ -1,0 +1,15 @@
+version: '3.1'
+services:
+  cshop-register:
+    restart: always
+    image: 192.168.56.100:5000/cshop-user-service
+    container_name: cshop-user-service
+    ports:
+      - 8010:8010
+    networks:
+      - cloud
+
+networks:
+  cloud:
+    external:
+      name: spring-cloud

@@ -1,0 +1,17 @@
+version: '3.1'
+services:
+  cshop-monitor:
+    restart: always
+    image: 192.168.56.100:5000/cshop-monitor
+    container_name: cshop-monitor
+    environment:
+      - EUREKA_INSTANCE_IP-ADDRESS=192.168.56.100
+    ports:
+      - 7010:7010
+    networks:
+      - cloud
+
+networks:
+  cloud:
+    external:
+      name: spring-cloud

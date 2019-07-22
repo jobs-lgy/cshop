@@ -1,8 +1,8 @@
 package com.javachen.cshop.service.impl;
 
 import com.javachen.cshop.common.auth.AuthUser;
-import com.javachen.cshop.common.response.PageResponse;
-import com.javachen.cshop.common.util.IdWorker;
+import com.javachen.cshop.common.model.response.PageResponse;
+import com.javachen.cshop.common.utils.IdWorker;
 import com.javachen.cshop.common.web.LoginInterceptor;
 import com.javachen.cshop.entity.Order;
 import com.javachen.cshop.entity.OrderDetail;

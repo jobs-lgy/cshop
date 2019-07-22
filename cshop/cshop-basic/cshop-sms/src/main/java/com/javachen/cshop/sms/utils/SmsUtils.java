@@ -8,7 +8,6 @@ import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
-import com.javachen.cshop.sms.pojo.SmsProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,7 @@ public class SmsUtils {
     static final String domain = "dysmsapi.aliyuncs.com";
     static final Logger logger = LoggerFactory.getLogger(SmsUtils.class);
     @Autowired
-    private SmsProperties properties;
+    private SmsProperty properties;
 
     public SendSmsResponse sendSms(String phone, String code, String signName, String template) throws ClientException {
 

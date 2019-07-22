@@ -17,5 +17,9 @@
         <module>cshop-auth</module>
         <module>cshop-sms</module>
         <module>cshop-log</module>
+        <module>cshop-config</module>
+        <module>cshop-monitor</module>
+        <module>cshop-cache</module>
+        <module>cshop-email</module>
     </modules>
 </project>

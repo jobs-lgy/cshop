@@ -1,7 +1,7 @@
 package com.javachen.cshop.api;
 
-import com.javachen.cshop.common.response.CommonResponse;
-import com.javachen.cshop.common.response.PageResponse;
+import com.javachen.cshop.common.model.response.CommonResponse;
+import com.javachen.cshop.common.model.response.PageResponse;
 import com.javachen.cshop.model.vo.SpuBo;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

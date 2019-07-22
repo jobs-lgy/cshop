@@ -1,6 +1,6 @@
 package com.javachen.cshop.domain;
 
-import com.javachen.cshop.common.response.PageResponse;
+import com.javachen.cshop.common.model.response.PageResponse;
 import com.javachen.cshop.entity.Brand;
 import com.javachen.cshop.entity.Category;
 

@@ -1,4 +1,7 @@
 FROM java:8
-ADD target/cshop-register-0.0.1-SNAPSHOT.jar app.jar
-EXPOSE 8080
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+VOLUME /tmp
+ADD target/cshop-register.jar app.jar
+
+ENTRYPOINT [ "java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/app.jar", "--spring.profiles.active=prod"]
+
+EXPOSE 8761

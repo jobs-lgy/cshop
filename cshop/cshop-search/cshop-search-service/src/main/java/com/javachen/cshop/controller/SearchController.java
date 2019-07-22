@@ -1,6 +1,6 @@
 package com.javachen.cshop.controller;
 
-import com.javachen.cshop.common.response.PageResponse;
+import com.javachen.cshop.common.model.response.PageResponse;
 import com.javachen.cshop.domain.Item;
 import com.javachen.cshop.domain.SearchRequest;
 import com.javachen.cshop.domain.SearchResult;
@@ -58,7 +58,7 @@ public class SearchController implements InitializingBean {
         do {
             //分页查询数据
             PageResponse<SpuBo> result = this.spuClient.findAllSpuByPage(page, row, null, true, null).getData();
-            List<SpuBo> spus = result.getData();
+            List<SpuBo> spus = result.getList();
             size = spus.size();
             page++;
             list.addAll(spus);

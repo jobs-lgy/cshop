@@ -2,6 +2,7 @@ package com.javachen.cshop.common.exception;
 
 public enum ErrorCode implements ErrorCodeAware {
     SYSTEM_INTERNAL_ERROR(10001, "系统内部异常"),
+    DATA_PARAMETER_INVALID_ERROR(10001, "数据参数不合法"),
     PARAMETER_INVALID_ERROR(10001, "参数不合法"),
     REQUEST_INVALID_ERROR(10002, "不支持的请求类型"),
     UNAUTHORIZED(10002, "未授权访问"),
@@ -36,29 +37,31 @@ public enum ErrorCode implements ErrorCodeAware {
 
     ;
 
-    private int errorCode;
-    private String errorMsg;
-    ErrorCode(int errorCode, String errorMsg) {
-        this.errorCode = errorCode;
-        this.errorMsg = errorMsg;
+    private int code;
+    private String message;
+
+    ErrorCode(int code, String message) {
+        this.code = code;
+        this.message = message;
     }
 
-    public ErrorCodeAware setErrorMsg(String errorMsg) {
-        this.errorMsg = errorMsg;
+    public ErrorCodeAware setMessage(String message) {
+        this.message = message;
         return this;
     }
 
     @Override
-    public int getErrorCode() {
-        return errorCode;
+    public int getCode() {
+        return code;
     }
 
-    public void setErrorCode(int errorCode) {
-        this.errorCode = errorCode;
+    public void setCode(int code) {
+        this.code = code;
     }
 
     @Override
-    public String getErrorMsg() {
-        return errorMsg;
+    public String getMessage() {
+        return message;
     }
+
 }

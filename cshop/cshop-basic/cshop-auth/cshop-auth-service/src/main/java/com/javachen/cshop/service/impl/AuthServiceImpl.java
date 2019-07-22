@@ -5,7 +5,7 @@ import com.javachen.cshop.common.auth.AuthUser;
 import com.javachen.cshop.common.auth.JwtHelper;
 import com.javachen.cshop.common.exception.BusinessException;
 import com.javachen.cshop.common.exception.ErrorCode;
-import com.javachen.cshop.common.response.CommonResponse;
+import com.javachen.cshop.common.model.response.CommonResponse;
 import com.javachen.cshop.feign.UserClient;
 import com.javachen.cshop.model.form.UserLogin;
 import com.javachen.cshop.model.vo.UserVo;
@@ -27,7 +27,7 @@ public class AuthServiceImpl implements AuthService {
         CommonResponse<UserVo> commonResponse = userClient.processLogin(userLogin);
 
         //登陆失败，抛出异常信息
-        if (commonResponse.getStatus().equals("success")) {
+        if (!commonResponse.isSuccess()) {
             throw new BusinessException(ErrorCode.AUTHORIZED_FAIL, commonResponse.getData().toString());
         }
         UserVo user = commonResponse.getData();

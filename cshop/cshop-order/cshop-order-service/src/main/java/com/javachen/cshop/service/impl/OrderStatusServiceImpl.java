@@ -25,7 +25,7 @@ public class OrderStatusServiceImpl implements OrderStatusService {
 //     */
 //    @Override
 //    public void sendMessage(OrderStatusMessage orderStatusMessage) {
-//        String json = JsonUtils.serialize(orderStatusMessage);
+//        String json = ObjectMapperUtils.serialize(orderStatusMessage);
 //        MessageProperties properties;
 //        if (orderStatusMessage.getType() == 1){
 //            // 持久性 non-persistent (1) or persistent (2)
@@ -49,7 +49,7 @@ public class OrderStatusServiceImpl implements OrderStatusService {
 //     */
 //    @Override
 //    public void sendComments(CommentsParameter commentsParameter) {
-//        String json = JsonUtils.serialize(commentsParameter);
+//        String json = ObjectMapperUtils.serialize(commentsParameter);
 //        try {
 //            this.amqpTemplate.convertAndSend("leyou.comments.exchange","user.comments", json);
 //        }catch (Exception e){

@@ -1,9 +1,9 @@
 package com.javachen.cshop.common.exception;
 
 public interface ErrorCodeAware {
-    public int getErrorCode();
+    public int getCode();
 
-    public String getErrorMsg();
+    public String getMessage();
 
-    public ErrorCodeAware setErrorMsg(String errorMsg);
+    public ErrorCodeAware setMessage(String message);
 }

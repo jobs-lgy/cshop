@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 /**
@@ -17,6 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@ActiveProfiles("prod")
 public class AccountServiceTest {
     @Autowired
     private AccountService accountService;
@@ -24,9 +26,9 @@ public class AccountServiceTest {
     @Test
     public void testRegister() {
         UserRegister userRegister = new UserRegister();
-        userRegister.setEmail("junecloud@163.com");
-        userRegister.setUsername("javachen");
-        userRegister.setPhone("17602538617");
+        userRegister.setEmail("junezchen@163.com");
+        userRegister.setUsername("javachen1");
+        userRegister.setPhone("17602538618");
         userRegister.setPassword("123456");
         userRegister.setPasswordConfirm("123456");
         accountService.register(userRegister);

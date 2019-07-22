@@ -1,0 +1,14 @@
+version: '3.1'
+services:
+  db:
+    image: redis
+    container_name: redis
+    restart: always
+    environment:
+      TZ: Asia/Shanghai
+    command: redis-server /etc/redis/redis.conf --appendonly yes --requirepass 123456
+    ports:
+      - 6379:6379
+    volumes:
+      - /data/docker/redis/data:/data
+      - /data/docker/redis/conf:/etc/redis/redis.conf

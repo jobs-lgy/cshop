@@ -1,7 +1,7 @@
 package com.javachen.cshop.controller;
 
-import com.javachen.cshop.common.response.CommonResponse;
-import com.javachen.cshop.common.response.PageResponse;
+import com.javachen.cshop.common.model.response.CommonResponse;
+import com.javachen.cshop.common.model.response.PageResponse;
 import com.javachen.cshop.entity.Brand;
 import com.javachen.cshop.service.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,16 +67,16 @@ public class BrandController {
      */
     @GetMapping("/cid/{categoryId}")
     public CommonResponse<List<Brand>> findAllByCategoryId(@PathVariable("categoryId") Long categoryId) {
-        return CommonResponse.ok(brandService.findAllByCategoryId(categoryId));
+        return CommonResponse.success(brandService.findAllByCategoryId(categoryId));
     }
 
     @GetMapping("/{brandId}")
     public CommonResponse<Brand> findById(@PathVariable("brandId") long brandId) {
-        return CommonResponse.ok(brandService.findById(brandId));
+        return CommonResponse.success(brandService.findById(brandId));
     }
 
     @GetMapping("/list")
     public CommonResponse<List<Brand>> findAllByIdIn(@RequestParam("ids") List<Long> ids) {
-        return CommonResponse.ok(brandService.findAllByIdIn(ids));
+        return CommonResponse.success(brandService.findAllByIdIn(ids));
     }
 }

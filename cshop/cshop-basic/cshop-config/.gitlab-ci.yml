@@ -1,0 +1,51 @@
+#stages:
+#  - build
+#  - push
+#  - run
+#  - clean
+#
+#build:
+#  stage: build
+#  script:
+#    - mvn clean package -Dmaven.test.skip=true
+#    - docker build -t 192.168.56.100:5000/cshop-register:0.0.1-SNAPSHOT .
+#
+#push:
+#  stage: push
+#  script:
+#    - docker push 192.168.56.100:5000/cshop-register:0.0.1-SNAPSHOT
+#
+#run:
+#  stage: run
+#  script:
+#    - docker-compose down
+#    - docker-compose up -d
+#
+#clean:
+#  stage: clean
+#  script:
+#    - docker rmi $(docker images -q -f dangling=true)
+
+stages:
+  - build
+  - run
+  - clean
+
+variables:
+  DOCKER_HOST: tcp://192.168.56.100:2375
+
+build:
+  stage: build
+  script:
+    - mvn clean package dockerfile:build -Dmaven.test.skip=true
+
+run:
+  stage: run
+  script:
+    - docker-compose down
+    - docker-compose up -d
+
+clean:
+  stage: clean
+  script:
+    - docker rmi $(docker images -q -f dangling=true)

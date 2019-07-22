@@ -1,9 +1,9 @@
 package com.javachen.cshop.common.exception;
 
 import com.google.common.collect.ImmutableMap;
-import com.javachen.cshop.common.response.CommonResponse;
-import com.javachen.cshop.common.response.ErrorMessage;
+import com.javachen.cshop.common.model.response.CommonResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
@@ -27,17 +27,18 @@ import java.util.stream.Collectors;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public CommonResponse handleValidationExceptions(MethodArgumentNotValidException ex) {
-        log.error("handleValidationExceptions", ex);
+    public CommonResponse handleValidationExceptions(HttpServletRequest request,MethodArgumentNotValidException ex) {
+        log.error("uri=[{}],message=[{}]",request.getRequestURI(),ExceptionUtils.getRootCause(ex).getMessage(),ex);
+
         return handleBindResult(ex.getBindingResult());
     }
 
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(BindException.class)
-    public CommonResponse handleBindExceptions(BindException ex) {
-        log.error(ErrorCode.PARAMETER_INVALID_ERROR.getErrorMsg(), ex);
+    public CommonResponse handleBindExceptions(HttpServletRequest request,BindException ex) {
+        log.error("uri=[{}],message=[{}]",request.getRequestURI(),ExceptionUtils.getRootCause(ex).getMessage(),ex);
 
         return handleBindResult(ex.getBindingResult());
     }
@@ -49,42 +50,29 @@ public class GlobalExceptionHandler {
                 .map(err -> ImmutableMap.of(((FieldError) err).getField(), err.getDefaultMessage()))
                 .collect(Collectors.toList());
 
-        //{"status":"fail","code":10001,"data":[{"email":"邮箱格式不正确"},{"password":"长度需要在6和25之间"},{"phone":"手机号格式不正确"}]}
-        return CommonResponse.error(ErrorCode.PARAMETER_INVALID_ERROR, errors);
+        return CommonResponse.error(new ExceptionResponse(ErrorCode.PARAMETER_INVALID_ERROR, errors));
     }
 
 
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(ConstraintViolationException.class)
-    public CommonResponse handleConstraintViolationException(ConstraintViolationException ex) {
-        log.error(ErrorCode.PARAMETER_INVALID_ERROR.getErrorMsg(), ex);
+    public CommonResponse<ExceptionResponse> handleConstraintViolationException(HttpServletRequest request,ConstraintViolationException ex) {
+        log.error("uri=[{}],message=[{}]",request.getRequestURI(),ExceptionUtils.getRootCause(ex).getMessage(),ex);
 
-        List<ErrorMessage> errors = ex.getConstraintViolations()
+        List<ImmutableMap> errors = ex.getConstraintViolations()
                 .stream()
-                .map(err -> new ErrorMessage(err.getPropertyPath().toString(), err.getMessage()))
+                .map(err -> ImmutableMap.of(err.getPropertyPath().toString(),err.getMessage()))
                 .collect(Collectors.toList());
-        return CommonResponse.error(ErrorCode.PARAMETER_INVALID_ERROR, errors);
+        return CommonResponse.error(new ExceptionResponse(ErrorCode.DATA_PARAMETER_INVALID_ERROR, errors));
     }
 
 
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(value = Exception.class)
-    public CommonResponse<?> handleException(HttpServletRequest req, Exception ex) {
-        ErrorCode errorCode = null;
-
-        //业务异常
-        if (ex instanceof BusinessException) {
-            BusinessException businessException = (BusinessException) ex;
-            errorCode = (ErrorCode) businessException.getErrorCodeAware();
-
-            log.error(errorCode.getErrorMsg(), ex);
-            return CommonResponse.error(errorCode, businessException.getErrorMsg());
-        } else {
-            errorCode = ExceptionToErrorCodeHelper.getErrorCode(ex);
-
-
-            log.error(errorCode.getErrorMsg(), ex);
-            return CommonResponse.error(errorCode);
-        }
+    public CommonResponse<ExceptionResponse> handleException(HttpServletRequest request, Exception ex) {
+        ErrorCode  errorCode = ExceptionToErrorCodeHelper.getErrorCode(ex);
+        String message = ExceptionUtils.getRootCause(ex).getMessage(); //最初的异常原因
+        log.error("uri=[{}],message=[{}]",request.getRequestURI(),ex);
+        return CommonResponse.error(new ExceptionResponse(errorCode, message));
     }
 }

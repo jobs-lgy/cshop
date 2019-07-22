@@ -1,0 +1,14 @@
+version: '3.1'
+services:
+  nginx:
+    restart: always
+    image: nginx
+    container_name: nginx
+    environment:
+      TZ: Asia/Shanghai
+    ports:
+      - 4180:80
+      - 4181:8080
+    volumes:
+      - /data/docker/nginx/conf/nginx.conf:/etc/nginx/nginx.conf
+      - /data/docker/nginx/wwwroot:/usr/share/nginx/wwwroot

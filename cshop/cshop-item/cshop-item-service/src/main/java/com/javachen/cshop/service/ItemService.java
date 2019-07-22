@@ -1,6 +1,6 @@
 package com.javachen.cshop.service;
 
-import com.javachen.cshop.common.response.PageResponse;
+import com.javachen.cshop.common.model.response.PageResponse;
 import com.javachen.cshop.entity.Sku;
 import com.javachen.cshop.entity.Spu;
 import com.javachen.cshop.entity.SpuDetail;

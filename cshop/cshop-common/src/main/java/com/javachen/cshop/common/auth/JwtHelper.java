@@ -1,6 +1,6 @@
 package com.javachen.cshop.common.auth;
 
-import com.javachen.cshop.common.util.ObjectUtils;
+import com.javachen.cshop.common.utils.ObjectUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;

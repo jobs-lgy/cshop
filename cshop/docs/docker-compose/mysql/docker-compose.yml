@@ -1,0 +1,21 @@
+version: '3.1'
+services:
+  db:
+    image: mysql:5.7
+    container_name: mysql
+    restart: always
+    environment:
+      TZ: Asia/Shanghai
+      MYSQL_ROOT_PASSWORD: 123456
+    command:
+      --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_general_ci
+      --explicit_defaults_for_timestamp=true
+      --lower_case_table_names=1
+    ports:
+      - 3306:3306
+    volumes:
+      - /data/docker/mysql/conf:/etc/mysql
+      - /data/docker/mysql/logs:/var/log/mysql
+      - /data/docker/mysql/data:/var/lib/mysql

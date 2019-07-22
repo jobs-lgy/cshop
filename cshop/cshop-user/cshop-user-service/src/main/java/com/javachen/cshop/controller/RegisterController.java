@@ -1,7 +1,6 @@
 package com.javachen.cshop.controller;
 
-import com.javachen.cshop.common.response.CommonResponse;
-import com.javachen.cshop.email.service.EmailService;
+import com.javachen.cshop.common.model.response.CommonResponse;
 import com.javachen.cshop.entity.User;
 import com.javachen.cshop.model.form.UserRegister;
 import com.javachen.cshop.service.AccountService;
@@ -15,8 +14,6 @@ import javax.validation.Valid;
 
 @RestController
 public class RegisterController {
-    @Autowired
-    protected EmailService emailService;
     @Autowired
     private AccountService accountService;
 

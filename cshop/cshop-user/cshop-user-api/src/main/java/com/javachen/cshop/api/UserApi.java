@@ -1,6 +1,6 @@
 package com.javachen.cshop.api;
 
-import com.javachen.cshop.common.response.CommonResponse;
+import com.javachen.cshop.common.model.response.CommonResponse;
 import com.javachen.cshop.model.form.PasswordChange;
 import com.javachen.cshop.model.form.PasswordReset;
 import com.javachen.cshop.model.form.UserLogin;

@@ -1,64 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
-    <property name="LOG_HOME" value="logs"></property>
-    <property name="FILESIZE" value="50MB"/>
-    <property name="MAXHISTORY" value="10"/>
-    <timestamp key="DATETIME" datePattern="yyyy-MM-dd HH:mm:ss"/>
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
-    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder charset="utf-8">
-            <pattern>[%level] %d{${DATETIME}} [%thread] %logger{36} - %m%n</pattern>
-        </encoder>
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>DEBUG</level>
-        </filter>
-    </appender>
+    <springProperty scope="context" name="springAppName" source="spring.application.name"/>
+    <property name="LOG_DATEFORMAT_PATTERN" value="yyyy-MM-dd HH:mm:ss.SSS,Asia/Shanghai"/>
+    <property name="LOG_FILE" value="${user.dir}/logs/${springAppName:-server}"/>​
+    <property name="LOG_FILE_MAX_SIZE" value="50MB"/>
+    <property name="LOG_FILE_MAX_HISTORY" value="10"/>
 
-    <appender name="all" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <encoder charset="utf-8">
-            <pattern>[%d{${DATETIME}}][%p][%c{40}][%t] %m%n</pattern>
-        </encoder>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_HOME}/user-%d.%i.log</fileNamePattern>
-            <maxHistory>${MAXHISTORY}</maxHistory>
-            <timeBasedFileNamingAndTriggeringPolicy
-                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>${FILESIZE}</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
-        </rollingPolicy>
-    </appender>
+    <!-- Appender to log to file in a JSON format -->
+<!--    <appender name="logstash" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+<!--        <file>${LOG_FILE}.json</file>-->
+<!--        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+<!--            <fileNamePattern>${LOG_FILE}.json.%d{yyyy-MM-dd}.gz</fileNamePattern>-->
+<!--            <maxHistory>7</maxHistory>-->
+<!--        </rollingPolicy>-->
+<!--        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">-->
+<!--            <providers>-->
+<!--                <timestamp>-->
+<!--                    <timeZone>UTC</timeZone>-->
+<!--                </timestamp>-->
+<!--                <pattern>-->
+<!--                    <pattern>-->
+<!--                        {-->
+<!--                        "severity": "%level",-->
+<!--                        "service": "${springAppName:-}",-->
+<!--                        "trace": "%X{X-B3-TraceId:-}",-->
+<!--                        "span": "%X{X-B3-SpanId:-}",-->
+<!--                        "parent": "%X{X-B3-ParentSpanId:-}",-->
+<!--                        "exportable": "%X{X-Span-Export:-}",-->
+<!--                        "pid": "${PID:-}",-->
+<!--                        "thread": "%thread",-->
+<!--                        "class": "%logger{40}",-->
+<!--                        "rest": "%message"-->
+<!--                        }-->
+<!--                    </pattern>-->
+<!--                </pattern>-->
+<!--            </providers>-->
+<!--        </encoder>-->
+<!--    </appender>-->
 
-    <appender name="error" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <encoder charset="utf-8">
-            <pattern>[%d{${DATETIME}}][%p][%c{40}][%t] %m%n</pattern>
-        </encoder>
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>ERROR</level>
-            <onMatch>ACCEPT</onMatch>
-            <onMismatch>DENY</onMismatch>
-        </filter>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_HOME}/user-error-%d.%i.log</fileNamePattern>
-            <maxHistory>${MAXHISTORY}</maxHistory>
-            <timeBasedFileNamingAndTriggeringPolicy
-                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>${FILESIZE}</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
-        </rollingPolicy>
-    </appender>
+<!--    <appender name="REDIS" class="com.cwbase.logback.RedisAppender">-->
+<!--        <tags>ecommerce-order-backend-${ACTIVE_PROFILE}</tags>-->
+<!--        <host>elk.yourdomain.com</host>-->
+<!--        <port>6379</port>-->
+<!--        <password>whatever</password>-->
+<!--        <key>ecommerce-ordder-log</key>-->
+<!--        <mdc>true</mdc>-->
+<!--        <type>redis</type>-->
+<!--    </appender>-->
 
-
-    <logger name="com.javachen" additivity="false" level="INFO">
-        <appender-ref ref="all"/>
-        <appender-ref ref="console"/>
-        <appender-ref ref="error"/>
-    </logger>
-
-    <logger name="com.javachen" level="DEBUG"/>
+    <logger name="org.springframework" level="INFO"/>
 
     <root level="INFO">
-        <appender-ref ref="console"/>
-        <appender-ref ref="error"/>
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FILE" />
     </root>
 
 </configuration>

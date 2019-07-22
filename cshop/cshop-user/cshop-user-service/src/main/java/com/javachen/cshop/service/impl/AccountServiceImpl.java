@@ -2,9 +2,7 @@ package com.javachen.cshop.service.impl;
 
 import com.javachen.cshop.common.exception.BusinessException;
 import com.javachen.cshop.common.exception.ErrorCode;
-import com.javachen.cshop.common.util.HashUtils;
-import com.javachen.cshop.email.domain.EmailInfo;
-import com.javachen.cshop.email.service.EmailService;
+import com.javachen.cshop.common.utils.HashUtils;
 import com.javachen.cshop.entity.User;
 import com.javachen.cshop.entity.UserPassword;
 import com.javachen.cshop.model.form.PasswordChange;
@@ -14,17 +12,16 @@ import com.javachen.cshop.model.form.UserRegister;
 import com.javachen.cshop.repository.UserPasswordRepository;
 import com.javachen.cshop.repository.UserRepository;
 import com.javachen.cshop.service.AccountService;
+import com.javachen.cshop.service.RabbitService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.amqp.AmqpException;
-import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import javax.annotation.Resource;
 import javax.transaction.Transactional;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,24 +38,19 @@ import java.util.concurrent.TimeUnit;
 public class AccountServiceImpl implements AccountService {
     private static final String REGISTER_KEY_PREFIX = "cshop:register:";
     private static final String RESET_KEY_PREFIX = "cshop:reset:";
-    @Resource(name = "registrationEmailInfo")
-    protected EmailInfo registrationEmailInfo;
-    @Resource(name = "forgotPasswordEmailInfo")
-    protected EmailInfo forgotPasswordEmailInfo;
-    @Resource(name = "changePasswordEmailInfo")
-    protected EmailInfo changePasswordEmailInfo;
+
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private UserPasswordRepository userPasswordRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
-    @Autowired
-    private EmailService emailService;
-    @Autowired
-    private AmqpTemplate amqpTemplate;
+
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
+
+    @Autowired
+    private RabbitService rabbitService;
 
     @Override
     @Transactional
@@ -78,7 +70,6 @@ public class AccountServiceImpl implements AccountService {
         }
 
         HashMap<String, Object> vars = new HashMap<String, Object>();
-        vars.put("token", token);
         if (!org.apache.commons.lang3.StringUtils.isEmpty(resetPasswordUrl)) {
             if (resetPasswordUrl.contains("?")) {
                 resetPasswordUrl = resetPasswordUrl + "&token=" + token;
@@ -86,8 +77,7 @@ public class AccountServiceImpl implements AccountService {
                 resetPasswordUrl = resetPasswordUrl + "?token=" + token;
             }
         }
-        vars.put("resetPasswordUrl", resetPasswordUrl);
-        emailService.sendTemplateEmail(email, forgotPasswordEmailInfo, vars);
+        rabbitService.sendEmail("resetPassword",email,resetPasswordUrl,user.getId(),user.getUsername());
     }
 
     private void checkUser(User user) {
@@ -133,12 +123,12 @@ public class AccountServiceImpl implements AccountService {
         userPassword.setPassword(passwordEncoder.encode(passwordChange.getNewPassword()));
         userPasswordRepository.save(userPassword);
 
-        emailService.sendTemplateEmail(passwordChange.getEmail(), changePasswordEmailInfo, new HashMap<String, Object>());
+        rabbitService.sendEmail("changePassword",user.getEmail(),null,user.getId(),user.getUsername());
         return user;
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackOn = Exception.class)
     public User resetPassword(PasswordReset passwordReset) {
         //校验用户
         User user = userRepository.findByEmail(passwordReset.getEmail());
@@ -163,22 +153,22 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackOn = Exception.class)
     public User register(UserRegister userRegister) {
-        User newUser = new User();
-        newUser.setEmail(userRegister.getEmail());
-        newUser.setPhone(userRegister.getPhone());
-        newUser.setUsername(userRegister.getUsername());
+        User user = new User();
+        user.setEmail(userRegister.getEmail());
+        user.setPhone(userRegister.getPhone());
+        user.setUsername(userRegister.getUsername());
 
-        if (userRepository.findByPhone(newUser.getPhone()) != null) {
+        if (userRepository.findByPhone(user.getPhone()) != null) {
             throw new BusinessException(ErrorCode.USER_PHONE_ALREADY_EXIST);
         }
 
-        if (userRepository.findByUsername(newUser.getUsername()) != null) {
+        if (userRepository.findByUsername(user.getUsername()) != null) {
             throw new BusinessException(ErrorCode.USER_USERNAME_ALREADY_EXIST);
         }
 
-        if (userRepository.findByEmail(newUser.getEmail()) != null) {
+        if (userRepository.findByEmail(user.getEmail()) != null) {
             throw new BusinessException(ErrorCode.USER_EMAIL_ALREADY_EXIST);
         }
 
@@ -186,7 +176,7 @@ public class AccountServiceImpl implements AccountService {
             throw new BusinessException(ErrorCode.USER_PASSWORD_NOT_EQUAL);
         }
 
-//        String key = REGISTER_KEY_PREFIX + newUser.getPhone();
+//        String key = REGISTER_KEY_PREFIX + user.getPhone();
 //        String codeCache = this.stringRedisTemplate.opsForValue().get(key);
 //        if (codeCache == null || !codeCache.equals(userRegister.getCode())) {
 //            throw new BusinessException(ErrorCode.USER_PHONE_CODE_ERROR);
@@ -194,26 +184,23 @@ public class AccountServiceImpl implements AccountService {
 
         try {
             //FIXME 后去需要邮件激活
-            newUser.setActive(true); //未激活
-            userRepository.save(newUser);
+            user.setActive(true); //未激活
+            userRepository.save(user);
 
             UserPassword userPassword = new UserPassword();
-            userPassword.setUserId(newUser.getId());
+            userPassword.setUserId(user.getId());
             userPassword.setPassword(passwordEncoder.encode(userRegister.getPassword()));
             userPasswordRepository.save(userPassword);
 
             HashMap<String, Object> vars = new HashMap<String, Object>();
-            vars.put("user", newUser);
+            vars.put("user", user);
 
-            //发送注册成功邮件
-            registrationEmailInfo.setUserId(newUser.getId());
-            registrationEmailInfo.setType(EmailInfo.REGISTER_TYPE);
-            emailService.sendTemplateEmail(newUser.getEmail(), registrationEmailInfo, vars);
+            rabbitService.sendEmail("register",user.getEmail(),null,user.getId(),user.getUsername());
 
             //清理redis
 //            this.stringRedisTemplate.delete(key);
 
-            return newUser;
+            return user;
         } catch (Exception e) {
             log.error("用户注册失败", e);
             throw new BusinessException(ErrorCode.USER_REGISTER_FAIL);
@@ -229,13 +216,9 @@ public class AccountServiceImpl implements AccountService {
     public void sendVerifyCode(String phone) {
         //1.生成验证码
         String code = RandomStringUtils.randomNumeric(4);
-        //2.发送短信
         try {
-            Map<String, String> msg = new HashMap<>();
-            msg.put("phone", phone);
-            msg.put("code", code);
-            this.amqpTemplate.convertAndSend("cshop.sms.exchange", "cshop.verify.code", msg);
-
+            //2.发送短信
+            rabbitService.sendSms(phone,code);
             //3.将code存入redis
             String key = REGISTER_KEY_PREFIX + phone;
             String codeCache = this.stringRedisTemplate.opsForValue().get(key);
@@ -246,6 +229,5 @@ public class AccountServiceImpl implements AccountService {
             log.error("发送短信失败，phone：{}，code：{}", phone, code);
             throw new BusinessException(ErrorCode.USER_PHONE_CODE_SEND_FAIL);
         }
-
     }
 }

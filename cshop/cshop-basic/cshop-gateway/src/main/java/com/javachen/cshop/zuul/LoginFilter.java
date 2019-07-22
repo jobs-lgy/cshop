@@ -2,7 +2,7 @@ package com.javachen.cshop.zuul;
 
 import com.javachen.cshop.common.auth.AuthUser;
 import com.javachen.cshop.common.auth.JwtHelper;
-import com.javachen.cshop.common.util.CookieUtils;
+import com.javachen.cshop.common.utils.CookieUtils;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
@@ -22,7 +22,7 @@ public class LoginFilter extends ZuulFilter {
     @Autowired
     private JwtHelper jwtHelper;
 
-    @Value("${cshop.filter.allowPaths}")
+    @Value("${cshop.web.allowPaths}")
     private String allowPaths;
 
     @Override
