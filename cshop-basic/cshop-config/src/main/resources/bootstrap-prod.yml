@@ -13,10 +13,11 @@ spring:
       label: master
       server:
         git: #必须是个干净的仓库
-          uri: http://192.168.56.100:4080/june/cshop-config.git
+#          uri: http://192.168.56.100:4080/june/cshop-config.git
+          uri: https://github.com/javachen/cshop-config.git
           search-paths: configs
-          username: june
-          password: 12345678
+#          username: june
+#          password: 12345678
     inetutils:
       ignoredInterfaces:  #禁用网卡
         - docker0
