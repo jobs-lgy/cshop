@@ -8,11 +8,19 @@
 
 基于乐友商和蚂蚁学院微服务第四期项目开发并做了大量修改，使用的技术包括Spring Boot、Spring MVC、Spring Cloud、JPA、Redis、RabbitMQ、ElasticSearch等框架，主要是完成了后端项目开发，前端没实现。
 
+项目代码：<https://github.com/javachen/cshop/tree/v0.0.1>
+
 项目文档：[spring-cloud-cshop](https://javachen.github.io/wiki/spring-cloud-cshop/)
 
 - 2、v0.0.2
 
 将Spring Cloud切换到Spring Cloud Alibaba上来。
+
+项目代码：<https://github.com/javachen/cshop/tree/v0.0.2>
+
+- 3、master
+
+用于开发的最新版本。
 
 # v0.0.1
 
