@@ -37,8 +37,9 @@ public class RestErrorController implements ErrorController {
         int status = (int) errorAttributes.get("status");
         String message = (String) errorAttributes.get("message");
         String path = (String) errorAttributes.get("path");
+        String trace = (String) errorAttributes.get("trace");
 
-        log.error("Error[{}] occurred while access uri[{}]",message, path);
+        log.error("Error[{}] occurred while access uri[{}]:{}",error, path,message);
 
         if(errorAttributes.containsKey("errors")){
             List<ObjectError> errors = (List<ObjectError>) errorAttributes.get("errors");

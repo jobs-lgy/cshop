@@ -7,7 +7,7 @@ package com.javachen.cshop.service;
  * @since
  */
 
-public interface RabbitService {
+public interface MqService {
     void sendEmail(String emailType, String emailTo, String url ,Long userId,String username);
 
     void sendSms(String phone,String code);

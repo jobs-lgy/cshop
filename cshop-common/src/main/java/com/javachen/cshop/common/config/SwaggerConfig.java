@@ -21,8 +21,6 @@ import static springfox.documentation.spi.DocumentationType.SWAGGER_2;
  * @since
  */
 @Configuration
-@EnableSwagger2
-@Profile(value = {"dev"})
 public class SwaggerConfig {
     @Bean
     public Docket api() {

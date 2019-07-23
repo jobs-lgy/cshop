@@ -11,10 +11,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @EnableBinding({SmsOutputProcessor.class, EmailOutputProcessor.class})
 @EnableAsync
 @EnableCaching
+@EnableSwagger2
 @SpringBootApplication
 @EnableDiscoveryClient
 public class AppUser  {

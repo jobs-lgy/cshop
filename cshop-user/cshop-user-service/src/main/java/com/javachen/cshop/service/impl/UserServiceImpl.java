@@ -1,7 +1,6 @@
 package com.javachen.cshop.service.impl;
 
-import com.javachen.cshop.common.exception.BusinessException;
-import com.javachen.cshop.common.exception.ErrorCode;
+import com.javachen.cshop.common.exception.NotFoundException;
 import com.javachen.cshop.entity.User;
 import com.javachen.cshop.repository.UserRepository;
 import com.javachen.cshop.service.UserService;
@@ -31,7 +30,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findById(Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_EXIST));
+                .orElseThrow(() -> new NotFoundException("id=1"));
     }
 
     @Override
@@ -48,7 +47,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(Long id) {
-        //TODO 标记删除？删除密码？
         userRepository.deleteById(id);
     }
 }

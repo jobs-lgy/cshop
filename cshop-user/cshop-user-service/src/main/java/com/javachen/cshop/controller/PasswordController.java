@@ -2,11 +2,15 @@ package com.javachen.cshop.controller;
 
 import com.javachen.cshop.entity.User;
 import com.javachen.cshop.model.form.PasswordChange;
+import com.javachen.cshop.model.form.PasswordReset;
 import com.javachen.cshop.service.AccountService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 
@@ -18,9 +22,9 @@ import javax.validation.Valid;
  * @see
  * @since
  */
-@Api("修改密码接口")
+@Api("密码接口")
 @Controller
-public class ChangePasswordController {
+public class PasswordController {
     @Autowired
     private AccountService accountService;
 
@@ -31,8 +35,34 @@ public class ChangePasswordController {
             @ApiResponse(code = 400, message = "请求参数有误"),
             @ApiResponse(code = 500, message = "服务器异常")
     })
-    @PostMapping("/account/password")
+    @PostMapping("/password")
     public User processChangePassword(@Valid PasswordChange passwordChange) {
         return accountService.changePassword(passwordChange);
+    }
+
+    /**
+     * 重置密码，发送邮件
+     *
+     * @param email
+     * @return
+     */
+    @GetMapping(value = "/password")
+    public void processForgotPassword(@RequestParam("email") String email) {
+        accountService.sendForgotPasswordNotification(email, this.getResetPasswordUrl());
+    }
+
+    /**
+     * 重置密码接口
+     *
+     * @param passwordReset
+     */
+    @PutMapping(value = "/password")
+    public void processResetPassword(@Valid PasswordReset passwordReset) {
+        accountService.resetPassword(passwordReset);
+    }
+
+
+    public String getResetPasswordUrl() {
+        return "";
     }
 }

@@ -15,16 +15,12 @@ public enum ErrorCode implements ErrorCodeAware {
     USER_USERNAME_ALREADY_EXIST(20003, "用户名重复"),
     USER_PHONE_ALREADY_EXIST(20003, "手机号重复"),
     USER_EMAIL_ALREADY_EXIST(20003, "邮箱重复"),
+
+    USER_NOT_ACTIVE(20005, "用户未激活"),
+
     USER_LOGIN_ERROR(20004, "用户名或密码错误"),
     USER_PASSWORD_ERROR(20004, "密码错误"),
-    USER_NOT_ACTIVE(20005, "用户未激活"),
     USER_PASSWORD_NOT_EQUAL(20006, "两次输入密码不一样"),
-
-    USER_PHONE_CODE_ERROR(20004, "手机验证码错误或者已失效"),
-    USER_PHONE_CODE_SEND_FAIL(20004, "手机验证码发送失败"),
-
-    USER_REGISTER_FAIL(20004, "用户注册失败"),
-
 
     RRAND_NOT_EXIST(30001, "品牌不存在"),
     CART_NOT_EXIST(30002, "购物车不存在"),

@@ -4,7 +4,7 @@ import com.google.common.collect.Maps;
 import com.javachen.cshop.common.utils.json.ObjectMapperUtils;
 import com.javachen.cshop.processor.EmailOutputProcessor;
 import com.javachen.cshop.processor.SmsOutputProcessor;
-import com.javachen.cshop.service.RabbitService;
+import com.javachen.cshop.service.MqService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.scheduling.annotation.Async;
@@ -14,7 +14,7 @@ import java.util.Map;
 
 
 @Service
-public class RabbitServiceImpl implements RabbitService {
+public class MqServiceImpl implements MqService {
 
     @Autowired
     SmsOutputProcessor smsOutputProcessor;

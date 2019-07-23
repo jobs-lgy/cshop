@@ -1,6 +1,6 @@
 package com.javachen.cshop.controller;
 
-import com.javachen.cshop.service.RabbitService;
+import com.javachen.cshop.service.MqService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,21 +14,21 @@ import org.springframework.web.bind.annotation.RestController;
  * @since
  */
 @RestController
-public class RabbitController {
+public class MqController {
     @Autowired
-    private RabbitService rabbitService;
+    private MqService mqService;
 
     @GetMapping("/sms/{phone}/{code}")
     @Validated
     public Boolean sendSms(@PathVariable String phone,@PathVariable String code) {
-        rabbitService.sendSms(phone,code);
+        mqService.sendSms(phone,code);
         return true;
     }
 
     @GetMapping("/email")
     @Validated
     public Boolean sendEmail() {
-        rabbitService.sendEmail("register","junecloud@163.com",null,1L,"javachen");
+        mqService.sendEmail("register","junecloud@163.com",null,1L,"javachen");
         return true;
     }
 }

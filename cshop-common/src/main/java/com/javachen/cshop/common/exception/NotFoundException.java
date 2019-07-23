@@ -17,6 +17,10 @@ public class NotFoundException extends RuntimeException implements ErrorCodeAwar
         this.errorCodeAware.setMessage(message);
     }
 
+    public NotFoundException() {
+        this.errorCodeAware = ErrorCode.NOT_FOUND;
+    }
+
     @Override
     public int getCode() {
         return this.errorCodeAware.getCode();

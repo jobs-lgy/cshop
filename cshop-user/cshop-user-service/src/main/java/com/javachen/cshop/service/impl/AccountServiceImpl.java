@@ -2,6 +2,7 @@ package com.javachen.cshop.service.impl;
 
 import com.javachen.cshop.common.exception.BusinessException;
 import com.javachen.cshop.common.exception.ErrorCode;
+import com.javachen.cshop.common.exception.NotFoundException;
 import com.javachen.cshop.common.utils.HashUtils;
 import com.javachen.cshop.entity.User;
 import com.javachen.cshop.entity.UserPassword;
@@ -12,10 +13,9 @@ import com.javachen.cshop.model.form.UserRegister;
 import com.javachen.cshop.repository.UserPasswordRepository;
 import com.javachen.cshop.repository.UserRepository;
 import com.javachen.cshop.service.AccountService;
-import com.javachen.cshop.service.RabbitService;
+import com.javachen.cshop.service.MqService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.RandomStringUtils;
-import org.springframework.amqp.AmqpException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -49,7 +49,7 @@ public class AccountServiceImpl implements AccountService {
     private StringRedisTemplate stringRedisTemplate;
 
     @Autowired
-    private RabbitService rabbitService;
+    private MqService mqService;
 
     @Override
     @Transactional
@@ -76,12 +76,12 @@ public class AccountServiceImpl implements AccountService {
                 resetPasswordUrl = resetPasswordUrl + "?token=" + token;
             }
         }
-        rabbitService.sendEmail("resetPassword",email,resetPasswordUrl,user.getId(),user.getUsername());
+        mqService.sendEmail("resetPassword",email,resetPasswordUrl,user.getId(),user.getUsername());
     }
 
     private void checkUser(User user) {
         if (user == null) {
-            throw new BusinessException(ErrorCode.USER_NOT_EXIST);
+            throw new NotFoundException();
         }
         if (!user.getActive()) {
             throw new BusinessException(ErrorCode.USER_NOT_ACTIVE);
@@ -122,7 +122,7 @@ public class AccountServiceImpl implements AccountService {
         userPassword.setPassword(passwordEncoder.encode(passwordChange.getNewPassword()));
         userPasswordRepository.save(userPassword);
 
-        rabbitService.sendEmail("changePassword",user.getEmail(),null,user.getId(),user.getUsername());
+        mqService.sendEmail("changePassword",user.getEmail(),null,user.getId(),user.getUsername());
         return user;
     }
 
@@ -181,29 +181,20 @@ public class AccountServiceImpl implements AccountService {
 //            throw new BusinessException(ErrorCode.USER_PHONE_CODE_ERROR);
 //        }
 
-        try {
-            //FIXME 后去需要邮件激活
-            user.setActive(true); //未激活
-            userRepository.save(user);
+        //FIXME 后去需要邮件激活
+        user.setActive(true); //未激活
+        userRepository.save(user);
 
-            UserPassword userPassword = new UserPassword();
-            userPassword.setUserId(user.getId());
-            userPassword.setPassword(passwordEncoder.encode(userRegister.getPassword()));
-            userPasswordRepository.save(userPassword);
+        UserPassword userPassword = new UserPassword();
+        userPassword.setUserId(user.getId());
+        userPassword.setPassword(passwordEncoder.encode(userRegister.getPassword()));
+        userPasswordRepository.save(userPassword);
 
-            HashMap<String, Object> vars = new HashMap<String, Object>();
-            vars.put("user", user);
+        mqService.sendEmail("register",user.getEmail(),null,user.getId(),user.getUsername());
 
-            rabbitService.sendEmail("register",user.getEmail(),null,user.getId(),user.getUsername());
-
-            //清理redis
+        //清理redis
 //            this.stringRedisTemplate.delete(key);
-
-            return user;
-        } catch (Exception e) {
-            log.error("用户注册失败", e);
-            throw new BusinessException(ErrorCode.USER_REGISTER_FAIL);
-        }
+        return user;
     }
 
     /**
@@ -215,18 +206,16 @@ public class AccountServiceImpl implements AccountService {
     public String sendVerifyCode(String phone) {
         //1.生成验证码
         String code = RandomStringUtils.randomNumeric(4);
-        try {
-            //2.发送短信
-            rabbitService.sendSms(phone,code);
-            //3.将code存入redis
-            String key = REGISTER_KEY_PREFIX + phone;
-            String codeCache = this.stringRedisTemplate.opsForValue().get(key);
-            if (StringUtils.isEmpty(codeCache)) {
-                this.stringRedisTemplate.opsForValue().set(key, code, 5, TimeUnit.MINUTES);
-            }
-        } catch (AmqpException e) {
-            log.error("发送短信失败，phone：{}，code：{}", phone, code);
-            throw new BusinessException(ErrorCode.USER_PHONE_CODE_SEND_FAIL);
+        //2.发送短信
+        mqService.sendSms(phone,code);
+
+        log.info("phone：{}，code：{}", phone, code);
+
+        //3.将code存入redis
+        String key = REGISTER_KEY_PREFIX + phone;
+        String codeCache = this.stringRedisTemplate.opsForValue().get(key);
+        if (StringUtils.isEmpty(codeCache)) {
+            this.stringRedisTemplate.opsForValue().set(key, code, 5, TimeUnit.MINUTES);
         }
         return code;
     }

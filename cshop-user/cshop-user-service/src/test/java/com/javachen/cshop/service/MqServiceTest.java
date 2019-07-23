@@ -1,17 +1,11 @@
 package com.javachen.cshop.service;
 
-import com.javachen.cshop.model.form.PasswordChange;
-import com.javachen.cshop.model.form.UserLogin;
-import com.javachen.cshop.model.form.UserRegister;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author june
@@ -22,12 +16,12 @@ import java.util.Map;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("prod")
-public class RabbitServiceTest {
+public class MqServiceTest {
     @Autowired
-    private RabbitService rabbitService;
+    private MqService mqService;
 
     @Test
     public void testRegister() {
-        rabbitService.sendSms("123","fff");
+        mqService.sendSms("123","fff");
     }
 }
