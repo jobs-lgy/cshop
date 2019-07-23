@@ -1,11 +1,10 @@
 package com.javachen.cshop.controller;
 
-import com.javachen.cshop.common.model.response.CommonResponse;
+import com.javachen.cshop.entity.User;
 import com.javachen.cshop.model.form.PasswordReset;
 import com.javachen.cshop.model.form.UserLogin;
 import com.javachen.cshop.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,8 +17,8 @@ public class LoginController {
     private AccountService accountService;
 
     @PostMapping(value = "/login")
-    public CommonResponse processLogin(@Valid UserLogin userLogin) {
-        return CommonResponse.success(accountService.login(userLogin));
+    public User processLogin(@Valid UserLogin userLogin) {
+        return accountService.login(userLogin);
     }
 
     /**
@@ -28,16 +27,14 @@ public class LoginController {
      * @param email
      * @return
      */
-    @GetMapping(value = "/login/forgotPassword")
-    public CommonResponse processForgotPassword(@RequestParam("email") String email) {
+    @PostMapping(value = "/login/forgotPassword")
+    public void processForgotPassword(@RequestParam("email") String email) {
         accountService.sendForgotPasswordNotification(email, this.getResetPasswordUrl());
-        return CommonResponse.success();
     }
 
     @PostMapping(value = "/login/resetPassword")
-    public CommonResponse processResetPassword(PasswordReset passwordReset) {
+    public void processResetPassword(PasswordReset passwordReset) {
         accountService.resetPassword(passwordReset);
-        return CommonResponse.success();
     }
 
 

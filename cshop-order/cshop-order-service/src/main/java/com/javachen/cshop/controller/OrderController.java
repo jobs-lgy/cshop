@@ -2,7 +2,6 @@ package com.javachen.cshop.controller;
 
 import com.javachen.cshop.common.exception.BusinessException;
 import com.javachen.cshop.common.exception.ErrorCode;
-import com.javachen.cshop.common.model.response.CommonResponse;
 import com.javachen.cshop.common.model.response.PageResponse;
 import com.javachen.cshop.config.PayHelper;
 import com.javachen.cshop.entity.Order;
@@ -44,14 +43,14 @@ public class OrderController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "order", required = true, value = "订单的json对象，包含订单条目和物流信息"),
     })
-    public CommonResponse<List<Long>> createOrder(@RequestBody @Valid Order order) {
+    public List<Long> createOrder(@RequestBody @Valid Order order) {
         List<Long> list = this.orderService.findStockId(order);
         if (list.size() != 0) {
             throw new BusinessException(ErrorCode.STOCK_NOT_ENOUGH);
         }
 
         Long id = this.orderService.add(order);
-        return CommonResponse.success(Arrays.asList(id));
+        return Arrays.asList(id);
     }
 
 

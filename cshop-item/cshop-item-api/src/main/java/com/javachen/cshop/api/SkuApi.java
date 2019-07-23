@@ -1,6 +1,5 @@
 package com.javachen.cshop.api;
 
-import com.javachen.cshop.common.model.response.CommonResponse;
 import com.javachen.cshop.entity.Sku;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,7 +14,7 @@ public interface SkuApi {
      * @return
      */
     @GetMapping("sku/{skuId}")
-    public CommonResponse<Sku> findSkuById(@PathVariable("skuId") Long skuId);
+    public Sku findSkuById(@PathVariable("skuId") Long skuId);
 
     /**
      * 根据Spu的id查询其下所有的sku
@@ -24,5 +23,5 @@ public interface SkuApi {
      * @return
      */
     @GetMapping("sku/spu/{spuId}")
-    public CommonResponse<List<Sku>> findAllSkuBySpuId(@PathVariable("spuId") Long spuId);
+    public List<Sku> findAllSkuBySpuId(@PathVariable("spuId") Long spuId);
 }

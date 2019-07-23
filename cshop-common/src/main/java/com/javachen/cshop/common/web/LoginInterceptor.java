@@ -3,7 +3,6 @@ package com.javachen.cshop.common.web;
 import com.javachen.cshop.common.auth.AuthUser;
 import com.javachen.cshop.common.auth.JwtHelper;
 import com.javachen.cshop.common.exception.ErrorCode;
-import com.javachen.cshop.common.model.response.CommonResponse;
 import com.javachen.cshop.common.utils.CookieUtils;
 import com.javachen.cshop.common.utils.json.ObjectMapperUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -75,7 +74,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     private void unauthorized(HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(ObjectMapperUtils.obj2json(CommonResponse.error(ErrorCode.UNAUTHORIZED)));
+        response.getWriter().write(ObjectMapperUtils.obj2json(ErrorCode.UNAUTHORIZED));
     }
 
     /**

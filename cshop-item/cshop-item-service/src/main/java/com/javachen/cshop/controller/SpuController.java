@@ -1,6 +1,5 @@
 package com.javachen.cshop.controller;
 
-import com.javachen.cshop.common.model.response.CommonResponse;
 import com.javachen.cshop.common.model.response.PageResponse;
 import com.javachen.cshop.entity.Spu;
 import com.javachen.cshop.model.vo.SpuBo;
@@ -10,20 +9,19 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-@CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
 @RestController
 public class SpuController {
     @Autowired
     private ItemService itemService;
 
     @GetMapping("spu/page")
-    public CommonResponse<PageResponse<SpuBo>> findAllSpuByPage(@RequestParam(value = "page", defaultValue = "1") int page,
+    public PageResponse<SpuBo> findAllSpuByPage(@RequestParam(value = "page", defaultValue = "1") int page,
                                                                 @RequestParam(value = "rows", defaultValue = "5") int rows,
                                                                 @RequestParam(value = "sortBy", required = false) String sortBy,
                                                                 @RequestParam(value = "desc", required = false, defaultValue = "false") Boolean desc,
                                                                 @RequestParam(value = "key", required = false) String key,
                                                                 @RequestParam(value = "saleable", required = false) Boolean saleable) {
-        return CommonResponse.success(itemService.findAllSpuByPage(page, rows, sortBy, desc, key, saleable));
+        return itemService.findAllSpuByPage(page, rows, sortBy, desc, key, saleable);
 
     }
 
@@ -34,9 +32,8 @@ public class SpuController {
      * @return Spu
      */
     @PostMapping("spu")
-    public CommonResponse addSpu(@RequestBody SpuBo goods) {
-        itemService.addSpu(goods);
-        return CommonResponse.success();
+    public Spu addSpu(@RequestBody SpuBo goods) {
+        return itemService.addSpu(goods);
     }
 
     /**
@@ -46,9 +43,8 @@ public class SpuController {
      * @return Spu
      */
     @PutMapping("spu")
-    public CommonResponse updateSpu(@RequestBody SpuBo goods) {
-        itemService.updateSpu(goods);
-        return CommonResponse.success();
+    public Spu updateSpu(@RequestBody SpuBo goods) {
+        return itemService.updateSpu(goods);
     }
 
     /**
@@ -56,8 +52,8 @@ public class SpuController {
      *
      * @return Sku
      */
-    @GetMapping("spu/out/{ids}")
-    public CommonResponse soldOut(@PathVariable("ids") String spuIds) {
+    @PostMapping("spu/out/{ids}")
+    public void soldOut(@PathVariable("ids") String spuIds) {
         String separator = "-";
         if (spuIds.contains(separator)) {
             String[] goodsId = spuIds.split(separator);
@@ -67,7 +63,6 @@ public class SpuController {
         } else {
             this.itemService.soldOut(Long.parseLong(spuIds));
         }
-        return CommonResponse.success();
     }
 
     /**
@@ -77,7 +72,7 @@ public class SpuController {
      * @return Spu 被删除的spu
      */
     @DeleteMapping("spu/{ids}")
-    public CommonResponse deleteSpu(@PathVariable("ids") String spuIds) {
+    public void deleteSpu(@PathVariable("ids") String spuIds) {
         String separator = "-";
         if (spuIds.contains(separator)) {
             String[] goodsId = spuIds.split(separator);
@@ -87,7 +82,6 @@ public class SpuController {
         } else {
             this.itemService.deleteSpu(Long.parseLong(spuIds));
         }
-        return CommonResponse.success();
     }
 
     /**
@@ -97,12 +91,12 @@ public class SpuController {
      * @return Spu
      */
     @GetMapping("spu/map/{spuId}")
-    public CommonResponse<Map<String, Object>> findSpuMapById(@PathVariable("spuId") Long spuId) {
-        return CommonResponse.success(itemService.findSpuMapById(spuId));
+    public Map<String, Object> findSpuMapById(@PathVariable("spuId") Long spuId) {
+        return itemService.findSpuMapById(spuId);
     }
 
     @GetMapping("spu/{spuId}")
-    public CommonResponse<Spu> findSpuById(@PathVariable("spuId") Long spuId) {
-        return CommonResponse.success(itemService.findSpuById(spuId));
+    public Spu findSpuById(@PathVariable("spuId") Long spuId) {
+        return itemService.findSpuById(spuId);
     }
 }

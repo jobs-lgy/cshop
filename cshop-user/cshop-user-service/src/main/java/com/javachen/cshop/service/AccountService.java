@@ -23,7 +23,7 @@ public interface AccountService {
 
     User register(UserRegister userRegister);
 
-    void sendVerifyCode(String phone);
+    String sendVerifyCode(String phone);
 
     void sendForgotPasswordNotification(String email, String forgotPasswordUrl);
 }

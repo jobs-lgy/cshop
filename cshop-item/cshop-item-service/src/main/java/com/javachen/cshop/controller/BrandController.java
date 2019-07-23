@@ -1,6 +1,5 @@
 package com.javachen.cshop.controller;
 
-import com.javachen.cshop.common.model.response.CommonResponse;
 import com.javachen.cshop.common.model.response.PageResponse;
 import com.javachen.cshop.entity.Brand;
 import com.javachen.cshop.service.BrandService;
@@ -18,35 +17,34 @@ public class BrandController {
     private BrandService brandService;
 
     @GetMapping("/page")
-    public CommonResponse<PageResponse<Brand>> queryBrandByPage(@RequestParam(value = "page", defaultValue = "1") int page,
+    public PageResponse<Brand> queryBrandByPage(@RequestParam(value = "page", defaultValue = "1") int page,
                                                                 @RequestParam(value = "rows", defaultValue = "5") int rows,
                                                                 @RequestParam(value = "sortBy", defaultValue = "id") String sortBy,
                                                                 @RequestParam(value = "desc", defaultValue = "false") Boolean desc,
                                                                 @RequestParam(value = "key", required = false) String key) {
         Page<Brand> result = brandService.findAllByPage(page, rows, sortBy, desc, key);
-        return CommonResponse.success(new PageResponse<Brand>(result.getTotalElements(), result.getTotalPages(), result.getContent()));
+        return new PageResponse<Brand>(result.getTotalElements(), result.getTotalPages(), result.getContent());
     }
 
     @PostMapping()
-    public CommonResponse<Brand> addBrand(@RequestBody Brand brand,
+    public Brand addBrand(@RequestBody Brand brand,
                                           @RequestParam("cids") List<Long> categories) {
-        return CommonResponse.success(brandService.add(brand, categories));
+        return brandService.add(brand, categories);
     }
 
     @PutMapping()
-    public CommonResponse<Brand> updateBrand(@RequestBody Brand brand,
+    public Brand updateBrand(@RequestBody Brand brand,
                                              @RequestParam("cids") List<Long> categories) {
-        return CommonResponse.success(brandService.update(brand, categories));
+        return brandService.update(brand, categories);
     }
 
     @DeleteMapping("/categoryBrand/{brandId}")
-    public CommonResponse deleteBrand(@PathVariable("brandId") long brandId) {
+    public void deleteBrand(@PathVariable("brandId") long brandId) {
         brandService.deleteCategoryBrand(brandId);
-        return CommonResponse.success();
     }
 
     @DeleteMapping("{brandId}")
-    public CommonResponse deleteBrand(@PathVariable("brandId") String bid) {
+    public void deleteBrand(@PathVariable("brandId") String bid) {
         String separator = "-";
         if (bid.contains(separator)) {
             String[] ids = bid.split(separator);
@@ -56,7 +54,6 @@ public class BrandController {
         } else {
             this.brandService.deleteBrand(Long.parseLong(bid));
         }
-        return CommonResponse.success();
     }
 
     /**
@@ -66,17 +63,17 @@ public class BrandController {
      * @return List<Brand>
      */
     @GetMapping("/cid/{categoryId}")
-    public CommonResponse<List<Brand>> findAllByCategoryId(@PathVariable("categoryId") Long categoryId) {
-        return CommonResponse.success(brandService.findAllByCategoryId(categoryId));
+    public List<Brand> findAllByCategoryId(@PathVariable("categoryId") Long categoryId) {
+        return brandService.findAllByCategoryId(categoryId);
     }
 
     @GetMapping("/{brandId}")
-    public CommonResponse<Brand> findById(@PathVariable("brandId") long brandId) {
-        return CommonResponse.success(brandService.findById(brandId));
+    public Brand findById(@PathVariable("brandId") long brandId) {
+        return brandService.findById(brandId);
     }
 
     @GetMapping("/list")
-    public CommonResponse<List<Brand>> findAllByIdIn(@RequestParam("ids") List<Long> ids) {
-        return CommonResponse.success(brandService.findAllByIdIn(ids));
+    public List<Brand> findAllByIdIn(@RequestParam("ids") List<Long> ids) {
+        return brandService.findAllByIdIn(ids);
     }
 }

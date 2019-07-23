@@ -23,11 +23,11 @@ public class OrderAddressServiceImpl implements OrderAddressService {
     }
 
     @Override
-    public void update(OrderAddress orderAddress) {
+    public OrderAddress update(OrderAddress orderAddress) {
         AuthUser userResponse = LoginInterceptor.getLoginUser();
         orderAddress.setUserId(userResponse.getId());
         setDefaultAddress(orderAddress);
-        this.orderAddressRepository.save(orderAddress);
+        return this.orderAddressRepository.save(orderAddress);
 
     }
 
@@ -38,11 +38,11 @@ public class OrderAddressServiceImpl implements OrderAddressService {
     }
 
     @Override
-    public void add(OrderAddress orderAddress) {
+    public OrderAddress add(OrderAddress orderAddress) {
         AuthUser userResponse = LoginInterceptor.getLoginUser();
         orderAddress.setUserId(userResponse.getId());
         setDefaultAddress(orderAddress);
-        this.orderAddressRepository.save(orderAddress);
+        return this.orderAddressRepository.save(orderAddress);
     }
 
     @Override

@@ -5,7 +5,6 @@ import com.javachen.cshop.common.auth.JwtConstants;
 import com.javachen.cshop.common.auth.JwtHelper;
 import com.javachen.cshop.common.exception.BusinessException;
 import com.javachen.cshop.common.exception.ErrorCode;
-import com.javachen.cshop.common.model.response.CommonResponse;
 import com.javachen.cshop.common.utils.CookieUtils;
 import com.javachen.cshop.model.form.UserLogin;
 import com.javachen.cshop.service.AuthService;
@@ -37,7 +36,7 @@ public class AuthController {
      * @return
      */
     @PostMapping("auth")
-    public CommonResponse authentication(@Valid UserLogin userLogin,
+    public String authentication(@Valid UserLogin userLogin,
                                          HttpServletRequest request,
                                          HttpServletResponse response
     ) {
@@ -49,7 +48,7 @@ public class AuthController {
         //2.将token写入cookie，并指定httpOnly为true，防止通过js获取和修改
         CookieUtils.setCookie(request, response, jwtHelper.getCookieName(), token, jwtHelper.getCookieMaxAge(), true);
 
-        return CommonResponse.success(token);
+        return token;
     }
 
     /**
@@ -59,11 +58,11 @@ public class AuthController {
      * @return
      */
     @GetMapping("verify")
-    public CommonResponse<AuthUser> verifyUser(@CookieValue(JwtConstants.COOKIE_NAME) String token, HttpServletRequest request,
+    public AuthUser verifyUser(@CookieValue(JwtConstants.COOKIE_NAME) String token, HttpServletRequest request,
                                                HttpServletResponse response) {
         AuthUser authUser = authService.verifyToken(token);
         CookieUtils.setCookie(request, response, jwtHelper.getCookieName(), token, jwtHelper.getCookieMaxAge());
-        return CommonResponse.success(authUser);
+        return authUser;
     }
 
 }

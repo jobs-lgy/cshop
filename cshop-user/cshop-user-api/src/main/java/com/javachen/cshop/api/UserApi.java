@@ -1,6 +1,6 @@
 package com.javachen.cshop.api;
 
-import com.javachen.cshop.common.model.response.CommonResponse;
+import com.javachen.cshop.entity.User;
 import com.javachen.cshop.model.form.PasswordChange;
 import com.javachen.cshop.model.form.PasswordReset;
 import com.javachen.cshop.model.form.UserLogin;
@@ -12,21 +12,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 public interface UserApi {
     @PostMapping(value = "/login")
-    CommonResponse processLogin(UserLogin userLogin);
+    User processLogin(UserLogin userLogin);
 
     @GetMapping(value = "/login/forgotPassword")
-    CommonResponse processForgotPassword(@RequestParam("email") String email);
+    void processForgotPassword(@RequestParam("email") String email);
 
     @PostMapping(value = "/login/resetPassword")
-    CommonResponse processResetPassword(PasswordReset passwordReset);
+    void processResetPassword(PasswordReset passwordReset);
 
     @PostMapping("/account/password")
-    CommonResponse processChangePassword(PasswordChange passwordChange);
+    User processChangePassword(PasswordChange passwordChange);
 
     @GetMapping("/register/code")
-    CommonResponse senVerifyCode(@RequestParam("phone") String phone);
+    String senVerifyCode(@RequestParam("phone") String phone);
 
     @PostMapping("/register")
-    CommonResponse<UserVo> register(UserRegister userRegister);
+    UserVo register(UserRegister userRegister);
 
 }

@@ -24,7 +24,6 @@ import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -213,7 +212,7 @@ public class AccountServiceImpl implements AccountService {
      * @param phone
      */
     @Override
-    public void sendVerifyCode(String phone) {
+    public String sendVerifyCode(String phone) {
         //1.生成验证码
         String code = RandomStringUtils.randomNumeric(4);
         try {
@@ -229,5 +228,6 @@ public class AccountServiceImpl implements AccountService {
             log.error("发送短信失败，phone：{}，code：{}", phone, code);
             throw new BusinessException(ErrorCode.USER_PHONE_CODE_SEND_FAIL);
         }
+        return code;
     }
 }

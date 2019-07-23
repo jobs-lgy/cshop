@@ -2,7 +2,6 @@ package com.javachen.cshop.common.web;
 
 import com.google.common.collect.ImmutableMap;
 import com.javachen.cshop.common.utils.logging.RequestIdMdcFilter;
-import com.javachen.cshop.common.model.response.CommonResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
@@ -51,7 +50,7 @@ public class RestErrorController implements ErrorController {
         errorAttributes.remove("trace");
         errorAttributes.put("requestId", webRequest.getAttribute(RequestIdMdcFilter.REQUEST_ID, RequestAttributes.SCOPE_REQUEST));
         errorAttributes.put("timestamp",System.currentTimeMillis());
-        return ResponseEntity.status(status).body(CommonResponse.error(errorAttributes));
+        return ResponseEntity.status(status).body(errorAttributes);
     }
 
     @Override

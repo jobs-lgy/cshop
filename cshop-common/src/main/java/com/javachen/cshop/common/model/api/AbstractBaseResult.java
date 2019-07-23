@@ -1,6 +1,5 @@
-package com.javachen.cshop.common.model.response.dto;
+package com.javachen.cshop.common.model.api;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import java.io.Serializable;

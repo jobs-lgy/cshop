@@ -15,7 +15,7 @@ public interface CartService {
      *
      * @param cart
      */
-    void add(Cart cart);
+    Cart add(Cart cart);
 
     /**
      * 查询购物车
@@ -30,7 +30,7 @@ public interface CartService {
      * @param skuId
      * @param num
      */
-    void updateNum(Long skuId, Integer num);
+    Cart updateNum(Long skuId, Integer num);
 
     /**
      * 删除购物车中的商品

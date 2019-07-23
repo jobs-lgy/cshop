@@ -27,7 +27,7 @@ public class CartServiceImpl implements CartService {
      * @param cart
      */
     @Override
-    public void add(Cart cart) {
+    public Cart add(Cart cart) {
 
 //
 //        //1.获取用户
@@ -58,6 +58,7 @@ public class CartServiceImpl implements CartService {
 //        }
 //        //9.将购物车数据写入redis
 //        hashOperations.put(cart.getSkuId().toString(),ObjectMapperUtils.serialize(cart));
+        return null;
     }
 
     /**
@@ -93,7 +94,7 @@ public class CartServiceImpl implements CartService {
      * @param num
      */
     @Override
-    public void updateNum(Long skuId, Integer num) {
+    public Cart updateNum(Long skuId, Integer num) {
 //        //1.获取登录用户
 //        UserResponse userInfo = LoginInterceptor.getLoginUser();
 //        String key = KEY_PREFIX + userInfo.getId();
@@ -104,6 +105,7 @@ public class CartServiceImpl implements CartService {
 //        cart.setNum(num);
 //        //3.写入购物车
 //        hashOperations.put(skuId.toString(),ObjectMapperUtils.serialize(cart));
+        return null;
     }
 
     /**

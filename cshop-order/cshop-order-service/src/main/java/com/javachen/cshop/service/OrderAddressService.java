@@ -22,7 +22,7 @@ public interface OrderAddressService {
      *
      * @param orderAddress
      */
-    void update(OrderAddress orderAddress);
+    OrderAddress update(OrderAddress orderAddress);
 
     /**
      * 查询地址
@@ -36,7 +36,7 @@ public interface OrderAddressService {
      *
      * @param orderAddress
      */
-    void add(OrderAddress orderAddress);
+    OrderAddress add(OrderAddress orderAddress);
 
     /**
      * 根据地址id查询地址

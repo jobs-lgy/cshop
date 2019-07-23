@@ -2,7 +2,6 @@ package com.javachen.cshop.service.impl;
 
 import com.google.common.collect.Maps;
 import com.javachen.cshop.common.utils.json.ObjectMapperUtils;
-import com.javachen.cshop.entity.User;
 import com.javachen.cshop.processor.EmailOutputProcessor;
 import com.javachen.cshop.processor.SmsOutputProcessor;
 import com.javachen.cshop.service.RabbitService;

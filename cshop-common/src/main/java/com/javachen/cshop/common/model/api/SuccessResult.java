@@ -1,4 +1,4 @@
-package com.javachen.cshop.common.model.response.dto;
+package com.javachen.cshop.common.model.api;
 
 import com.google.common.collect.Lists;
 import lombok.Data;

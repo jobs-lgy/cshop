@@ -1,6 +1,5 @@
 package com.javachen.cshop.controller;
 
-import com.javachen.cshop.common.model.response.CommonResponse;
 import com.javachen.cshop.common.model.response.PageResponse;
 import com.javachen.cshop.entity.User;
 import com.javachen.cshop.model.vo.UserVo;
@@ -23,25 +22,22 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public CommonResponse<Void> save(@RequestBody @Valid User user) {
-        userService.save(user);
-        return CommonResponse.success();
+    public User save(@RequestBody @Valid User user) {
+        return userService.save(user);
     }
 
     @PutMapping
-    public CommonResponse<Void> update(@RequestBody @Valid User user) {
-        userService.save(user);
-        return CommonResponse.success();
+    public User update(@RequestBody @Valid User user) {
+        return userService.save(user);
     }
 
     @DeleteMapping("/{id}")
-    public CommonResponse<Void> delete(@Valid @PathVariable Long id) {
+    public void delete(@Valid @PathVariable Long id) {
         userService.delete(id);
-        return CommonResponse.success();
     }
 
     @GetMapping
-    public CommonResponse<PageResponse<UserVo>> findAll(
+    public PageResponse<UserVo> findAll(
             @ApiParam("第几页")
             @Valid @Positive @RequestParam(required = false, defaultValue = "0") int page,
             @ApiParam("每页记录数")
@@ -49,13 +45,13 @@ public class UserController {
 
         Page<User> result = userService.findAll(PageRequest.of(page, size));
         List<UserVo> userVoList=result.getContent().stream().map(user -> user.toVo()).collect(Collectors.toList());
-        return CommonResponse.success(new PageResponse<UserVo>(result.getTotalElements(), result.getTotalPages(),userVoList ));
+        return new PageResponse<UserVo>(result.getTotalElements(), result.getTotalPages(),userVoList );
     }
 
     //FIXME 1、校验没有起作用   2、/user/getotp 的get请求映射到这里出现类型转换异常
     @GetMapping("/{id}")
     @Validated
-    public CommonResponse<UserVo> findById(@ApiParam("用户id") @Positive @PathVariable Long id) {
-        return CommonResponse.success(userService.findById(id).toVo());
+    public UserVo findById(@ApiParam("用户id") @Positive @PathVariable Long id) {
+        return userService.findById(id).toVo();
     }
 }

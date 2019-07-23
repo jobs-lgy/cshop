@@ -1,6 +1,5 @@
 package com.javachen.cshop.controller;
 
-import com.javachen.cshop.common.model.response.CommonResponse;
 import com.javachen.cshop.entity.Sku;
 import com.javachen.cshop.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +24,8 @@ public class SkuController {
      * @return List<Sku>
      */
     @GetMapping("sku/spu/{spuId}")
-    public CommonResponse<List<Sku>> findAllSkuBySpuId(@PathVariable("spuId") Long spuId) {
-        return CommonResponse.success(itemService.findAllSkuBySpuId(spuId));
+    public List<Sku> findAllSkuBySpuId(@PathVariable("spuId") Long spuId) {
+        return itemService.findAllSkuBySpuId(spuId);
     }
 
     /**
@@ -36,13 +35,13 @@ public class SkuController {
      * @return Sku 商品sku信息
      */
     @GetMapping("sku/{skuId}")
-    public CommonResponse<Sku> findSkuById(@PathVariable("skuId") Long skuId) {
-        return CommonResponse.success(itemService.findSkuById(skuId));
+    public Sku findSkuById(@PathVariable("skuId") Long skuId) {
+        return itemService.findSkuById(skuId);
     }
 
     @GetMapping("sku")
-    public CommonResponse<List<Sku>> findAllSku() {
+    public List<Sku> findAllSku() {
         //FIXME
-        return CommonResponse.success(itemService.findAllSkuBySpuId(76l));
+        return itemService.findAllSkuBySpuId(76l);
     }
 }

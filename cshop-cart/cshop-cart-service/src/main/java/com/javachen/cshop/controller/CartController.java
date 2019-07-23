@@ -1,8 +1,5 @@
 package com.javachen.cshop.controller;
 
-import com.javachen.cshop.common.exception.BusinessException;
-import com.javachen.cshop.common.exception.ErrorCode;
-import com.javachen.cshop.common.model.response.CommonResponse;
 import com.javachen.cshop.pojo.Cart;
 import com.javachen.cshop.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +26,8 @@ public class CartController {
      * @return
      */
     @PostMapping
-    public CommonResponse addCart(@RequestBody Cart cart) {
-        this.cartService.add(cart);
-        return CommonResponse.success();
+    public Cart addCart(@RequestBody Cart cart) {
+       return this.cartService.add(cart);
     }
 
     /**
@@ -40,12 +36,8 @@ public class CartController {
      * @return
      */
     @GetMapping
-    public CommonResponse<List<Cart>> queryCartList() {
-        List<Cart> carts = this.cartService.findAllCart();
-        if (carts == null) {
-            throw new BusinessException(ErrorCode.CART_NOT_EXIST);
-        }
-        return CommonResponse.success(carts);
+    public List<Cart> queryCartList() {
+        return this.cartService.findAllCart();
     }
 
     /**
@@ -54,9 +46,8 @@ public class CartController {
      * @return
      */
     @PutMapping
-    public CommonResponse updateNum(@RequestParam("skuId") Long skuId, @RequestParam("num") Integer num) {
-        this.cartService.updateNum(skuId, num);
-        return CommonResponse.success();
+    public Cart updateNum(@RequestParam("skuId") Long skuId, @RequestParam("num") Integer num) {
+        return this.cartService.updateNum(skuId, num);
     }
 
     /**
@@ -66,9 +57,8 @@ public class CartController {
      * @return
      */
     @DeleteMapping("{skuId}")
-    public CommonResponse deleteCart(@PathVariable("skuId") String skuId) {
+    public void deleteCart(@PathVariable("skuId") String skuId) {
         this.cartService.delete(skuId);
-        return CommonResponse.success();
     }
 
 }

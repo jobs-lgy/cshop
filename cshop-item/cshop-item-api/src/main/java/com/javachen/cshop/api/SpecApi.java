@@ -1,6 +1,5 @@
 package com.javachen.cshop.api;
 
-import com.javachen.cshop.common.model.response.CommonResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -12,5 +11,5 @@ public interface SpecApi {
      * @return
      */
     @GetMapping("spec/{categoryId}")
-    public CommonResponse<String> querySpecificationByCategoryId(@PathVariable("categoryId") Long categoryId);
+    public String querySpecificationByCategoryId(@PathVariable("categoryId") Long categoryId);
 }

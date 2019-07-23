@@ -1,8 +1,8 @@
 package com.javachen.cshop.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.javachen.cshop.common.utils.json.ObjectMapperUtils;
 import com.javachen.cshop.common.utils.NumberUtils;
+import com.javachen.cshop.common.utils.json.ObjectMapperUtils;
 import com.javachen.cshop.domain.Item;
 import com.javachen.cshop.domain.SearchRequest;
 import com.javachen.cshop.domain.SearchResult;
@@ -78,7 +78,7 @@ public class SearchServiceImpl implements SearchService {
         //1.查询商品分类名称
         String names = spuBo.getCname();
         //2.查询sku
-        List<Sku> skus = this.skuClient.findAllSkuBySpuId(spuBo.getId()).getData();
+        List<Sku> skus = this.skuClient.findAllSkuBySpuId(spuBo.getId());
 
         //4.处理sku,仅封装id，价格、标题、图片、并获得价格集合
         List<Long> prices = new ArrayList<>();
@@ -96,7 +96,7 @@ public class SearchServiceImpl implements SearchService {
             });
         }
         //3.查询详情
-        SpuDetail spuDetail = this.spuDetailClient.findSpuDetailById(spuBo.getId()).getData();
+        SpuDetail spuDetail = this.spuDetailClient.findSpuDetailById(spuBo.getId());
 
         //过滤规格模板，把所有可搜索的信息保存到Map中
         Map<String, Object> specMap = new HashMap<>();
@@ -193,7 +193,7 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public void createIndex(Long id) throws IOException {
-        SpuBo spuBo = this.spuClient.findSpuById(id).getData();
+        SpuBo spuBo = this.spuClient.findSpuById(id);
 
         if (spuBo != null) {
             //构建商品
@@ -267,7 +267,7 @@ public class SearchServiceImpl implements SearchService {
      */
     private List<Map<String, Object>> getSpec(Long id, QueryBuilder basicQuery) {
         //不管是全局参数还是sku参数，只要是搜索参数，都根据分类id查询出来
-        String specsJSONStr = this.specClient.querySpecificationByCategoryId(id).getData();
+        String specsJSONStr = this.specClient.querySpecificationByCategoryId(id);
         //1.将规格反序列化为集合
         List<Map<String, Object>> specs = null;
         specs = ObjectMapperUtils.json2pojo(specsJSONStr, new TypeReference<List<Map<String, Object>>>() {
@@ -424,7 +424,7 @@ public class SearchServiceImpl implements SearchService {
             bids.add(bucket.getKeyAsNumber().longValue());
         }
         //根据品牌id查询品牌
-        return this.brandClient.findAllByIdIn(bids).getData();
+        return this.brandClient.findAllByIdIn(bids);
     }
 
     /**
@@ -440,7 +440,7 @@ public class SearchServiceImpl implements SearchService {
             cids.add(bucket.getKeyAsNumber().longValue());
         }
         //根据id查询分类名称
-        return this.categoryClient.findAllByIdIn(cids).getData();
+        return this.categoryClient.findAllByIdIn(cids);
     }
 
     /**

@@ -8,6 +8,8 @@ public enum ErrorCode implements ErrorCodeAware {
     UNAUTHORIZED(10002, "未授权访问"),
     AUTHORIZED_FAIL(10002, "授权失败"),
 
+    NOT_FOUND(2000,"记录不存在"),
+
     USER_TOKEN_INVALID(20001, "用户TOKEN失效"),
     USER_NOT_EXIST(20002, "用户不存在"),
     USER_USERNAME_ALREADY_EXIST(20003, "用户名重复"),

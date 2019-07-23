@@ -1,6 +1,5 @@
 package com.javachen.cshop.controller;
 
-import com.javachen.cshop.common.model.response.CommonResponse;
 import com.javachen.cshop.entity.OrderAddress;
 import com.javachen.cshop.service.OrderAddressService;
 import io.swagger.annotations.Api;
@@ -28,9 +27,8 @@ public class OrderAddressController {
     @PostMapping
     @ApiOperation(value = "创建收货地址接口", notes = "创建地址")
     @ApiImplicitParam(name = "orderAddress", required = true, value = "地址对象")
-    public CommonResponse addAddressByUserId(@RequestBody @Valid OrderAddress orderAddress) {
-        this.orderAddressService.add(orderAddress);
-        return CommonResponse.success();
+    public OrderAddress addAddressByUserId(@RequestBody @Valid OrderAddress orderAddress) {
+        return this.orderAddressService.add(orderAddress);
     }
 
     /**
@@ -40,8 +38,8 @@ public class OrderAddressController {
      */
     @GetMapping
     @ApiOperation(value = "查询收货地址接口，返回地址列表", notes = "查询地址")
-    public CommonResponse<List<OrderAddress>> queryAddressByUserId() {
-        return CommonResponse.success(this.orderAddressService.findAllByUserId());
+    public List<OrderAddress> queryAddressByUserId() {
+        return this.orderAddressService.findAllByUserId();
     }
 
     /**
@@ -53,9 +51,8 @@ public class OrderAddressController {
     @PutMapping
     @ApiOperation(value = "修改收货地址接口", notes = "修改地址")
     @ApiImplicitParam(name = "orderAddress", required = true, value = "地址对象")
-    public CommonResponse<Void> updateAddressByUserId(@RequestBody OrderAddress orderAddress) {
-        this.orderAddressService.update(orderAddress);
-        return CommonResponse.success();
+    public OrderAddress updateAddressByUserId(@RequestBody OrderAddress orderAddress) {
+        return this.orderAddressService.update(orderAddress);
     }
 
     /**
@@ -67,15 +64,14 @@ public class OrderAddressController {
     @DeleteMapping("{addressId}")
     @ApiOperation(value = "删除收货地址接口", notes = "创建地址")
     @ApiImplicitParam(name = "addressId", required = true, value = "地址id")
-    public CommonResponse<Void> deleteAddress(@PathVariable("addressId") Long addressId) {
+    public void deleteAddress(@PathVariable("addressId") Long addressId) {
         this.orderAddressService.delete(addressId);
-        return CommonResponse.success();
     }
 
     @GetMapping("{addressId}")
     @ApiOperation(value = "根据id查询收货地址接口", notes = "查询地址")
     @ApiImplicitParam(name = "addressId", required = true, value = "地址id")
-    public CommonResponse<OrderAddress> queryAddressById(@PathVariable("addressId") Long addressId) {
-        return CommonResponse.success(this.orderAddressService.findByIdAndUserId(addressId));
+    public OrderAddress queryAddressById(@PathVariable("addressId") Long addressId) {
+        return this.orderAddressService.findByIdAndUserId(addressId);
     }
 }

@@ -32,9 +32,8 @@ public class SpecificationController {
      * @return Specification
      */
     @PostMapping()
-    public Boolean add(@RequestBody Specification specification) {
-        specificationService.add(specification);
-        return true;
+    public Specification add(@RequestBody Specification specification) {
+        return specificationService.add(specification);
     }
 
     /**
@@ -44,15 +43,13 @@ public class SpecificationController {
      * @return Specification
      */
     @PutMapping()
-    public Boolean updateSpecification(@RequestBody Specification specification) {
-        specificationService.update(specification);
-        return true;
+    public Specification updateSpecification(@RequestBody Specification specification) {
+        return specificationService.update(specification);
     }
 
     @DeleteMapping("{id}")
-    public Boolean deleteSpecification(@PathVariable("id") Long id) {
+    public void deleteSpecification(@PathVariable("id") Long id) {
         this.specificationService.delete(id);
-        return true;
     }
 
 //    @GetMapping("/params")

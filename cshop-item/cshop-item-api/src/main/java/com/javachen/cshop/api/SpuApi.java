@@ -1,6 +1,5 @@
 package com.javachen.cshop.api;
 
-import com.javachen.cshop.common.model.response.CommonResponse;
 import com.javachen.cshop.common.model.response.PageResponse;
 import com.javachen.cshop.model.vo.SpuBo;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +11,7 @@ import java.util.Map;
 public interface SpuApi {
 
     @GetMapping("spu/page")
-    public CommonResponse<PageResponse<SpuBo>> findAllSpuByPage(
+    public PageResponse<SpuBo> findAllSpuByPage(
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             @RequestParam(value = "rows", defaultValue = "5") Integer rows,
             @RequestParam(value = "sortBy", required = false) String sortBy,
@@ -26,8 +25,8 @@ public interface SpuApi {
      * @return
      */
     @GetMapping("spu/map/{spuId}")
-    public CommonResponse<Map<String, Object>> findSpuMapById(@PathVariable("spuId") Long spuId);
+    public Map<String, Object> findSpuMapById(@PathVariable("spuId") Long spuId);
 
     @GetMapping("spu/{spuId}")
-    public CommonResponse<SpuBo> findSpuById(@PathVariable("spuId") Long spuId);
+    public SpuBo findSpuById(@PathVariable("spuId") Long spuId);
 }

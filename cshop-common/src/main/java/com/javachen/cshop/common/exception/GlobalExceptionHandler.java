@@ -1,7 +1,6 @@
 package com.javachen.cshop.common.exception;
 
 import com.google.common.collect.ImmutableMap;
-import com.javachen.cshop.common.model.response.CommonResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.http.HttpStatus;
@@ -27,52 +26,52 @@ import java.util.stream.Collectors;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public CommonResponse handleValidationExceptions(HttpServletRequest request,MethodArgumentNotValidException ex) {
+    public ExceptionResponse handleValidationExceptions(HttpServletRequest request,MethodArgumentNotValidException ex) {
         log.error("uri=[{}],message=[{}]",request.getRequestURI(),ExceptionUtils.getRootCause(ex).getMessage(),ex);
 
         return handleBindResult(ex.getBindingResult());
     }
 
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BindException.class)
-    public CommonResponse handleBindExceptions(HttpServletRequest request,BindException ex) {
+    public ExceptionResponse handleBindExceptions(HttpServletRequest request,BindException ex) {
         log.error("uri=[{}],message=[{}]",request.getRequestURI(),ExceptionUtils.getRootCause(ex).getMessage(),ex);
 
         return handleBindResult(ex.getBindingResult());
     }
 
-    private CommonResponse handleBindResult(BindingResult bindingResult) {
+    private ExceptionResponse handleBindResult(BindingResult bindingResult) {
         //name-->用户名不能为空
         List<ImmutableMap> errors = bindingResult
                 .getAllErrors().stream()
                 .map(err -> ImmutableMap.of(((FieldError) err).getField(), err.getDefaultMessage()))
                 .collect(Collectors.toList());
 
-        return CommonResponse.error(new ExceptionResponse(ErrorCode.PARAMETER_INVALID_ERROR, errors));
+        return new ExceptionResponse(ErrorCode.PARAMETER_INVALID_ERROR, errors);
     }
 
 
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ConstraintViolationException.class)
-    public CommonResponse<ExceptionResponse> handleConstraintViolationException(HttpServletRequest request,ConstraintViolationException ex) {
+    public ExceptionResponse handleConstraintViolationException(HttpServletRequest request,ConstraintViolationException ex) {
         log.error("uri=[{}],message=[{}]",request.getRequestURI(),ExceptionUtils.getRootCause(ex).getMessage(),ex);
 
         List<ImmutableMap> errors = ex.getConstraintViolations()
                 .stream()
                 .map(err -> ImmutableMap.of(err.getPropertyPath().toString(),err.getMessage()))
                 .collect(Collectors.toList());
-        return CommonResponse.error(new ExceptionResponse(ErrorCode.DATA_PARAMETER_INVALID_ERROR, errors));
+        return new ExceptionResponse(ErrorCode.DATA_PARAMETER_INVALID_ERROR, errors);
     }
 
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(value = Exception.class)
-    public CommonResponse<ExceptionResponse> handleException(HttpServletRequest request, Exception ex) {
+    public ExceptionResponse handleException(HttpServletRequest request, Exception ex) {
         ErrorCode  errorCode = ExceptionToErrorCodeHelper.getErrorCode(ex);
         String message = ExceptionUtils.getRootCause(ex).getMessage(); //最初的异常原因
         log.error("uri=[{}],message=[{}]",request.getRequestURI(),ex);
-        return CommonResponse.error(new ExceptionResponse(errorCode, message));
+        return new ExceptionResponse(errorCode, message);
     }
 }
