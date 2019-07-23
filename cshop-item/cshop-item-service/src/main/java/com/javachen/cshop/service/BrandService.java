@@ -15,11 +15,10 @@ public interface BrandService {
     /**
      * 查询指定ID的品牌
      *
-     * @param brandId 品牌ID
+     * @param id 品牌ID
      * @return Brand
      */
-    @GetMapping("brand/{brandId}")
-    Brand findById(@PathVariable("brandId") Long brandId);
+    Brand findById(Long id);
 
     /**
      * 查询指定ID的品牌
@@ -27,8 +26,7 @@ public interface BrandService {
      * @param ids 品牌ID集合
      * @return Brand
      */
-    @GetMapping("brand/ids")
-    List<Brand> findAllByIdIn(@RequestParam("ids") List<Long> ids);
+    List<Brand> findAllByIdIn(List<Long> ids);
 
     List<Brand> findAllByCategoryId(Long categoryId);
 
@@ -38,7 +36,7 @@ public interface BrandService {
 
     Brand update(Brand brand, List<Long> categories);
 
-    void deleteBrand(Long brandId);
+    void delete(Long id);
 
     void deleteCategoryBrand(Long brandId);
 }

@@ -12,7 +12,6 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("address")
 @Api("地址管理")
 public class OrderAddressController {
 
@@ -24,7 +23,7 @@ public class OrderAddressController {
      *
      * @return
      */
-    @PostMapping
+    @PostMapping("/address")
     @ApiOperation(value = "创建收货地址接口", notes = "创建地址")
     @ApiImplicitParam(name = "orderAddress", required = true, value = "地址对象")
     public OrderAddress addAddressByUserId(@RequestBody @Valid OrderAddress orderAddress) {
@@ -36,7 +35,7 @@ public class OrderAddressController {
      *
      * @return
      */
-    @GetMapping
+    @GetMapping("/address")
     @ApiOperation(value = "查询收货地址接口，返回地址列表", notes = "查询地址")
     public List<OrderAddress> queryAddressByUserId() {
         return this.orderAddressService.findAllByUserId();
@@ -48,7 +47,7 @@ public class OrderAddressController {
      * @param orderAddress
      * @return
      */
-    @PutMapping
+    @PutMapping("/address")
     @ApiOperation(value = "修改收货地址接口", notes = "修改地址")
     @ApiImplicitParam(name = "orderAddress", required = true, value = "地址对象")
     public OrderAddress updateAddressByUserId(@RequestBody OrderAddress orderAddress) {
@@ -58,20 +57,20 @@ public class OrderAddressController {
     /**
      * 删除收货地址
      *
-     * @param addressId
+     * @param id
      * @return
      */
-    @DeleteMapping("{addressId}")
+    @DeleteMapping("/address/{id}")
     @ApiOperation(value = "删除收货地址接口", notes = "创建地址")
-    @ApiImplicitParam(name = "addressId", required = true, value = "地址id")
-    public void deleteAddress(@PathVariable("addressId") Long addressId) {
-        this.orderAddressService.delete(addressId);
+    @ApiImplicitParam(name = "id", required = true, value = "地址id")
+    public void deleteAddress(@PathVariable("id") Long id) {
+        this.orderAddressService.delete(id);
     }
 
-    @GetMapping("{addressId}")
+    @GetMapping("/address/{id}")
     @ApiOperation(value = "根据id查询收货地址接口", notes = "查询地址")
-    @ApiImplicitParam(name = "addressId", required = true, value = "地址id")
-    public OrderAddress queryAddressById(@PathVariable("addressId") Long addressId) {
-        return this.orderAddressService.findByIdAndUserId(addressId);
+    @ApiImplicitParam(name = "id", required = true, value = "地址id")
+    public OrderAddress queryAddressById(@PathVariable("id") Long id) {
+        return this.orderAddressService.findByIdAndUserId(id);
     }
 }

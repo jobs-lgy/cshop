@@ -16,18 +16,51 @@ import java.util.stream.Collectors;
  * @since
  */
 @RestController
-@RequestMapping("category")
 public class CategoryController {
 
     @Autowired
     private CategoryService categoryService;
 
-    @GetMapping("/list")
-    public List<Category> findAllByParentId(@RequestParam(value = "pid", defaultValue = "0") Long pid) {
-        if (pid == -1) {
+    /**
+     * 查询子子分类
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("/category/children/{id}")
+    public List<Category> findAllByParentId(@RequestParam(value = "id", defaultValue = "0") Long id) {
+        if (id == -1) {
             return Arrays.asList(this.categoryService.findTop());
         }
-        return this.categoryService.findAllByParentId(pid);
+        return this.categoryService.findAllByParentId(id);
+    }
+
+    /**
+     * 根据cid3查询分类
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("category/cid3/{cid3}")
+    public List<Category> findAllByCid3(@PathVariable("cid3") Long id) {
+        return categoryService.findAllByCid3(id);
+    }
+
+
+    /**
+     * 根据商品分类id查询分类集合
+     *
+     * @param ids 要查询的分类id集合
+     * @return 多个名称的集合
+     */
+    @GetMapping("/category/ids")
+    public List<Category> findAllByIdIn(@RequestParam("ids") List<Long> ids) {
+        return categoryService.findAllByIdIn(ids);
+    }
+
+    @GetMapping("/category/brand/{brandId}")
+    public Category findByBrandyId(@PathVariable("brandId") Long brandId) {
+        return categoryService.findByBrandyId(brandId);
     }
 
     /**
@@ -36,7 +69,7 @@ public class CategoryController {
      * @param category 分类
      * @return Category
      */
-    @PostMapping()
+    @PostMapping("/category")
     public Category add(Category category) {
         return categoryService.add(category);
     }
@@ -47,7 +80,7 @@ public class CategoryController {
      * @param category 分类
      * @return Category
      */
-    @PutMapping()
+    @PutMapping("/category")
     public Category update(Category category) {
         return categoryService.update(category);
     }
@@ -55,50 +88,13 @@ public class CategoryController {
     /**
      * 删除指定ID的分类
      *
-     * @param categoryId 分类ID
+     * @param id 分类ID
      * @return Category 被删除的分类对象
      */
-    @DeleteMapping("/{categoryId}")
-    public Boolean delete(@PathVariable("categoryId") Long categoryId) {
-        categoryService.delete(categoryId);
+    @DeleteMapping("/category/{id}")
+    public Boolean delete(@PathVariable("id") Long id) {
+        categoryService.delete(id);
         return true;
     }
 
-    /**
-     * 根据商品分类id查询分类集合
-     *
-     * @param ids 要查询的分类id集合
-     * @return 多个名称的集合
-     */
-    @GetMapping("/all")
-    public List<Category> findAllByIdIn(@RequestParam("ids") List<Long> ids) {
-        return categoryService.findAllByIdIn(ids);
-    }
-
-    /**
-     * 根据商品分类id查询名称
-     *
-     * @param ids 要查询的分类id集合
-     * @return 多个名称的集合
-     */
-    @GetMapping("/names")
-    public List<String> findAllNameByIdIn(@RequestParam("ids") List<Long> ids) {
-        return this.categoryService.findAllByIdIn(ids).stream().map(Category::getName).collect(Collectors.toList());
-    }
-
-    @GetMapping("/bid/{brandId}")
-    public Category findByBrandyId(@PathVariable("brandId") Long brandId) {
-        return categoryService.findByBrandyId(brandId);
-    }
-
-    /**
-     * 根据分类id集合查询分类名称
-     *
-     * @param id
-     * @return
-     */
-    @GetMapping("list/level/{cid3}")
-    public List<Category> findAllByCid3(@PathVariable("cid3") Long id) {
-        return categoryService.findAllByCid3(id);
-    }
 }

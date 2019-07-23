@@ -19,7 +19,6 @@ import java.util.Arrays;
 import java.util.List;
 
 @RestController
-@RequestMapping("order")
 @Api("订单服务接口")
 public class OrderController {
 
@@ -38,7 +37,7 @@ public class OrderController {
      * @param order 订单对象
      * @return 订单编号
      */
-    @PostMapping
+    @PostMapping("/order")
     @ApiOperation(value = "创建订单接口，返回订单编号", notes = "创建订单")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "order", required = true, value = "订单的json对象，包含订单条目和物流信息"),
@@ -62,9 +61,8 @@ public class OrderController {
      */
     @ApiOperation(value = "根据订单编号查询订单，返回订单对象", notes = "查询订单")
     @ApiImplicitParam(name = "id", required = true, value = "订单编号", type = "Long")
-    @GetMapping("{id}")
+    @GetMapping("/order/{id}")
     public ResponseEntity<Order> queryOrderById(@PathVariable("id") Long id) {
-        System.out.println("查询订单：" + id);
         Order order = this.orderService.findById(id);
         if (order == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -80,7 +78,7 @@ public class OrderController {
      * @param status 订单状态
      * @return
      */
-    @GetMapping("list")
+    @GetMapping("/order")
     @ApiOperation(value = "分页查询当前用户订单，并且可以根据订单状态过滤", notes = "分页查询当前用户订单")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", value = "当前页", defaultValue = "1", type = "Integer"),
@@ -118,7 +116,7 @@ public class OrderController {
      * @param status
      * @return
      */
-    @PutMapping("{id}/{status}")
+    @PutMapping("/order/{id}/{status}")
     @ApiOperation(value = "更新订单状态", notes = "更新订单状态")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "订单编号", type = "Long"),
@@ -150,7 +148,7 @@ public class OrderController {
      * @param orderId
      * @return
      */
-    @GetMapping("url/{id}")
+    @GetMapping("/order/url/{id}")
     @ApiOperation(value = "生成微信扫描支付付款链接", notes = "生成付款链接")
     @ApiImplicitParam(name = "id", value = "订单编号", type = "Long")
     @ApiResponses({
@@ -174,7 +172,7 @@ public class OrderController {
      * @param orderId
      * @return
      */
-    @GetMapping("state/{id}")
+    @GetMapping("/order/state/{id}")
     @ApiOperation(value = "查询扫码支付的付款状态", notes = "查询付款状态")
     @ApiImplicitParam(name = "id", value = "订单编号", type = "Long")
     @ApiResponses({
@@ -193,7 +191,7 @@ public class OrderController {
      * @param id
      * @return
      */
-    @GetMapping("skuId/{id}")
+    @GetMapping("/order/skuId/{id}")
     @ApiOperation(value = "根据订单号查询其包含的所有商品ID", notes = "查询商品ID")
     @ApiImplicitParam(name = "id", value = "订单编号", type = "Long")
     @ApiResponses({
@@ -216,7 +214,7 @@ public class OrderController {
      * @param id
      * @return
      */
-    @GetMapping("status/{id}")
+    @GetMapping("/order/status/{id}")
     @ApiOperation(value = "根据订单号查询订单状态", notes = "查询订单状态")
     @ApiImplicitParam(name = "id", value = "订单编号", type = "Long")
     @ApiResponses({

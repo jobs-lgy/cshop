@@ -8,7 +8,7 @@ import com.javachen.cshop.common.utils.json.ObjectMapperUtils;
 import com.javachen.cshop.entity.*;
 import com.javachen.cshop.model.vo.SpuBo;
 import com.javachen.cshop.reposity.*;
-import com.javachen.cshop.service.ItemService;
+import com.javachen.cshop.service.SpuService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-public class ItemServiceImpl implements ItemService {
+public class SpuServiceImpl implements SpuService {
 
     @Autowired
     private SpuRepository spuRepository;
@@ -47,7 +47,7 @@ public class ItemServiceImpl implements ItemService {
 //    @Autowired
 //    private AmqpTemplate amqpTemplate;
 
-    public PageResponse<SpuBo> findAllSpuByPage(int page, int rows, String sortBy, Boolean desc, String key, Boolean saleable) {
+    public PageResponse<SpuBo> findAllByPage(int page, int rows, String sortBy, Boolean desc, String key, Boolean saleable) {
         Page<Spu> spuPage = null;
         if (StringUtils.isEmpty(key)) {
             spuPage = spuRepository.findAll(new PageRequest(page, rows));
@@ -84,7 +84,7 @@ public class ItemServiceImpl implements ItemService {
      * @return SPU
      */
     @Transactional
-    public Spu addSpu(SpuBo spu) {
+    public Spu add(SpuBo spu) {
         spu.setEnable(true);
         spu.setSaleable(true); // 上架
         spuRepository.save(spu);
@@ -126,7 +126,7 @@ public class ItemServiceImpl implements ItemService {
      * @return SPU
      */
     @Transactional
-    public Spu updateSpu(SpuBo spu) {
+    public Spu update(SpuBo spu) {
         // 保存SPU
         spu.setSaleable(true); // 上架
         spu.setEnable(true);
@@ -164,8 +164,8 @@ public class ItemServiceImpl implements ItemService {
      * @param spuId spuid
      * @return 商品信息
      */
-    public Map<String, Object> findSpuMapById(Long spuId) {
-        Spu spu = findSpuById(spuId);
+    public Map<String, Object> findMapById(Long spuId) {
+        Spu spu = findById(spuId);
         List<Category> categoryList = categoryReposity.findAllById(Arrays.asList(spu.getCid1(), spu.getCid2(), spu.getCid3()));
         Brand brand = brandReposity.findById(spu.getBrandId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.RRAND_NOT_EXIST));
@@ -218,8 +218,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public SpuBo findSpuById(Long spuId) {
-        Spu spu = findSpuById(spuId);
+    public SpuBo findById(Long spuId) {
+        Spu spu = this.spuRepository.findById(spuId).orElseThrow(() -> new BusinessException(ErrorCode.SPU_NOT_EXIST));
         SpuDetail spuDetail = spuDetailRepository.findById(spuId).orElseThrow(() -> new BusinessException(ErrorCode.SPU_NOT_EXIST));
 
         List<Sku> skuList = skuRepository.findAllBySpuId(spuId);
@@ -330,30 +330,6 @@ public class ItemServiceImpl implements ItemService {
     public SpuDetail findSpuDetailById(Long spuId) {
         return spuDetailRepository.findById(spuId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.SPU_NOT_EXIST));
-
-    }
-
-    /**
-     * 按spuid查询sku列表
-     *
-     * @param spuId id
-     * @return sku列表
-     */
-    public List<Sku> findAllSkuBySpuId(Long spuId) {
-        List<Sku> skuList = skuRepository.findAllBySpuId(spuId);
-        // 查询每个sku的库存信息
-        List<Stock> stockList = stockRepository.findAllBySkuIdIn(skuList.stream().map(Sku::getId).collect(Collectors.toList()));
-        // 将库存数量与skuId生成map
-        Map<Long, Integer> stockMap = stockList.stream().collect(Collectors.toMap(Stock::getSkuId, Stock::getStock));
-        // 设置库存数量
-        skuList.forEach(s -> s.setStock(stockMap.get(s.getId())));
-
-        return skuList;
-    }
-
-    public List<Sku> findAllSku() {
-        return skuRepository.findAll();
-
     }
 
     /**
@@ -363,7 +339,7 @@ public class ItemServiceImpl implements ItemService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void soldOut(Long spuId) {
-        Spu oldSpu = this.findSpuById(spuId);
+        Spu oldSpu = this.findById(spuId);
         List<Sku> skuList = this.skuRepository.findAllBySpuId(spuId);
         if (oldSpu.getSaleable()) {
             //下架
@@ -395,7 +371,7 @@ public class ItemServiceImpl implements ItemService {
      * @return 被删除的商品
      */
     @Transactional
-    public void deleteSpu(Long spuId) {
+    public void delete(Long spuId) {
         // 删除spu和spuDetail
         spuRepository.deleteById(spuId);
         spuDetailRepository.deleteById(spuId);
@@ -406,31 +382,5 @@ public class ItemServiceImpl implements ItemService {
         // 发送同步数据消息
 //        sendMessage(spu.getId(), Constants.ROUTING_KEY_DELETE_ITEM);
 
-    }
-
-//    /**
-//     * 发送同步数据消息
-//     *
-//     * @param id         商品ID
-//     * @param routingKey rabbitmq routingKey
-//     */
-//    private void sendMessage(Long id, String routingKey) {
-//        // 发送消息
-//        try {
-//            amqpTemplate.convertAndSend(routingKey, id);
-//        } catch (Exception e) {
-//            log.error("[{}]商品消息发送异常，商品id：{}", routingKey, id, e);
-//        }
-//    }
-
-    /**
-     * 查询sku信息
-     *
-     * @param skuId skuId
-     * @return Sku 商品sku信息
-     */
-    public Sku findSkuById(Long skuId) {
-        return skuRepository.findById(skuId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.SKU_NOT_EXIST));
     }
 }

@@ -59,7 +59,7 @@ public class BrandServiceImpl implements BrandService {
     public Brand add(Brand brand, List<Long> categories) {
         brandReposity.save(brand);
         // 添加关联的品牌分类
-        insertCategoryBrand(brand, categories);
+        addCategoryBrand(brand, categories);
 
         return brand;
     }
@@ -76,7 +76,7 @@ public class BrandServiceImpl implements BrandService {
         brandReposity.save(brand);
         // 更新关联的品牌分类
         categoryBrandRespository.deleteByBrandId(brand.getId());
-        insertCategoryBrand(brand, categories);
+        addCategoryBrand(brand, categories);
         return brand;
     }
 
@@ -87,7 +87,7 @@ public class BrandServiceImpl implements BrandService {
      * @param brand      品牌
      * @param categories 分类
      */
-    private void insertCategoryBrand(Brand brand, List<Long> categories) {
+    private void addCategoryBrand(Brand brand, List<Long> categories) {
         categories.forEach(categoryId -> {
             categoryBrandRespository.save((new CategoryBrand(categoryId, brand.getId())));
         });
@@ -96,14 +96,14 @@ public class BrandServiceImpl implements BrandService {
     /**
      * 删除品牌
      *
-     * @param brandId 品牌ID
+     * @param id 品牌ID
      * @return 被删除的品牌
      */
-    public void deleteBrand(Long brandId) {
+    public void delete(Long id) {
         // 查询要删除的品牌
-        brandReposity.deleteById(brandId);
+        brandReposity.deleteById(id);
         // 删除品牌的关联分类数据
-        categoryBrandRespository.deleteByBrandId(brandId);
+        categoryBrandRespository.deleteByBrandId(id);
     }
 
     public void deleteCategoryBrand(Long brandId) {

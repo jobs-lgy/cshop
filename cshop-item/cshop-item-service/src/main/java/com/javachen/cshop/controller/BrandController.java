@@ -10,50 +10,39 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("brand")
 public class BrandController {
 
     @Autowired
     private BrandService brandService;
 
-    @GetMapping("/page")
-    public PageResponse<Brand> queryBrandByPage(@RequestParam(value = "page", defaultValue = "1") int page,
-                                                                @RequestParam(value = "rows", defaultValue = "5") int rows,
+    @GetMapping("/brand")
+    public PageResponse<Brand> findByPage(@RequestParam(value = "page", defaultValue = "1") int page,
+                                                                @RequestParam(value = "size", defaultValue = "5") int size,
                                                                 @RequestParam(value = "sortBy", defaultValue = "id") String sortBy,
                                                                 @RequestParam(value = "desc", defaultValue = "false") Boolean desc,
                                                                 @RequestParam(value = "key", required = false) String key) {
-        Page<Brand> result = brandService.findAllByPage(page, rows, sortBy, desc, key);
+        Page<Brand> result = brandService.findAllByPage(page, size, sortBy, desc, key);
         return new PageResponse<Brand>(result.getTotalElements(), result.getTotalPages(), result.getContent());
     }
 
-    @PostMapping()
-    public Brand addBrand(@RequestBody Brand brand,
-                                          @RequestParam("cids") List<Long> categories) {
+    @PostMapping("/brand")
+    public Brand addBrand(@RequestBody Brand brand,@RequestParam("cids") List<Long> categories) {
         return brandService.add(brand, categories);
     }
 
-    @PutMapping()
-    public Brand updateBrand(@RequestBody Brand brand,
-                                             @RequestParam("cids") List<Long> categories) {
+    @PutMapping("/brand")
+    public Brand updateBrand(@RequestBody Brand brand,@RequestParam("cids") List<Long> categories) {
         return brandService.update(brand, categories);
     }
 
-    @DeleteMapping("/categoryBrand/{brandId}")
-    public void deleteBrand(@PathVariable("brandId") long brandId) {
-        brandService.deleteCategoryBrand(brandId);
+    @GetMapping("/brand/{id}")
+    public Brand findById(@PathVariable("id") long id) {
+        return brandService.findById(id);
     }
 
-    @DeleteMapping("{brandId}")
-    public void deleteBrand(@PathVariable("brandId") String bid) {
-        String separator = "-";
-        if (bid.contains(separator)) {
-            String[] ids = bid.split(separator);
-            for (String id : ids) {
-                this.brandService.deleteBrand(Long.parseLong(id));
-            }
-        } else {
-            this.brandService.deleteBrand(Long.parseLong(bid));
-        }
+    @DeleteMapping("/brand/categoryBrand/{brandId}")
+    public void deleteCategoryBrand(@PathVariable("brandId") long brandId) {
+        brandService.deleteCategoryBrand(brandId);
     }
 
     /**
@@ -62,18 +51,21 @@ public class BrandController {
      * @param categoryId 分类ID
      * @return List<Brand>
      */
-    @GetMapping("/cid/{categoryId}")
+    @GetMapping("/brand/category/{categoryId}")
     public List<Brand> findAllByCategoryId(@PathVariable("categoryId") Long categoryId) {
         return brandService.findAllByCategoryId(categoryId);
     }
 
-    @GetMapping("/{brandId}")
-    public Brand findById(@PathVariable("brandId") long brandId) {
-        return brandService.findById(brandId);
+
+    @DeleteMapping("/brand/ids/{ids}")
+    public void deleteBrand(@PathVariable("ids") List<Long> ids) {
+        for (Long id : ids) {
+            this.brandService.delete(id);
+        }
     }
 
-    @GetMapping("/list")
-    public List<Brand> findAllByIdIn(@RequestParam("ids") List<Long> ids) {
+    @GetMapping("/brand/ids/{ids}")
+    public List<Brand> findAllByIdIn(@PathVariable("ids") List<Long> ids) {
         return brandService.findAllByIdIn(ids);
     }
 }

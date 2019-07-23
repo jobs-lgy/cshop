@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("spec")
 public class SpecificationController {
 
     @Autowired
@@ -18,11 +17,10 @@ public class SpecificationController {
      * @param categoryId 分类ID
      * @return Specification
      */
-    @GetMapping("/{categoryId}")
-    public String querySpecificationByCategoryId(@PathVariable("categoryId") Long categoryId) {
+    @GetMapping("/spec")
+    public Specification querySpecificationByCategoryId(@RequestParam("categoryId") Long categoryId) {
         // 查询规格
-        Specification specification = specificationService.findByCategoryId(categoryId);
-        return specification.getSpecifications();
+        return specificationService.findByCategoryId(categoryId);
     }
 
     /**
@@ -31,7 +29,7 @@ public class SpecificationController {
      * @param specification 规格
      * @return Specification
      */
-    @PostMapping()
+    @PostMapping("/spec")
     public Specification add(@RequestBody Specification specification) {
         return specificationService.add(specification);
     }
@@ -42,12 +40,12 @@ public class SpecificationController {
      * @param specification 规格
      * @return Specification
      */
-    @PutMapping()
+    @PutMapping("/spec")
     public Specification updateSpecification(@RequestBody Specification specification) {
         return specificationService.update(specification);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/spec/{id}")
     public void deleteSpecification(@PathVariable("id") Long id) {
         this.specificationService.delete(id);
     }
