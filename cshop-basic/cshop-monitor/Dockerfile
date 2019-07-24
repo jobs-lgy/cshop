@@ -1,7 +1,7 @@
 FROM java:8
 
-VOLUME /tmp
-ADD target/cshop-monitor.jar app.jar
+ARG JAR_FILE
+ADD ${JAR_FILE} /app.jar
 
 ENV DOCKERIZE_VERSION v0.6.1
 RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \

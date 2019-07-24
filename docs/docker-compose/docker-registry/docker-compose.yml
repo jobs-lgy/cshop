@@ -13,7 +13,7 @@ services:
     image: konradkleine/docker-registry-frontend:v2
     restart: always
     ports:
-      - 5080:80
+      - 5001:80
     volumes:
       - /data/docker/registry/certs/frontend.crt:/etc/apache2/server.crt:ro
       - /data/docker/registry/certs/frontend.key:/etc/apache2/server.key:ro

@@ -1,7 +1,9 @@
 spring:
+  application:
+    name: cshop-monitor
   cloud:
     config:
       uri: http://192.168.56.100:7000
-      name: cshop-monitor
       profile: prod
       label: master
+      name: ${spring.application.name}

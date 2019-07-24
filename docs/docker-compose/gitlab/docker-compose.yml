@@ -13,9 +13,8 @@ services:
         unicorn['port'] = 8888
         nginx['listen_port'] = 4080
     ports:
-      - '4080:8080'
-      - '4443:443'
-      - '4022:22'
+      - 4080:8080
+      - 4081:22
     volumes:
       - /data/docker/gitlab/conf:/etc/gitlab
       - /data/docker/gitlab/data:/var/opt/gitlab

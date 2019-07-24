@@ -5,12 +5,9 @@ services:
     image: jenkinsci/jenkins
     container_name: jenkins
     ports:
-      - 4020:8080
-      - 50000:50000
+      - 4090:8080
+      - 4091:50000
     environment:
       TZ: Asia/Shanghai
     volumes:
-      - data:/var/jenkins_home
-
-volumes:
-  data:
+      - /data/docker/jenkins:/var/jenkins_home
