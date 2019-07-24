@@ -1,14 +1,23 @@
 server:
   port: 7070
 
-
 spring:
   main:
     allow-bean-definition-overriding: true
-
   application:
     name: cshop-search-service
-
+  cloud:
+    loadbalancer:
+      retry:
+        enabled: true
+    inetutils:
+      ignoredInterfaces:  #禁用网卡
+        - docker0
+        - veth.*
+        - en0
+    nacos:
+      discovery:
+        server-addr: 192.168.56.100:8848
   data:
     elasticsearch:
       cluster-name: es-cluster
@@ -19,29 +28,12 @@ spring:
     password: cshop
     host: 192.168.56.100
 
-  cloud:
-    loadbalancer:
-      retry:
-        enabled: true
 
-    inetutils:
-      ignoredInterfaces:  #禁用网卡
-        - docker0
-        - veth.*
-        - en0
-
-
-  client:
-    service-url:
-      defaultZone: http://127.0.0.1:8761/eureka
-    registry-fetch-interval-seconds: 5
-  instance:
-    lease-renewal-interval-in-seconds: 5 # 每隔5秒发送一次心跳
-    lease-expiration-duration-in-seconds: 10 # 10秒不发送就过期
-    prefer-ip-address: true
-    ip-address: 127.0.0.1
-    instance-id: ${spring.application.name}:${server.port}
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
 
 ribbon:
   ConnectTimeout: 4000 # 连接超时时间(ms)
@@ -58,9 +50,3 @@ hystrix:
           thread:
             timeoutInMillisecond: 10000 # 熔断超时时长：10000ms
 
-
-
-cshop:
-  jwt:
-    cookieName: CS_TOKEN
-    publicKeyPath: /Users/june/share/rsa.pub # 公钥地址

@@ -1,0 +1,55 @@
+server:
+  port: 7030
+
+spring:
+  application:
+    name: cshop-sms
+  cloud:
+    ignoredInterfaces:  #禁用网卡
+      - docker0
+      - veth*
+      - en0
+      - br*
+    nacos:
+      discovery:
+        server-addr: 192.168.56.100:8848
+    stream:
+      default:
+        content-type: application/json
+      defaultBinder: defaultRabbit
+      bindings:
+        smsInput:
+          destination: cshop.sms
+          group: group-1  # 具体分组,对应队列名称,并且持久化队列
+          consumer:
+            maxAttempts: 1
+      binders:
+        defaultRabbit:
+          type: rabbit
+
+  rabbitmq:
+    virtual-host: /cshop
+    username: cshop
+    password: cshop
+    host: 192.168.56.100
+    port: 5672
+    publisher-confirms: true #生产者确认机制，确保消息会正确发送，如果发送失败会有错误回执，从而触发重试
+    template:
+      retry:
+        enabled: true #开启失败重试
+        max-interval: 210000ms #最长重试间隔，超过这个间隔将不再重试
+        initial-interval: 10000ms #第一次重试的间隔时长
+        multiplier: 2 #下次重试间隔的倍数，此处是2即下次重试间隔是上次的2倍
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+cshop:
+  sms:
+    accessKeyId: LTAIc259TULYzaS7
+    accessKeySecret: 1uh79I1UAmwQ4YWsSmOgxw7JEBGA0v
+    signName: CShop商城
+    verifyCodeTemplate: SMS_148614415

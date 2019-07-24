@@ -8,13 +8,20 @@ spring:
 
   main:
     allow-bean-definition-overriding: true
-
+  cloud:
+    inetutils:
+      ignoredInterfaces:  #禁用网卡
+        - docker0
+        - veth.*
+        - en0
+    nacos:
+      discovery:
+        server-addr: 192.168.56.100:8848
   jpa:
     show-sql: true
     hibernate:
       ddl-auto: update
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
@@ -27,35 +34,5 @@ spring:
       validation-query: select 'x'  #解决mysql 8小时问题
       time-between-eviction-runs-millis: 60000 #空闲连接检查时间间隔
       min-evictable-idle-time-millis: 300000 #空闲连接最小空闲时间
-  cloud:
-    inetutils:
-      ignoredInterfaces:  #禁用网卡
-        - docker0
-        - veth.*
-        - en0
 
-eureka:
-  client:
-    service-url:
-      defaultZone: http://127.0.0.1:8761/eureka
-    registry-fetch-interval-seconds: 5
-  instance:
-    lease-renewal-interval-in-seconds: 5 # 每隔5秒发送一次心跳
-    lease-expiration-duration-in-seconds: 10 # 10秒不发送就过期
-    prefer-ip-address: true
-    ip-address: 127.0.0.1
-    instance-id: ${spring.application.name}:${server.port}
 
-cshop:
-  worker:
-    workerId: 1
-    dataCenterId: 1
-  jwt:
-    cookieName: CS_TOKEN
-    publicKeyPath: /Users/june/share/rsa.pub # 公钥地址
-  wxpay:
-    appID: wx8397f8696b538317
-    mchID: 1473426802
-    key: T6m9iK73b0kn9g5v426MKfHQH7X8rKwb
-    httpConnectTimeoutMs: 5000
-    httpReadTimeoutMs: 10000

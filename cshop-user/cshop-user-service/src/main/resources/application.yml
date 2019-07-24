@@ -1,0 +1,74 @@
+server:
+  port: 8010
+  #tomcat调优
+  tomcat:
+    accept-count: 100
+    max-connections: 10000
+    max-threads: 2000
+    min-spare-threads: 10
+
+spring:
+  application:
+    name: cshop-user-service
+  main:
+    allow-bean-definition-overriding: true
+
+  cloud:
+    ignoredInterfaces:  #禁用网卡
+      - docker0
+      - veth*
+      - en0
+      - br*
+    nacos:
+      discovery:
+        server-addr: 192.168.56.100:8848
+    stream:
+      default:
+        content-type: application/json
+      defaultBinder: defaultRabbit
+      bindings:
+        smsOutput:
+          destination: cshop.sms
+        emailOutput:
+          destination: cshop.email
+      binders:
+        defaultRabbit:
+          type: rabbit
+
+  rabbitmq:
+    virtual-host: /cshop
+    username: cshop
+    password: cshop
+    host: 192.168.56.100
+    port: 5672
+    publisher-confirms: true #生产者确认机制，确保消息会正确发送，如果发送失败会有错误回执，从而触发重试
+    template:
+      retry:
+        enabled: true #开启失败重试
+        max-interval: 210000ms #最长重试间隔，超过这个间隔将不再重试
+        initial-interval: 10000ms #第一次重试的间隔时长
+        multiplier: 2 #下次重试间隔的倍数，此处是2即下次重试间隔是上次的2倍
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      url: jdbc:mysql://192.168.56.100:3306/user?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+      username: root
+      password: 123456
+      max-active: 100 #最大连接数
+      min-idle: 20 #最小连接数
+      max-wait: 5000 #获取连接的最大等待时间
+      validation-query: select 'x'  #解决mysql 8小时问题
+      time-between-eviction-runs-millis: 60000 #空闲连接检查时间间隔
+      min-evictable-idle-time-millis: 300000 #空闲连接最小空闲时间
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
