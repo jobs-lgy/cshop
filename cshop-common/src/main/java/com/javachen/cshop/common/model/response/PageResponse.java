@@ -24,4 +24,5 @@ public class PageResponse<T> implements Serializable {
     public PageResponse(Long total, List<T> list) {
         this(total, 10, list);
     }
+
 }

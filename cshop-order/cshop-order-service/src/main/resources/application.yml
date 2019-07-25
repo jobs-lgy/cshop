@@ -17,13 +17,16 @@ spring:
     nacos:
       discovery:
         server-addr: 192.168.56.100:8848
+    sentinel:
+      transport:
+        port: 7011
+        dashboard: 192.168.56.100:7010
 
   jpa:
     show-sql: true
     hibernate:
       ddl-auto: update
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
@@ -37,7 +40,7 @@ spring:
       time-between-eviction-runs-millis: 60000 #空闲连接检查时间间隔
       min-evictable-idle-time-millis: 300000 #空闲连接最小空闲时间
 
-
+#Sentinel 适配了 Feign 组件。但默认是关闭的
 feign:
   sentinel:
     enabled: true

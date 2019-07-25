@@ -1,6 +1,7 @@
 package com.javachen.cshop.sms.service;
 
-import com.javachen.cshop.common.utils.json.ObjectMapperUtils;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.javachen.cshop.common.json.JsonUtils;
 import com.javachen.cshop.sms.processor.SmsInputProcessor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.annotation.StreamListener;
@@ -24,7 +25,7 @@ public class MessageServiceImpl implements MessageService {
         String phone = null;
         String code = null;
         try {
-            Map<String, Object> smsMap = ObjectMapperUtils.json2map(message.getPayload());
+            Map<String, Object> smsMap = JsonUtils.toObject(message.getPayload(),new TypeReference<Map<String, Object>>(){});
             if (smsMap == null || !smsMap.containsKey("code") || !smsMap.containsKey("phone")) {
                 log.warn("Received msg not validated:{}", message.getPayload());
                 return;

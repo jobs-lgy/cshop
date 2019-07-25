@@ -1,8 +1,8 @@
 package com.javachen.cshop.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.javachen.cshop.common.json.JsonUtils;
 import com.javachen.cshop.common.utils.NumberUtils;
-import com.javachen.cshop.common.utils.json.ObjectMapperUtils;
 import com.javachen.cshop.domain.Item;
 import com.javachen.cshop.domain.SearchRequest;
 import com.javachen.cshop.domain.SearchResult;
@@ -99,7 +99,7 @@ public class SearchServiceImpl implements SearchService {
         Map<String, Object> specMap = new HashMap<>();
         if (spuDetail != null) {
             //提取公共属性
-            List<Map<String, Object>> genericSpecs = ObjectMapperUtils.json2pojo(spuDetail.getSpecifications(), new TypeReference<List<Map<String, Object>>>() {
+            List<Map<String, Object>> genericSpecs = JsonUtils.toObject(spuDetail.getSpecifications(), new TypeReference<List<Map<String, Object>>>() {
             });
 
             String searchable = "searchable";
@@ -130,7 +130,7 @@ public class SearchServiceImpl implements SearchService {
         item.setCreateTime(spuBo.getCreateTime());
         item.setAll(spuBo.getTitle() + " " + names.replaceAll("/", " "));
         item.setPrice(prices);
-        item.setSkus(ObjectMapperUtils.obj2json(skuLists));
+        item.setSkus(JsonUtils.toJson(skuLists));
         item.setSpecs(specMap);
         return item;
     }

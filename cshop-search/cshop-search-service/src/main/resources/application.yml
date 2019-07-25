@@ -7,9 +7,6 @@ spring:
   application:
     name: cshop-search-service
   cloud:
-    loadbalancer:
-      retry:
-        enabled: true
     inetutils:
       ignoredInterfaces:  #禁用网卡
         - docker0
@@ -18,6 +15,11 @@ spring:
     nacos:
       discovery:
         server-addr: 192.168.56.100:8848
+    sentinel:
+      transport:
+        port: 8719
+        dashboard: 192.168.56.100:7010
+
   data:
     elasticsearch:
       cluster-name: elasticsearch
@@ -28,6 +30,10 @@ spring:
     password: cshop
     host: 192.168.56.100
 
+#Sentinel 适配了 Feign 组件。但默认是关闭的
+feign:
+  sentinel:
+    enabled: true
 
 management:
   endpoints:

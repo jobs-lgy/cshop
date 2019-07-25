@@ -1,5 +1,6 @@
 package com.javachen.cshop.controller;
 
+import com.javachen.cshop.common.model.response.RestResponse;
 import com.javachen.cshop.entity.User;
 import com.javachen.cshop.model.form.PasswordChange;
 import com.javachen.cshop.model.form.PasswordReset;
@@ -36,8 +37,8 @@ public class PasswordController {
             @ApiResponse(code = 500, message = "服务器异常")
     })
     @PostMapping("/password")
-    public User processChangePassword(@Valid PasswordChange passwordChange) {
-        return accountService.changePassword(passwordChange);
+    public RestResponse<User> processChangePassword(@Valid PasswordChange passwordChange) {
+        return RestResponse.success(accountService.changePassword(passwordChange));
     }
 
     /**

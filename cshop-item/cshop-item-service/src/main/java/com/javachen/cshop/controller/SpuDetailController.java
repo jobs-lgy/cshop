@@ -1,5 +1,6 @@
 package com.javachen.cshop.controller;
 
+import com.javachen.cshop.common.model.response.RestResponse;
 import com.javachen.cshop.entity.SpuDetail;
 import com.javachen.cshop.service.SpuService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class SpuDetailController {
      * @return SpuDetail
      */
     @GetMapping("spuDetail/{id}")
-    public SpuDetail findById(@PathVariable("id") Long id) {
-        return spuService.findSpuDetailById(id);
+    public RestResponse<SpuDetail> findById(@PathVariable("id") Long id) {
+        return RestResponse.success(spuService.findSpuDetailById(id));
     }
 }

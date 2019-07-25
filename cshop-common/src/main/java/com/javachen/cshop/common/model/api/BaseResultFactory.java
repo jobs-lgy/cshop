@@ -1,6 +1,5 @@
 package com.javachen.cshop.common.model.api;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @SuppressWarnings("all")
@@ -19,10 +18,7 @@ public class BaseResultFactory<T extends AbstractBaseDomain> {
 
     }
 
-    // 设置通用的响应
-    private static HttpServletResponse response;
-
-    public static BaseResultFactory getInstance(HttpServletResponse response) {
+    public static BaseResultFactory getInstance() {
         if (baseResultFactory == null) {
             synchronized (BaseResultFactory.class) {
                 if (baseResultFactory == null) {
@@ -31,9 +27,7 @@ public class BaseResultFactory<T extends AbstractBaseDomain> {
             }
         }
 
-        BaseResultFactory.response = response;
         // 设置通用响应
-        baseResultFactory.initResponse();
         return baseResultFactory;
     }
 
@@ -70,8 +64,6 @@ public class BaseResultFactory<T extends AbstractBaseDomain> {
      */
     public AbstractBaseResult build(int code, String title, String detail, String level) {
         // 设置请求失败的响应码
-        response.setStatus(code);
-
         if (LOGGER_LEVEL_DEBUG.equals(level)) {
             return new ErrorResult(code, title, detail);
         } else {
@@ -79,11 +71,11 @@ public class BaseResultFactory<T extends AbstractBaseDomain> {
         }
     }
 
-    /**
-     * 初始化 HttpServletResponse
-     */
-    private void initResponse() {
-        // 需要符合 JSON API 规范
-        response.setHeader("Content-Type", "application/vnd.api+json");
-    }
+//    /**
+//     * 初始化 HttpServletResponse
+//     */
+//    private void initResponse() {
+//        // 需要符合 JSON API 规范
+//        response.setHeader("Content-Type", "application/vnd.api+json");
+//    }
 }

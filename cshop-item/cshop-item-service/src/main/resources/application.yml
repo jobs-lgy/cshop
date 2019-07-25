@@ -4,22 +4,17 @@ server:
 
 spring:
   application:
-    name: cshop-cshop-service
-
+    name: cshop-item-service
   main:
     allow-bean-definition-overriding: true
-
   cloud:
-    inetutils:
-      ignoredInterfaces:  #禁用网卡
-        - docker0
-        - veth.*
-        - en0
-        - br*
     nacos:
       discovery:
         server-addr: 192.168.56.100:8848
-
+    sentinel:
+      transport:
+        port: 7011
+        dashboard: 192.168.56.100:7010
   jpa:
     show-sql: true
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
@@ -37,3 +32,8 @@ spring:
       min-evictable-idle-time-millis: 300000 #空闲连接最小空闲时间
 
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

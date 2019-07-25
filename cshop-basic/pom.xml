@@ -13,7 +13,6 @@
     <modules>
         <module>cshop-gateway</module>
         <module>cshop-image-server</module>
-        <module>cshop-auth</module>
         <module>cshop-sms</module>
         <module>cshop-log</module>
         <module>cshop-cache</module>

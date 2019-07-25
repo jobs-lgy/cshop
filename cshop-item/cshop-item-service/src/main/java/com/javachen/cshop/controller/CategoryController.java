@@ -1,5 +1,6 @@
 package com.javachen.cshop.controller;
 
+import com.javachen.cshop.common.model.response.RestResponse;
 import com.javachen.cshop.entity.Category;
 import com.javachen.cshop.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author june
@@ -28,11 +28,11 @@ public class CategoryController {
      * @return
      */
     @GetMapping("/category/children/{id}")
-    public List<Category> findAllByParentId(@RequestParam(value = "id", defaultValue = "0") Long id) {
+    public RestResponse<List<Category>> findAllByParentId(@RequestParam(value = "id", defaultValue = "0") Long id) {
         if (id == -1) {
-            return Arrays.asList(this.categoryService.findTop());
+            return RestResponse.success(Arrays.asList(this.categoryService.findTop()));
         }
-        return this.categoryService.findAllByParentId(id);
+        return RestResponse.success(categoryService.findAllByParentId(id));
     }
 
     /**
@@ -42,8 +42,8 @@ public class CategoryController {
      * @return
      */
     @GetMapping("category/cid3/{cid3}")
-    public List<Category> findAllByCid3(@PathVariable("cid3") Long id) {
-        return categoryService.findAllByCid3(id);
+    public RestResponse<List<Category>>  findAllByCid3(@PathVariable("cid3") Long id) {
+        return RestResponse.success(categoryService.findAllByCid3(id));
     }
 
 
@@ -54,13 +54,13 @@ public class CategoryController {
      * @return 多个名称的集合
      */
     @GetMapping("/category/ids")
-    public List<Category> findAllByIdIn(@RequestParam("ids") List<Long> ids) {
-        return categoryService.findAllByIdIn(ids);
+    public RestResponse<List<Category>>  findAllByIdIn(@RequestParam("ids") List<Long> ids) {
+        return RestResponse.success(categoryService.findAllByIdIn(ids));
     }
 
     @GetMapping("/category/brand/{brandId}")
-    public Category findByBrandyId(@PathVariable("brandId") Long brandId) {
-        return categoryService.findByBrandyId(brandId);
+    public RestResponse<Category> findByBrandyId(@PathVariable("brandId") Long brandId) {
+        return RestResponse.success(categoryService.findByBrandyId(brandId));
     }
 
     /**
@@ -70,8 +70,8 @@ public class CategoryController {
      * @return Category
      */
     @PostMapping("/category")
-    public Category add(Category category) {
-        return categoryService.add(category);
+    public RestResponse<Category> add(Category category) {
+        return RestResponse.success(categoryService.add(category));
     }
 
     /**
@@ -81,8 +81,8 @@ public class CategoryController {
      * @return Category
      */
     @PutMapping("/category")
-    public Category update(Category category) {
-        return categoryService.update(category);
+    public RestResponse<Category> update(Category category) {
+        return RestResponse.success(categoryService.update(category));
     }
 
     /**
@@ -92,9 +92,8 @@ public class CategoryController {
      * @return Category 被删除的分类对象
      */
     @DeleteMapping("/category/{id}")
-    public Boolean delete(@PathVariable("id") Long id) {
+    public void delete(@PathVariable("id") Long id) {
         categoryService.delete(id);
-        return true;
     }
 
 }

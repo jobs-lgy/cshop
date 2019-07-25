@@ -1,14 +1,14 @@
 package com.javachen.cshop.feign;
 
-import com.javachen.cshop.api.BrandApi;
+import com.javachen.cshop.entity.Brand;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
-/**
- * @author june
- * @createTime 2019-06-26 19:45
- * @see
- * @since
- */
-@FeignClient(name = "cshop-cshop-service")
-public interface BrandClient extends BrandApi {
+import java.util.List;
+
+@FeignClient(name = "cshop-item-service")
+public interface BrandClient {
+    @GetMapping("/brand/ids/{ids}")
+    public List<Brand> findAllByIdIn(@PathVariable("ids") List<Long> ids);
 }

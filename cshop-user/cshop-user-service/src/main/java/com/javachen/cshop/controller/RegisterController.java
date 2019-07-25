@@ -1,5 +1,6 @@
 package com.javachen.cshop.controller;
 
+import com.javachen.cshop.common.model.response.RestResponse;
 import com.javachen.cshop.entity.User;
 import com.javachen.cshop.model.form.UserRegister;
 import com.javachen.cshop.service.AccountService;
@@ -19,12 +20,12 @@ public class RegisterController {
     private AccountService accountService;
 
     @GetMapping("/register/code")
-    public String senVerifyCode(@RequestParam("phone") String phone) {
-       return this.accountService.sendVerifyCode(phone);
+    public RestResponse<String> senVerifyCode(@RequestParam("phone") String phone) {
+       return RestResponse.success(accountService.sendVerifyCode(phone));
     }
 
     @PostMapping("/register")
-    public User register(@Valid UserRegister userRegister) {
-        return accountService.register(userRegister);
+    public RestResponse<User> register(@Valid UserRegister userRegister) {
+        return RestResponse.success(accountService.register(userRegister));
     }
 }

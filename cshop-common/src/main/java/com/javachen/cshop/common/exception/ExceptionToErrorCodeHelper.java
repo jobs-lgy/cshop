@@ -1,7 +1,6 @@
 package com.javachen.cshop.common.exception;
 
 import com.google.common.collect.ImmutableMap;
-import com.javachen.cshop.common.auth.AuthFailedException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -17,7 +16,6 @@ public class ExceptionToErrorCodeHelper {
             .put(HttpMediaTypeNotSupportedException.class, ErrorCode.REQUEST_INVALID_ERROR)
             .put(HttpRequestMethodNotSupportedException.class, ErrorCode.REQUEST_INVALID_ERROR)
             .put(IllegalStateException.class, ErrorCode.PARAMETER_INVALID_ERROR)
-            .put(AuthFailedException.class, ErrorCode.AUTHORIZED_FAIL)
             .put(NumberFormatException.class, ErrorCode.PARAMETER_INVALID_ERROR).build();
 
     public static ErrorCode getErrorCode(Throwable throwable) {

@@ -1,6 +1,7 @@
 package com.javachen.cshop.controller;
 
 import com.javachen.cshop.common.model.response.PageResponse;
+import com.javachen.cshop.common.model.response.RestResponse;
 import com.javachen.cshop.entity.User;
 import com.javachen.cshop.model.vo.UserVo;
 import com.javachen.cshop.service.UserService;
@@ -26,13 +27,13 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/user")
-    public User save(@RequestBody @Valid User user) {
-        return userService.save(user);
+    public RestResponse<User> save(@RequestBody @Valid User user) {
+        return RestResponse.success(userService.save(user));
     }
 
     @PutMapping("/user")
-    public User update(@RequestBody @Valid User user) {
-        return userService.save(user);
+    public RestResponse<User> update(@RequestBody @Valid User user) {
+        return RestResponse.success(userService.save(user));
     }
 
     @DeleteMapping("/user/{id}")
@@ -47,12 +48,12 @@ public class UserController {
             @ApiImplicitParam(name = "size", value = "每页记录数", required = false, paramType = "query", dataType = "Integer")
     })
     @GetMapping("/user")
-    public PageResponse<UserVo> findAll(
+    public RestResponse<PageResponse<UserVo>> findAll(
             @Valid @Positive @RequestParam(required = false, defaultValue = "0") int page,
             @Valid @Positive @RequestParam(required = false, defaultValue = "10") int size) {
         Page<User> result = userService.findAll(PageRequest.of(page, size));
         List<UserVo> userVoList=result.getContent().stream().map(user -> user.toVo()).collect(Collectors.toList());
-        return new PageResponse<UserVo>(result.getTotalElements(), result.getTotalPages(),userVoList );
+        return RestResponse.success(new PageResponse<UserVo>(result.getTotalElements(), result.getTotalPages(),userVoList ));
     }
 
     //FIXME 1、校验没有起作用
@@ -62,7 +63,7 @@ public class UserController {
     })
     @GetMapping("/user/{id}")
     @Validated
-    public UserVo findById(@Positive @PathVariable Long id) {
-        return userService.findById(id).toVo();
+    public RestResponse<UserVo> findById(@Positive @PathVariable Long id) {
+        return RestResponse.success(userService.findById(id).toVo());
     }
 }

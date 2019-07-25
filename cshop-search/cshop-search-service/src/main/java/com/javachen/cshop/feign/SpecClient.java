@@ -1,14 +1,12 @@
 package com.javachen.cshop.feign;
 
-import com.javachen.cshop.api.SpecApi;
+import com.javachen.cshop.entity.Specification;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-/**
- * @author june
- * @createTime 2019-06-26 19:45
- * @see
- * @since
- */
-@FeignClient(name = "cshop-cshop-service")
-public interface SpecClient extends SpecApi {
+@FeignClient(name = "cshop-item-service")
+public interface SpecClient {
+    @GetMapping("/spec")
+    public Specification findByCategoryId(@RequestParam("categoryId") Long categoryId);
 }

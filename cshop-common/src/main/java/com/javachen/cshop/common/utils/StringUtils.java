@@ -19,7 +19,6 @@ package com.javachen.cshop.common.utils;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringEscapeUtils;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
@@ -235,21 +234,6 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
      */
     public static Integer toInteger(Object val) {
         return toLong(val).intValue();
-    }
-
-    /**
-     * 获得用户远程地址
-     */
-    public static String getRemoteAddr(HttpServletRequest request) {
-        String remoteAddr = request.getHeader("X-Real-IP");
-        if (isNotBlank(remoteAddr)) {
-            remoteAddr = request.getHeader("X-Forwarded-For");
-        } else if (isNotBlank(remoteAddr)) {
-            remoteAddr = request.getHeader("Proxy-Client-IP");
-        } else if (isNotBlank(remoteAddr)) {
-            remoteAddr = request.getHeader("WL-Proxy-Client-IP");
-        }
-        return remoteAddr != null ? remoteAddr : request.getRemoteAddr();
     }
 
     /**

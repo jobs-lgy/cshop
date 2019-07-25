@@ -53,7 +53,7 @@ public class ElasticsearchTest {
         int size;
         do {
             //分页查询数据
-            PageResponse<SpuBo> result = this.spuClient.findAllSpuByPage(page, row, null, true, null);
+            PageResponse<SpuBo> result = this.spuClient.findAllByPage(page, row, null, true, null,false);
             List<SpuBo> spus = result.getList();
             size = spus.size();
             page++;
