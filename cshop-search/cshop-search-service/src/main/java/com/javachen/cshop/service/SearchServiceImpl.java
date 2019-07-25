@@ -266,8 +266,7 @@ public class SearchServiceImpl implements SearchService {
         //不管是全局参数还是sku参数，只要是搜索参数，都根据分类id查询出来
         Specification specification = this.specClient.findByCategoryId(id);
         //1.将规格反序列化为集合
-        List<Map<String, Object>> specs = null;
-        specs = ObjectMapperUtils.json2pojo(specification.getSpecifications(), new TypeReference<List<Map<String, Object>>>() {
+        List<Map<String, Object>> specs = JsonUtils.toObject(specification.getSpecifications(), new TypeReference<List<Map<String, Object>>>() {
         });
         //2.过滤出可以搜索的规格参数名称，分成数值类型、字符串类型
         Set<String> strSpec = new HashSet<>();
