@@ -2,6 +2,7 @@ package com.javachen.cshop.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.javachen.cshop.common.json.JsonUtils;
+import com.javachen.cshop.common.model.response.RestResponse;
 import com.javachen.cshop.common.utils.NumberUtils;
 import com.javachen.cshop.domain.Item;
 import com.javachen.cshop.domain.SearchRequest;
@@ -10,6 +11,7 @@ import com.javachen.cshop.entity.*;
 import com.javachen.cshop.feign.*;
 import com.javachen.cshop.model.vo.SpuBo;
 import com.javachen.cshop.repository.ItemRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -43,6 +45,7 @@ import java.util.stream.Collectors;
  * @see
  * @since
  */
+@Slf4j
 @Service
 public class SearchServiceImpl implements SearchService {
     @Autowired
@@ -75,8 +78,15 @@ public class SearchServiceImpl implements SearchService {
         //1.查询商品分类名称
         String names = spuBo.getCname();
         //2.查询sku
-        List<Sku> skus = this.skuClient.findAllBySpuId(spuBo.getId());
+        RestResponse<List<Sku>> response=this.skuClient.findAllBySpuId(spuBo.getId());
 
+        List<Sku> skus;
+        if(!response.isSuccess()){
+            log.warn("没有找到sku，spuId={}",spuBo.getId());
+            return null;
+        }
+
+        skus= response.getData();
         //4.处理sku,仅封装id，价格、标题、图片、并获得价格集合
         List<Long> prices = new ArrayList<>();
         List<Map<String, Object>> skuLists = new ArrayList<>();
@@ -93,32 +103,36 @@ public class SearchServiceImpl implements SearchService {
             });
         }
         //3.查询详情
-        SpuDetail spuDetail = this.spuDetailClient.findById(spuBo.getId());
 
+        RestResponse<SpuDetail> spuDetailRestResponse=this.spuDetailClient.findById(spuBo.getId());
         //过滤规格模板，把所有可搜索的信息保存到Map中
         Map<String, Object> specMap = new HashMap<>();
-        if (spuDetail != null) {
-            //提取公共属性
-            List<Map<String, Object>> genericSpecs = JsonUtils.toObject(spuDetail.getSpecifications(), new TypeReference<List<Map<String, Object>>>() {
-            });
-
-            String searchable = "searchable";
-            String v = "v";
-            String k = "k";
-            String options = "options";
-
-            genericSpecs.forEach(m -> {
-                List<Map<String, Object>> params = (List<Map<String, Object>>) m.get("params");
-                params.forEach(spe -> {
-                    if ((boolean) spe.get(searchable)) {
-                        if (spe.get(v) != null) {
-                            specMap.put(spe.get(k).toString(), spe.get(v));
-                        } else if (spe.get(options) != null) {
-                            specMap.put(spe.get(k).toString(), spe.get(options));
-                        }
-                    }
+        if (response.isSuccess()) {
+            SpuDetail spuDetail =spuDetailRestResponse.getData();
+            if(spuDetail!=null && spuDetail.getSpecifications()!=null){
+                //提取公共属性
+                List<Map<String, Object>> genericSpecs = JsonUtils.toObject(spuDetail.getSpecifications(), new TypeReference<List<Map<String, Object>>>() {
                 });
-            });
+
+                String searchable = "searchable";
+                String v = "v";
+                String k = "k";
+                String options = "options";
+                genericSpecs.forEach(m -> {
+                    List<Map<String, Object>> params = (List<Map<String, Object>>) m.get("params");
+                    params.forEach(spe -> {
+                        if ((boolean) spe.get(searchable)) {
+                            if (spe.get(v) != null) {
+                                specMap.put(spe.get(k).toString(), spe.get(v));
+                            } else if (spe.get(options) != null) {
+                                specMap.put(spe.get(k).toString(), spe.get(options));
+                            }
+                        }
+                    });
+                });
+            }else{
+                log.warn("商品明细不存在，spuid={}",spuBo.getId());
+            }
         }
 
         item.setId(spuBo.getId());
@@ -190,7 +204,7 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public void createIndex(Long id) throws IOException {
-        SpuBo spuBo = this.spuClient.findById(id);
+        SpuBo spuBo = this.spuClient.findById(id).getData();
 
         if (spuBo != null) {
             //构建商品
@@ -264,7 +278,7 @@ public class SearchServiceImpl implements SearchService {
      */
     private List<Map<String, Object>> getSpec(Long id, QueryBuilder basicQuery) {
         //不管是全局参数还是sku参数，只要是搜索参数，都根据分类id查询出来
-        Specification specification = this.specClient.findByCategoryId(id);
+        Specification specification = this.specClient.findByCategoryId(id).getData();
         //1.将规格反序列化为集合
         List<Map<String, Object>> specs = JsonUtils.toObject(specification.getSpecifications(), new TypeReference<List<Map<String, Object>>>() {
         });
@@ -420,7 +434,7 @@ public class SearchServiceImpl implements SearchService {
             bids.add(bucket.getKeyAsNumber().longValue());
         }
         //根据品牌id查询品牌
-        return this.brandClient.findAllByIdIn(bids);
+        return this.brandClient.findAllByIdIn(bids).getData();
     }
 
     /**
@@ -436,7 +450,7 @@ public class SearchServiceImpl implements SearchService {
             cids.add(bucket.getKeyAsNumber().longValue());
         }
         //根据id查询分类名称
-        return this.categoryClient.findAllByIdIn(cids);
+        return this.categoryClient.findAllByIdIn(cids).getData();
     }
 
     /**

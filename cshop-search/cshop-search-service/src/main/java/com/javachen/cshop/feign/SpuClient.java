@@ -1,6 +1,7 @@
 package com.javachen.cshop.feign;
 
 import com.javachen.cshop.common.model.response.PageResponse;
+import com.javachen.cshop.common.model.response.RestResponse;
 import com.javachen.cshop.model.vo.SpuBo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +13,7 @@ import java.util.Map;
 public interface SpuClient {
 
     @GetMapping("/spu")
-    PageResponse<SpuBo> findAllByPage(@RequestParam(value = "page", defaultValue = "1") int page,
+    RestResponse<PageResponse<SpuBo>> findAllByPage(@RequestParam(value = "page", defaultValue = "1") int page,
                                       @RequestParam(value = "rows", defaultValue = "10") int rows,
                                       @RequestParam(value = "sortBy", required = false) String sortBy,
                                       @RequestParam(value = "desc", required = false, defaultValue = "false") Boolean desc,
@@ -26,8 +27,8 @@ public interface SpuClient {
      * @return
      */
     @GetMapping("spu/map/{spuId}")
-    public Map<String, Object> findMapById(@PathVariable("spuId") Long spuId);
+    public RestResponse<Map<String, Object>> findMapById(@PathVariable("spuId") Long spuId);
 
     @GetMapping("spu/{id}")
-    public SpuBo findById(@PathVariable("id") Long id);
+    public RestResponse<SpuBo> findById(@PathVariable("id") Long id);
 }

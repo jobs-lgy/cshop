@@ -13,7 +13,7 @@ spring:
         server-addr: 192.168.56.100:8848
     sentinel:
       transport:
-        port: 7011
+        port: 8719
         dashboard: 192.168.56.100:7010
   jpa:
     show-sql: true

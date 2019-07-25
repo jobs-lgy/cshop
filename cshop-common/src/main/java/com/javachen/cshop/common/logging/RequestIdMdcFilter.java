@@ -21,8 +21,6 @@ import static org.springframework.core.Ordered.HIGHEST_PRECEDENCE;
  * If request contains `X-Request-Id` header then it's used as request id.
  * Otherwise a random request id is generated.
  */
-@Component
-@Order(HIGHEST_PRECEDENCE)
 public class RequestIdMdcFilter extends OncePerRequestFilter {
     public static final String REQUEST_ID = "requestId";
     private static final String CLIENT_IP = "clientIp";

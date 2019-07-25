@@ -7,11 +7,6 @@ spring:
   application:
     name: cshop-search-service
   cloud:
-    inetutils:
-      ignoredInterfaces:  #禁用网卡
-        - docker0
-        - veth.*
-        - en0
     nacos:
       discovery:
         server-addr: 192.168.56.100:8848
@@ -34,6 +29,12 @@ spring:
 feign:
   sentinel:
     enabled: true
+  client:
+    config:
+      default:
+        connect-timeout: 30000
+        read-timeout: 120000
+
 
 management:
   endpoints:

@@ -1,7 +1,10 @@
 package com.javachen.cshop.common.exception;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import java.io.Serializable;
 
 /**
  * @author june
@@ -10,8 +13,9 @@ import lombok.extern.slf4j.Slf4j;
  * @since
  */
 @Data
+@NoArgsConstructor
 @Slf4j
-public class ExceptionResponse {
+public class ExceptionResponse implements Serializable {
     public static final String LOGGER_LEVEL_DEBUG = "DEBUG";
 
     private int code;  //错误码

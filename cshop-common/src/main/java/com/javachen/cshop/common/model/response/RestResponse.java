@@ -2,6 +2,9 @@ package com.javachen.cshop.common.model.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 
 /**
  * @author june
@@ -10,8 +13,9 @@ import lombok.Data;
  * @since
  */
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
-public class RestResponse<T> {
+public class RestResponse<T> implements Serializable {
     private boolean success;
     private T data;
 

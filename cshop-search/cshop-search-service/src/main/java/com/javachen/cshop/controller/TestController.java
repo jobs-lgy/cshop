@@ -13,6 +13,6 @@ public class TestController {
 
     @GetMapping("test")
     public SpuBo index() throws Exception {
-        return spuClient.findById(7L);
+        return spuClient.findById(7L).getData();
     }
 }

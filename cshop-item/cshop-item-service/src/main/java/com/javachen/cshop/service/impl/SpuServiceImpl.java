@@ -58,23 +58,27 @@ public class SpuServiceImpl implements SpuService {
 
         // 使用spu集合 构造spuBO集合
         List<SpuBo> spuBoList = spuPage.getContent().stream().map(spu -> {
-            SpuBo spuBo = new SpuBo();
-            BeanUtils.copyProperties(spu, spuBo);
-            // 查询分类名称列表并处理成字符串
-            Optional<String> categoryNameString = categoryReposity.findAllById(Arrays.asList(spu.getCid1(), spu.getCid2(), spu.getCid3()))
-                    .stream()
-                    .map(Category::getName)
-                    .reduce((name1, name2) -> name1 + "/" + name2);
-            // 查询品牌名称
-            Brand brand = brandReposity.findById(spu.getBrandId())
-                    .orElseThrow(() -> new BusinessException(ErrorCode.RRAND_NOT_EXIST));
-            // 设置分类以及品牌名称
-            spuBo.setBname(brand.getName());
-            spuBo.setCname(categoryNameString.get());
-            return spuBo;
+            return findSpuBo(spu);
         }).collect(Collectors.toList());
 
         return new PageResponse<SpuBo>(spuPage.getTotalElements(), spuPage.getTotalPages(), spuBoList);
+    }
+
+    private SpuBo findSpuBo(Spu spu){
+        SpuBo spuBo = new SpuBo();
+        BeanUtils.copyProperties(spu, spuBo);
+        // 查询分类名称列表并处理成字符串
+        Optional<String> categoryNameString = categoryReposity.findAllById(Arrays.asList(spu.getCid1(), spu.getCid2(), spu.getCid3()))
+                .stream()
+                .map(Category::getName)
+                .reduce((name1, name2) -> name1 + "/" + name2);
+        // 查询品牌名称
+        Brand brand = brandReposity.findById(spu.getBrandId()).orElse(null);
+        // 设置分类以及品牌名称
+        spuBo.setBname(brand.getName());
+        spuBo.setCname(categoryNameString.get());
+
+        return spuBo;
     }
 
     /**
@@ -233,9 +237,7 @@ public class SpuServiceImpl implements SpuService {
                 }
             }
         }
-
-        SpuBo spuBo = (SpuBo) spu;
-        spuBo.setBrandId(spu.getBrandId());
+        SpuBo spuBo = findSpuBo(spu);
         spuBo.setSpuDetail(spuDetail);
         spuBo.setSkuList(skuList);
         return spuBo;
@@ -328,8 +330,8 @@ public class SpuServiceImpl implements SpuService {
     }
 
     public SpuDetail findSpuDetailById(Long spuId) {
-        return spuDetailRepository.findById(spuId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.SPU_NOT_EXIST));
+        //商品明细可以为空
+        return spuDetailRepository.findById(spuId).orElse(null);
     }
 
     /**

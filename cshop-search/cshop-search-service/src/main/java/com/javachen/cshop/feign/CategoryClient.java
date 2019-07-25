@@ -1,5 +1,6 @@
 package com.javachen.cshop.feign;
 
+import com.javachen.cshop.common.model.response.RestResponse;
 import com.javachen.cshop.entity.Category;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,5 +12,5 @@ import java.util.List;
 @FeignClient(name = "cshop-item-service")
 public interface CategoryClient {
     @GetMapping("/category/ids")
-    public List<Category> findAllByIdIn(@RequestParam("ids") List<Long> ids);
+    public RestResponse<List<Category>> findAllByIdIn(@RequestParam("ids") List<Long> ids);
 }

@@ -53,14 +53,17 @@ public class SearchController  implements InitializingBean {
         List<SpuBo> list = new ArrayList<>();
         int page = 1;
         int row = 100;
-        int size;
+        int size=0;
         do {
+            RestResponse<PageResponse<SpuBo>> response=this.spuClient.findAllByPage(page, row, null, true, null,false);
             //分页查询数据
-            PageResponse<SpuBo> result = this.spuClient.findAllByPage(page, row, null, true, null,false);
-            List<SpuBo> spus = result.getList();
-            size = spus.size();
-            page++;
-            list.addAll(spus);
+            if(response.isSuccess()){
+                PageResponse<SpuBo> result = response.getData();
+                List<SpuBo> spus = result.getList();
+                size = spus.size();
+                page++;
+                list.addAll(spus);
+            }
         } while (size == 100);
 
         List<Item> itemList = new ArrayList<>();
