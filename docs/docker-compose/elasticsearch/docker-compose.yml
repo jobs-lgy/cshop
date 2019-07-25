@@ -10,6 +10,5 @@ services:
     environment:
       cluster.name: elasticsearch
     volumes:
-      - /data/docker/elasticsearch/config:/usr/share/elasticsearch/config
       - /data/docker/elasticsearch/data:/usr/share/elasticsearch/data
       - /data/docker/elasticsearch/plugins:/usr/share/elasticsearch/plugins
