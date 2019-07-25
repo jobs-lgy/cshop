@@ -1,9 +1,0 @@
-spring:
-  application:
-    name: cshop-gateway
-  cloud:
-    config:
-      uri: http://192.168.56.100:7000
-      profile: prod
-      label: master
-      name: ${spring.application.name}

@@ -16,11 +16,11 @@ public class SpuDetailController {
     /**
      * 按商品ID查询商品描述
      *
-     * @param spuId 商品ID
+     * @param id 商品ID
      * @return SpuDetail
      */
-    @GetMapping("spuDetail/{spuId}")
-    public SpuDetail findSpuDetailById(@PathVariable("spuId") Long spuId) {
-        return spuService.findSpuDetailById(spuId);
+    @GetMapping("spuDetail/{id}")
+    public SpuDetail findById(@PathVariable("id") Long id) {
+        return spuService.findSpuDetailById(id);
     }
 }

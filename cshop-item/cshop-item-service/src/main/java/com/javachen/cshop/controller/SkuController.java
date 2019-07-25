@@ -23,7 +23,7 @@ public class SkuController {
      * @return List<Sku>
      */
     @GetMapping("sku")
-    public List<Sku> findAllSkuBySpuId(@RequestParam("spuId") Long spuId) {
+    public List<Sku> findAllBySpuId(@RequestParam("spuId") Long spuId) {
         if(spuId==null){
             return skuService.findAll();
         }
@@ -33,11 +33,11 @@ public class SkuController {
     /**
      * 查询sku信息
      *
-     * @param skuId skuId
+     * @param id id
      * @return Sku 商品sku信息
      */
     @GetMapping("sku/{id}")
-    public Sku findSkuById(@PathVariable("id") Long skuId) {
-        return skuService.findById(skuId);
+    public Sku findById(@PathVariable("id") Long id) {
+        return skuService.findById(id);
     }
 }

@@ -32,20 +32,20 @@ public interface SpuService {
     /**
      * 查询spu信息
      *
-     * @param spuId 商品ID
+     * @param id 商品ID
      * @return Spu
      */
-    Map<String, Object> findMapById(Long spuId);
+    Map<String, Object> findMapById(Long id);
 
-    SpuBo findById(Long spuId);
+    SpuBo findById(Long id);
 
-    void delete(Long spuId);
+    void delete(Long id);
 
-    void soldOut(Long spuIds);
+    void soldOut(Long id);
 
     Spu add(SpuBo spuBo);
 
     Spu update(SpuBo spuBo);
 
-    SpuDetail findSpuDetailById(Long spuId);
+    SpuDetail findSpuDetailById(Long id);
 }
