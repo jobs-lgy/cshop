@@ -1,9 +1,7 @@
 package com.javachen.cshop.service.impl;
 
-import com.javachen.cshop.common.auth.AuthUser;
 import com.javachen.cshop.common.model.response.PageResponse;
 import com.javachen.cshop.common.utils.IdWorker;
-import com.javachen.cshop.common.web.LoginInterceptor;
 import com.javachen.cshop.entity.Order;
 import com.javachen.cshop.entity.OrderDetail;
 import com.javachen.cshop.entity.OrderStatus;
@@ -16,8 +14,6 @@ import com.javachen.cshop.repository.StockRepository;
 import com.javachen.cshop.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -61,12 +57,11 @@ public class OrderServiceImpl implements OrderService {
         //1.生成orderId
         long orderId = idWorker.nextId();
         //2.获取登录的用户
-        AuthUser userResponse = LoginInterceptor.getLoginUser();
         //3.初始化数据
-        order.setBuyerName(userResponse.getUsername());
+//        order.setBuyerName(userResponse.getUsername());
         order.setBuyerRate(false);
         order.setOrderId(orderId);
-        order.setUserId(userResponse.getId());
+//        order.setUserId(userResponse.getId());
         //4.保存数据
         this.orderRepository.save(order);
 
@@ -138,16 +133,17 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public PageResponse<Order> findAllByStatus(Integer page, Integer rows, Integer status) {
         try {
-            AuthUser userResponse = LoginInterceptor.getLoginUser();
-            //3.查询
-            Page<Order> pageInfo = this.orderRepository.findAllByUserIdAndStatus(userResponse.getId(), status, new PageRequest(page, rows));
-            //4.填充orderDetail
-            List<Order> orderList = pageInfo.getContent();
-            orderList.forEach(order -> {
-                List<OrderDetail> orderDetailList = this.orderDetailRepository.findAllByOrderId(order.getOrderId());
-                order.setOrderDetails(orderDetailList);
-            });
-            return new PageResponse<Order>(pageInfo.getTotalElements(), pageInfo.getTotalPages(), pageInfo.getContent());
+//            AuthUser userResponse = LoginInterceptor.getLoginUser();
+//            //3.查询
+//            Page<Order> pageInfo = this.orderRepository.findAllByUserIdAndStatus(userResponse.getId(), status, new PageRequest(page, rows));
+//            //4.填充orderDetail
+//            List<Order> orderList = pageInfo.getContent();
+//            orderList.forEach(order -> {
+//                List<OrderDetail> orderDetailList = this.orderDetailRepository.findAllByOrderId(order.getOrderId());
+//                order.setOrderDetails(orderDetailList);
+//            });
+//            return new PageResponse<Order>(pageInfo.getTotalElements(), pageInfo.getTotalPages(), pageInfo.getContent());
+            return null;
         } catch (Exception e) {
             log.error("查询订单出错", e);
             return null;

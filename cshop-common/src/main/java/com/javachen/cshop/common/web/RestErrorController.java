@@ -1,12 +1,12 @@
 package com.javachen.cshop.common.web;
 
 import com.google.common.collect.ImmutableMap;
+import com.javachen.cshop.common.model.response.RestResponse;
 import com.javachen.cshop.common.utils.logging.RequestIdMdcFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.boot.web.servlet.error.ErrorController;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +31,7 @@ public class RestErrorController implements ErrorController {
     private ErrorAttributes errorAttributes;
 
     @RequestMapping(value = PATH)
-    public ResponseEntity<?> handleError(WebRequest webRequest) {
+    public RestResponse<Map<String, Object>> handleError(WebRequest webRequest) {
         Map<String, Object> errorAttributes = getErrorAttributes(webRequest);
         String error = (String) errorAttributes.get("error");
         int status = (int) errorAttributes.get("status");
@@ -51,7 +51,9 @@ public class RestErrorController implements ErrorController {
         errorAttributes.remove("trace");
         errorAttributes.put("requestId", webRequest.getAttribute(RequestIdMdcFilter.REQUEST_ID, RequestAttributes.SCOPE_REQUEST));
         errorAttributes.put("timestamp",System.currentTimeMillis());
-        return ResponseEntity.status(status).body(errorAttributes);
+
+        RestResponse.fail(errorAttributes);
+        return RestResponse.fail(errorAttributes);
     }
 
     @Override

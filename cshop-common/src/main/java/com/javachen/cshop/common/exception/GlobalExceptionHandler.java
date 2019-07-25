@@ -1,6 +1,7 @@
 package com.javachen.cshop.common.exception;
 
 import com.google.common.collect.ImmutableMap;
+import com.javachen.cshop.common.model.response.RestResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
+ * 微服务，json全部返回200
+ *
  * @author june
  * @createTime 2019-06-24 22:02
  * @see
@@ -35,23 +38,23 @@ public class GlobalExceptionHandler {
     private ConfigurableApplicationContext applicationContext;
 
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ExceptionResponse handleValidationExceptions(HttpServletRequest request, MethodArgumentNotValidException ex) {
+    public RestResponse<ExceptionResponse> handleValidationExceptions(HttpServletRequest request, MethodArgumentNotValidException ex) {
         log.error("uri=[{}],message=[{}]", request.getRequestURI(), ExceptionUtils.getRootCause(ex).getMessage(), ex);
 
         return handleBindResult(ex.getBindingResult(), ex);
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(BindException.class)
-    public ExceptionResponse handleBindExceptions(HttpServletRequest request, BindException ex) {
+    public RestResponse<ExceptionResponse> handleBindExceptions(HttpServletRequest request, BindException ex) {
         log.error("uri=[{}],message=[{}]", request.getRequestURI(), ExceptionUtils.getRootCause(ex).getMessage(), ex);
 
         return handleBindResult(ex.getBindingResult(), ex);
     }
 
-    private ExceptionResponse handleBindResult(BindingResult bindingResult, Exception ex) {
+    private RestResponse<ExceptionResponse> handleBindResult(BindingResult bindingResult, Exception ex) {
         //name-->用户名不能为空
         List<ImmutableMap> errors = bindingResult
                 .getAllErrors().stream()
@@ -59,13 +62,14 @@ public class GlobalExceptionHandler {
                 .collect(Collectors.toList());
 
         String level = applicationContext.getEnvironment().getProperty(LOGGING_LEVEL_CSHOP);
-        return ExceptionResponse.withDetail(ErrorCode.PARAMETER_INVALID_ERROR, errors, ex.getStackTrace(),level);
+        ExceptionResponse exceptionResponse = ExceptionResponse.withDetail(ErrorCode.PARAMETER_INVALID_ERROR, errors, ex.getStackTrace(), level);
+        return RestResponse.fail(exceptionResponse);
     }
 
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(ConstraintViolationException.class)
-    public ExceptionResponse handleConstraintViolationException(HttpServletRequest request, ConstraintViolationException ex) {
+    public RestResponse<ExceptionResponse> handleConstraintViolationException(HttpServletRequest request, ConstraintViolationException ex) {
         log.error("uri=[{}],message=[{}]", request.getRequestURI(), ExceptionUtils.getRootCause(ex).getMessage(), ex);
 
         List<ImmutableMap> errors = ex.getConstraintViolations()
@@ -74,17 +78,21 @@ public class GlobalExceptionHandler {
                 .collect(Collectors.toList());
 
         String level = applicationContext.getEnvironment().getProperty(LOGGING_LEVEL_CSHOP);
-        return ExceptionResponse.withDetail(ErrorCode.DATA_PARAMETER_INVALID_ERROR, errors, ex.getStackTrace(),level);
+        ExceptionResponse exceptionResponse = ExceptionResponse.withDetail(ErrorCode.DATA_PARAMETER_INVALID_ERROR, errors, ex.getStackTrace(), level);
+
+        return RestResponse.fail(exceptionResponse);
     }
 
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(value = Exception.class)
-    public ExceptionResponse handleException(HttpServletRequest request, Exception ex) {
+    public RestResponse<ExceptionResponse> handleException(HttpServletRequest request, Exception ex) {
         ErrorCode errorCode = ExceptionToErrorCodeHelper.getErrorCode(ex);
         String message = ExceptionUtils.getRootCause(ex).getMessage(); //最初的异常原因
         log.error("uri=[{}],message=[{}]", request.getRequestURI(), ex);
 
         String level = applicationContext.getEnvironment().getProperty(LOGGING_LEVEL_CSHOP);
-        return ExceptionResponse.withDetail(errorCode, message,ex.getStackTrace(),level);
+        ExceptionResponse exceptionResponse = ExceptionResponse.withDetail(errorCode, message, ex.getStackTrace(), level);
+
+        return RestResponse.fail(exceptionResponse);
     }
 }

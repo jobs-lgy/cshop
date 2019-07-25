@@ -1,5 +1,6 @@
 package com.javachen.cshop.controller;
 
+import com.javachen.cshop.common.model.response.RestResponse;
 import com.javachen.cshop.entity.Specification;
 import com.javachen.cshop.service.SpecificationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +19,9 @@ public class SpecificationController {
      * @return Specification
      */
     @GetMapping("/spec")
-    public Specification findByCategoryId(@RequestParam("categoryId") Long categoryId) {
+    public RestResponse<Specification> findByCategoryId(@RequestParam("categoryId") Long categoryId) {
         // 查询规格
-        return specificationService.findByCategoryId(categoryId);
+        return RestResponse.success(specificationService.findByCategoryId(categoryId));
     }
 
     /**
@@ -30,8 +31,8 @@ public class SpecificationController {
      * @return Specification
      */
     @PostMapping("/spec")
-    public Specification add(@RequestBody Specification specification) {
-        return specificationService.add(specification);
+    public RestResponse<Specification> add(@RequestBody Specification specification) {
+        return RestResponse.success(specificationService.add(specification));
     }
 
     /**
@@ -41,8 +42,8 @@ public class SpecificationController {
      * @return Specification
      */
     @PutMapping("/spec")
-    public Specification update(@RequestBody Specification specification) {
-        return specificationService.update(specification);
+    public RestResponse<Specification> update(@RequestBody Specification specification) {
+        return RestResponse.success(specificationService.update(specification));
     }
 
     @DeleteMapping("/spec/{id}")

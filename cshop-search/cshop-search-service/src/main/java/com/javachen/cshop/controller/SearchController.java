@@ -1,6 +1,7 @@
 package com.javachen.cshop.controller;
 
 import com.javachen.cshop.common.model.response.PageResponse;
+import com.javachen.cshop.common.model.response.RestResponse;
 import com.javachen.cshop.domain.Item;
 import com.javachen.cshop.domain.SearchRequest;
 import com.javachen.cshop.domain.SearchResult;
@@ -11,7 +12,6 @@ import com.javachen.cshop.service.SearchService;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +23,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping
-public class SearchController implements InitializingBean {
+public class SearchController  implements InitializingBean {
 
     @Autowired
     private SearchService searchService;
@@ -38,12 +38,11 @@ public class SearchController implements InitializingBean {
     private ElasticsearchTemplate elasticsearchTemplate;
 
     @PostMapping("page")
-    public ResponseEntity<PageResponse<Item>> search(@RequestBody SearchRequest searchRequest) {
+    public RestResponse<PageResponse<Item>> search(@RequestBody SearchRequest searchRequest) {
         SearchResult<Item> result = this.searchService.search(searchRequest);
-        return ResponseEntity.ok(result);
+        return RestResponse.success(result);
     }
 
-    @Override
     public void afterPropertiesSet() throws Exception {
         // 创建索引
         this.elasticsearchTemplate.createIndex(Item.class);
@@ -57,7 +56,7 @@ public class SearchController implements InitializingBean {
         int size;
         do {
             //分页查询数据
-            PageResponse<SpuBo> result = this.spuClient.findAllSpuByPage(page, row, null, true, null);
+            PageResponse<SpuBo> result = this.spuClient.findAllByPage(page, row, null, true, null);
             List<SpuBo> spus = result.getList();
             size = spus.size();
             page++;

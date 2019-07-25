@@ -12,7 +12,7 @@ import java.util.Map;
 public interface SpuApi {
 
     @GetMapping("spu/page")
-    public PageResponse<SpuBo> findAllSpuByPage(
+    public PageResponse<SpuBo> findAllByPage(
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             @RequestParam(value = "rows", defaultValue = "5") Integer rows,
             @RequestParam(value = "sortBy", required = false) String sortBy,

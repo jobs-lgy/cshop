@@ -1,5 +1,6 @@
 package com.javachen.cshop.controller;
 
+import com.javachen.cshop.common.model.response.RestResponse;
 import com.javachen.cshop.entity.Sku;
 import com.javachen.cshop.service.SkuService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +24,11 @@ public class SkuController {
      * @return List<Sku>
      */
     @GetMapping("sku")
-    public List<Sku> findAllBySpuId(@RequestParam("spuId") Long spuId) {
+    public RestResponse<List<Sku>> findAllBySpuId(@RequestParam("spuId") Long spuId) {
         if(spuId==null){
-            return skuService.findAll();
+            return RestResponse.success(skuService.findAll());
         }
-        return skuService.findAllBySpuId(spuId);
+        return RestResponse.success(skuService.findAllBySpuId(spuId));
     }
 
     /**
@@ -37,7 +38,7 @@ public class SkuController {
      * @return Sku 商品sku信息
      */
     @GetMapping("sku/{id}")
-    public Sku findById(@PathVariable("id") Long id) {
-        return skuService.findById(id);
+    public RestResponse<Sku> findById(@PathVariable("id") Long id) {
+        return RestResponse.success(skuService.findById(id));
     }
 }

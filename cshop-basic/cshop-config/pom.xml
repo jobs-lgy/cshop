@@ -34,13 +34,6 @@
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
         <!-- Spring Cloud End -->
-
-        <!-- Spring Boot Admin Begin -->
-        <dependency>
-            <groupId>de.codecentric</groupId>
-            <artifactId>spring-boot-admin-starter-client</artifactId>
-        </dependency>
-        <!-- Spring Boot Admin End -->
     </dependencies>
 
     <build>

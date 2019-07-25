@@ -70,13 +70,6 @@
         </dependency>
         <!-- Spring Cloud End -->
 
-        <!-- Spring Boot Admin Begin -->
-        <dependency>
-            <groupId>de.codecentric</groupId>
-            <artifactId>spring-boot-admin-starter-client</artifactId>
-        </dependency>
-        <!-- Spring Boot Admin End -->
-
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-starter</artifactId>

@@ -1,7 +1,5 @@
 package com.javachen.cshop.service.impl;
 
-import com.javachen.cshop.common.auth.AuthUser;
-import com.javachen.cshop.common.web.LoginInterceptor;
 import com.javachen.cshop.entity.OrderAddress;
 import com.javachen.cshop.repository.OrderAddressRepository;
 import com.javachen.cshop.service.OrderAddressService;
@@ -18,14 +16,12 @@ public class OrderAddressServiceImpl implements OrderAddressService {
 
     @Override
     public void delete(Long id) {
-        AuthUser userResponse = LoginInterceptor.getLoginUser();
-        this.orderAddressRepository.deleteByIdAndUserId(id, userResponse.getId());
+//        this.orderAddressRepository.deleteByIdAndUserId(id, userResponse.getId());
     }
 
     @Override
     public OrderAddress update(OrderAddress orderAddress) {
-        AuthUser userResponse = LoginInterceptor.getLoginUser();
-        orderAddress.setUserId(userResponse.getId());
+//        orderAddress.setUserId(userResponse.getId());
         setDefaultAddress(orderAddress);
         return this.orderAddressRepository.save(orderAddress);
 
@@ -33,22 +29,22 @@ public class OrderAddressServiceImpl implements OrderAddressService {
 
     @Override
     public List<OrderAddress> findAllByUserId() {
-        AuthUser userResponse = LoginInterceptor.getLoginUser();
-        return this.orderAddressRepository.findAllByUserId(userResponse.getId());
+//        AuthUser userResponse = LoginInterceptor.getLoginUser();
+        return this.orderAddressRepository.findAllByUserId(1L);
     }
 
     @Override
     public OrderAddress add(OrderAddress orderAddress) {
-        AuthUser userResponse = LoginInterceptor.getLoginUser();
-        orderAddress.setUserId(userResponse.getId());
+//        AuthUser userResponse = LoginInterceptor.getLoginUser();
+//        orderAddress.setUserId(userResponse.getId());
         setDefaultAddress(orderAddress);
         return this.orderAddressRepository.save(orderAddress);
     }
 
     @Override
     public OrderAddress findByIdAndUserId(Long addressId) {
-        AuthUser userResponse = LoginInterceptor.getLoginUser();
-        return this.orderAddressRepository.findByIdAndUserId(addressId, userResponse.getId());
+//        AuthUser userResponse = LoginInterceptor.getLoginUser();
+        return this.orderAddressRepository.findByIdAndUserId(addressId, 1L);
     }
 
     public void setDefaultAddress(OrderAddress orderAddress) {

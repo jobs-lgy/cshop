@@ -1,6 +1,7 @@
 package com.javachen.cshop.email.service.impl;
 
-import com.javachen.cshop.common.utils.json.ObjectMapperUtils;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.javachen.cshop.common.json.JsonUtils;
 import com.javachen.cshop.email.config.CoreEmailConfig;
 import com.javachen.cshop.email.domain.EmailInfo;
 import com.javachen.cshop.email.domain.EmailTarget;
@@ -59,7 +60,7 @@ public class EmailServiceImpl implements EmailService {
         emailTrackingRepository.save(emailRecord);
         props.put("emailRecordId", emailRecord.getId());
 
-        messageCreator.sendMessage(emailInfo,emailTarget,props);
+        messageCreator.sendMessage(emailInfo, emailTarget, props);
 
         return true;
     }
@@ -68,12 +69,13 @@ public class EmailServiceImpl implements EmailService {
     @Override
     @Transactional
     public void receive(Message<String> message) {
-        log.info("receive message:{}",message.getPayload());
+        log.info("receive message:{}", message.getPayload());
         String emailType = null;
         String emailTo = null;
         EmailInfo emailInfo = null;
         try {
-            Map<String, Object> props = ObjectMapperUtils.json2map(message.getPayload());
+            Map<String, Object> props = JsonUtils.toObject(message.getPayload(), new TypeReference<Map<String, Object>>() {
+            });
             if (props == null || !props.containsKey("emailType") || !props.containsKey("emailTo")) {
                 log.warn("Received msg not validated:{}", message.getPayload());
                 return;

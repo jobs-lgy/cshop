@@ -1,5 +1,6 @@
 package com.javachen.cshop.controller;
 
+import com.javachen.cshop.common.model.response.RestResponse;
 import com.javachen.cshop.entity.User;
 import com.javachen.cshop.model.form.UserLogin;
 import com.javachen.cshop.service.AccountService;
@@ -17,13 +18,13 @@ public class LoginController {
     private AccountService accountService;
 
     @PostMapping(value = "/login")
-    public User processLogin(@Valid UserLogin userLogin) {
-        return accountService.login(userLogin);
+    public RestResponse<User> processLogin(@Valid UserLogin userLogin) {
+        return RestResponse.success(accountService.login(userLogin));
     }
 
     @PostMapping(value = "/logout")
-    public User processLogout(@Valid UserLogin userLogin) {
-        return accountService.login(userLogin);
+    public RestResponse<User> processLogout(@Valid UserLogin userLogin) {
+        return RestResponse.success(accountService.login(userLogin));
     }
 
 }

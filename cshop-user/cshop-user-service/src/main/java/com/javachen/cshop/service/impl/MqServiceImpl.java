@@ -1,7 +1,7 @@
 package com.javachen.cshop.service.impl;
 
 import com.google.common.collect.Maps;
-import com.javachen.cshop.common.utils.json.ObjectMapperUtils;
+import com.javachen.cshop.common.json.JsonUtils;
 import com.javachen.cshop.processor.EmailOutputProcessor;
 import com.javachen.cshop.processor.SmsOutputProcessor;
 import com.javachen.cshop.service.MqService;
@@ -30,7 +30,7 @@ public class MqServiceImpl implements MqService {
         map.put("url",url);
         map.put("userId",userId);
         map.put("username",username);
-        emailOutputProcessor.emailOutput().send(MessageBuilder.withPayload(ObjectMapperUtils.mapToJson(map)).build());
+        emailOutputProcessor.emailOutput().send(MessageBuilder.withPayload(JsonUtils.toJson(map)).build());
     }
 
     @Async
@@ -38,6 +38,6 @@ public class MqServiceImpl implements MqService {
         Map map= Maps.newHashMap();
         map.put("code",code);
         map.put("phone",phone);
-        smsOutputProcessor.smsOutput().send(MessageBuilder.withPayload(ObjectMapperUtils.mapToJson(map)).build());
+        smsOutputProcessor.smsOutput().send(MessageBuilder.withPayload(JsonUtils.toJson(map)).build());
     }
 }
