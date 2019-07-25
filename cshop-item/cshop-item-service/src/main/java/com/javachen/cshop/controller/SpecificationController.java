@@ -18,7 +18,7 @@ public class SpecificationController {
      * @return Specification
      */
     @GetMapping("/spec")
-    public Specification querySpecificationByCategoryId(@RequestParam("categoryId") Long categoryId) {
+    public Specification findByCategoryId(@RequestParam("categoryId") Long categoryId) {
         // 查询规格
         return specificationService.findByCategoryId(categoryId);
     }
@@ -41,12 +41,12 @@ public class SpecificationController {
      * @return Specification
      */
     @PutMapping("/spec")
-    public Specification updateSpecification(@RequestBody Specification specification) {
+    public Specification update(@RequestBody Specification specification) {
         return specificationService.update(specification);
     }
 
     @DeleteMapping("/spec/{id}")
-    public void deleteSpecification(@PathVariable("id") Long id) {
+    public void delete(@PathVariable("id") Long id) {
         this.specificationService.delete(id);
     }
 

@@ -1,6 +1,7 @@
 package com.javachen.cshop.api;
 
 import com.javachen.cshop.common.model.response.PageResponse;
+import com.javachen.cshop.entity.Spu;
 import com.javachen.cshop.model.vo.SpuBo;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,8 +26,8 @@ public interface SpuApi {
      * @return
      */
     @GetMapping("spu/map/{spuId}")
-    public Map<String, Object> findSpuMapById(@PathVariable("spuId") Long spuId);
+    public Map<String, Object> findMapById(@PathVariable("spuId") Long spuId);
 
-    @GetMapping("spu/{spuId}")
-    public SpuBo findSpuById(@PathVariable("spuId") Long spuId);
+    @GetMapping("spu/{id}")
+    public SpuBo findById(@PathVariable("id") Long id);
 }

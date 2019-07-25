@@ -6,10 +6,7 @@ import com.javachen.cshop.common.utils.json.ObjectMapperUtils;
 import com.javachen.cshop.domain.Item;
 import com.javachen.cshop.domain.SearchRequest;
 import com.javachen.cshop.domain.SearchResult;
-import com.javachen.cshop.entity.Brand;
-import com.javachen.cshop.entity.Category;
-import com.javachen.cshop.entity.Sku;
-import com.javachen.cshop.entity.SpuDetail;
+import com.javachen.cshop.entity.*;
 import com.javachen.cshop.feign.*;
 import com.javachen.cshop.model.vo.SpuBo;
 import com.javachen.cshop.repository.ItemRepository;
@@ -78,7 +75,7 @@ public class SearchServiceImpl implements SearchService {
         //1.查询商品分类名称
         String names = spuBo.getCname();
         //2.查询sku
-        List<Sku> skus = this.skuClient.findAllSkuBySpuId(spuBo.getId());
+        List<Sku> skus = this.skuClient.findAllBySpuId(spuBo.getId());
 
         //4.处理sku,仅封装id，价格、标题、图片、并获得价格集合
         List<Long> prices = new ArrayList<>();
@@ -96,7 +93,7 @@ public class SearchServiceImpl implements SearchService {
             });
         }
         //3.查询详情
-        SpuDetail spuDetail = this.spuDetailClient.findSpuDetailById(spuBo.getId());
+        SpuDetail spuDetail = this.spuDetailClient.findById(spuBo.getId());
 
         //过滤规格模板，把所有可搜索的信息保存到Map中
         Map<String, Object> specMap = new HashMap<>();
@@ -193,7 +190,7 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public void createIndex(Long id) throws IOException {
-        SpuBo spuBo = this.spuClient.findSpuById(id);
+        SpuBo spuBo = this.spuClient.findById(id);
 
         if (spuBo != null) {
             //构建商品
@@ -267,10 +264,10 @@ public class SearchServiceImpl implements SearchService {
      */
     private List<Map<String, Object>> getSpec(Long id, QueryBuilder basicQuery) {
         //不管是全局参数还是sku参数，只要是搜索参数，都根据分类id查询出来
-        String specsJSONStr = this.specClient.querySpecificationByCategoryId(id);
+        Specification specification = this.specClient.findByCategoryId(id);
         //1.将规格反序列化为集合
         List<Map<String, Object>> specs = null;
-        specs = ObjectMapperUtils.json2pojo(specsJSONStr, new TypeReference<List<Map<String, Object>>>() {
+        specs = ObjectMapperUtils.json2pojo(specification.getSpecifications(), new TypeReference<List<Map<String, Object>>>() {
         });
         //2.过滤出可以搜索的规格参数名称，分成数值类型、字符串类型
         Set<String> strSpec = new HashSet<>();

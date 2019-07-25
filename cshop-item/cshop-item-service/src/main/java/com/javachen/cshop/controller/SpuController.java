@@ -16,7 +16,7 @@ public class SpuController {
     private SpuService spuService;
 
     @GetMapping("/spu")
-    public PageResponse<SpuBo> findAllSpuByPage(@RequestParam(value = "page", defaultValue = "1") int page,
+    public PageResponse<SpuBo> findAllByPage(@RequestParam(value = "page", defaultValue = "1") int page,
                                                                 @RequestParam(value = "rows", defaultValue = "5") int rows,
                                                                 @RequestParam(value = "sortBy", required = false) String sortBy,
                                                                 @RequestParam(value = "desc", required = false, defaultValue = "false") Boolean desc,
@@ -33,7 +33,7 @@ public class SpuController {
      * @return Spu
      */
     @PostMapping("/spu")
-    public Spu addSpu(@RequestBody SpuBo goods) {
+    public Spu add(@RequestBody SpuBo goods) {
         return spuService.add(goods);
     }
 
@@ -44,7 +44,7 @@ public class SpuController {
      * @return Spu
      */
     @PutMapping("/spu")
-    public Spu updateSpu(@RequestBody SpuBo goods) {
+    public Spu update(@RequestBody SpuBo goods) {
         return spuService.update(goods);
     }
 
@@ -80,12 +80,12 @@ public class SpuController {
      * @return Spu
      */
     @GetMapping("spu/map/{spuId}")
-    public Map<String, Object> findSpuMapById(@PathVariable("spuId") Long spuId) {
+    public Map<String, Object> findMapById(@PathVariable("spuId") Long spuId) {
         return spuService.findMapById(spuId);
     }
 
-    @GetMapping("spu/{spuId}")
-    public Spu findSpuById(@PathVariable("spuId") Long spuId) {
-        return spuService.findById(spuId);
+    @GetMapping("spu/{id}")
+    public SpuBo findById(@PathVariable("id") Long id) {
+        return spuService.findById(id);
     }
 }

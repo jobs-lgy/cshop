@@ -5,6 +5,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 public interface SpuDetailApi {
-    @GetMapping("spuDetail/{spuId}")
-    public SpuDetail findSpuDetailById(@PathVariable("spuId") Long spuId);
+    @GetMapping("spuDetail/{id}")
+    public SpuDetail findById(@PathVariable("id") Long id) ;
 }

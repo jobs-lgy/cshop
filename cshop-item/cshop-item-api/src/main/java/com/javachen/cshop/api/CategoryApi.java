@@ -9,9 +9,6 @@ import java.util.List;
 
 @RequestMapping("category")
 public interface CategoryApi {
-    @GetMapping("names")
-    public List<String> findAllNameByIdIn(@RequestParam("ids") List<Long> ids);
-
-    @GetMapping("list")
+    @GetMapping("/category/ids")
     public List<Category> findAllByIdIn(@RequestParam("ids") List<Long> ids);
 }

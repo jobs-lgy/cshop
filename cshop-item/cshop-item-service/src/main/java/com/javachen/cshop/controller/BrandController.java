@@ -17,7 +17,7 @@ public class BrandController {
 
     @GetMapping("/brand")
     public PageResponse<Brand> findByPage(@RequestParam(value = "page", defaultValue = "1") int page,
-                                                                @RequestParam(value = "size", defaultValue = "5") int size,
+                                                                @RequestParam(value = "size", defaultValue = "10") int size,
                                                                 @RequestParam(value = "sortBy", defaultValue = "id") String sortBy,
                                                                 @RequestParam(value = "desc", defaultValue = "false") Boolean desc,
                                                                 @RequestParam(value = "key", required = false) String key) {
