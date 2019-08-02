@@ -1,8 +1,8 @@
-package com.javachen.cshop.controller;
+package com.javachen.cshop.admin.controller;
 
 import com.javachen.cshop.common.model.response.RestResponse;
 import com.javachen.cshop.entity.Specification;
-import com.javachen.cshop.service.SpecificationService;
+import com.javachen.cshop.admin.service.SpecificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

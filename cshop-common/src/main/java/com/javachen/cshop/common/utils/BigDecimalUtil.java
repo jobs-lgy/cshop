@@ -2,15 +2,11 @@ package com.javachen.cshop.common.utils;
 
 import java.math.BigDecimal;
 
-/**
- * Created by geely
- */
 public class BigDecimalUtil {
 
     private BigDecimalUtil() {
 
     }
-
 
     public static BigDecimal add(double v1, double v2) {
         BigDecimal b1 = new BigDecimal(Double.toString(v1));
@@ -38,6 +34,4 @@ public class BigDecimalUtil {
 
         //除不尽的情况
     }
-
-
 }

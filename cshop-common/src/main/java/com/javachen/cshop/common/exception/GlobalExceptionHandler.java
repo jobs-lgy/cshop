@@ -41,46 +41,43 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public RestResponse<ExceptionResponse> handleValidationExceptions(HttpServletRequest request, MethodArgumentNotValidException ex) {
-        log.error("uri=[{}],message=[{}]", request.getRequestURI(), ExceptionUtils.getRootCause(ex).getMessage(), ex);
-
-        return handleBindResult(ex.getBindingResult(), ex);
+        return handleBindResult(request, ex.getBindingResult(), ex);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(BindException.class)
     public RestResponse<ExceptionResponse> handleBindExceptions(HttpServletRequest request, BindException ex) {
-        log.error("uri=[{}],message=[{}]", request.getRequestURI(), ExceptionUtils.getRootCause(ex).getMessage(), ex);
-
-        return handleBindResult(ex.getBindingResult(), ex);
+        return handleBindResult(request, ex.getBindingResult(), ex);
     }
 
-    private RestResponse<ExceptionResponse> handleBindResult(BindingResult bindingResult, Exception ex) {
+    private RestResponse<ExceptionResponse> handleBindResult(HttpServletRequest request, BindingResult bindingResult, Exception ex) {
+        ErrorCode errorCode = ExceptionToErrorCodeHelper.getErrorCode(ex);
+
         //name-->用户名不能为空
         List<ImmutableMap> errors = bindingResult
                 .getAllErrors().stream()
                 .map(err -> ImmutableMap.of(((FieldError) err).getField(), err.getDefaultMessage()))
                 .collect(Collectors.toList());
 
-        String level = applicationContext.getEnvironment().getProperty(LOGGING_LEVEL_CSHOP);
-        ExceptionResponse exceptionResponse = ExceptionResponse.withDetail(ErrorCode.PARAMETER_INVALID_ERROR, errors, ex.getStackTrace(), level);
-        return RestResponse.fail(exceptionResponse);
+        log.error("uri=[{}],message=[{}]", request.getRequestURI(), errors, ex);
+
+        return RestResponse.fail(errorCode);
     }
 
 
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(ConstraintViolationException.class)
     public RestResponse<ExceptionResponse> handleConstraintViolationException(HttpServletRequest request, ConstraintViolationException ex) {
-        log.error("uri=[{}],message=[{}]", request.getRequestURI(), ExceptionUtils.getRootCause(ex).getMessage(), ex);
+        ErrorCode errorCode = ExceptionToErrorCodeHelper.getErrorCode(ex);
 
-        List<ImmutableMap> errors = ex.getConstraintViolations()
+        List<String> errors = ex.getConstraintViolations()
                 .stream()
-                .map(err -> ImmutableMap.of(err.getPropertyPath().toString(), err.getMessage()))
+                .map(err -> err.getPropertyPath().toString() + err.getMessage())
                 .collect(Collectors.toList());
 
-        String level = applicationContext.getEnvironment().getProperty(LOGGING_LEVEL_CSHOP);
-        ExceptionResponse exceptionResponse = ExceptionResponse.withDetail(ErrorCode.DATA_PARAMETER_INVALID_ERROR, errors, ex.getStackTrace(), level);
+        log.error("uri=[{}],message=[{}]", request.getRequestURI(), errors, ex);
 
-        return RestResponse.fail(exceptionResponse);
+        return RestResponse.fail(errorCode);
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -90,9 +87,9 @@ public class GlobalExceptionHandler {
         String message = ExceptionUtils.getRootCause(ex).getMessage(); //最初的异常原因
         log.error("uri=[{}],message=[{}]", request.getRequestURI(), ex);
 
-        String level = applicationContext.getEnvironment().getProperty(LOGGING_LEVEL_CSHOP);
-        ExceptionResponse exceptionResponse = ExceptionResponse.withDetail(errorCode, message, ex.getStackTrace(), level);
+//        String level = applicationContext.getEnvironment().getProperty(LOGGING_LEVEL_CSHOP);
+//        ExceptionResponse exceptionResponse = ExceptionResponse.withDetail(errorCode, message, ex.getStackTrace(), level);
 
-        return RestResponse.fail(exceptionResponse);
+        return RestResponse.fail(errorCode, message);
     }
 }

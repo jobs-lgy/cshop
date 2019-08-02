@@ -1,17 +1,17 @@
-package com.javachen.cshop.service.impl;
+package com.javachen.cshop.admin.service.impl;
 
+import com.javachen.cshop.api.SpuClient;
 import com.javachen.cshop.common.model.response.PageResponse;
 import com.javachen.cshop.common.utils.IdWorker;
 import com.javachen.cshop.entity.Order;
 import com.javachen.cshop.entity.OrderDetail;
 import com.javachen.cshop.entity.OrderStatus;
 import com.javachen.cshop.entity.Stock;
-import com.javachen.cshop.feign.SpuClient;
-import com.javachen.cshop.repository.OrderDetailRepository;
-import com.javachen.cshop.repository.OrderRepository;
-import com.javachen.cshop.repository.OrderStatusRepository;
-import com.javachen.cshop.repository.StockRepository;
-import com.javachen.cshop.service.OrderService;
+import com.javachen.cshop.admin.repository.OrderDetailRepository;
+import com.javachen.cshop.admin.repository.OrderRepository;
+import com.javachen.cshop.admin.repository.OrderStatusRepository;
+import com.javachen.cshop.admin.repository.StockRepository;
+import com.javachen.cshop.admin.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

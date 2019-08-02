@@ -14,9 +14,9 @@
         <!-- Environment Settings -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <java.version>1.8</java.version>
         <docker.registry>192.168.56.100:5000</docker.registry>
 
         <!-- Spring Boot Settings -->
@@ -32,12 +32,15 @@
 
     <modules>
         <module>cshop-basic</module>
-        <module>cshop-item</module>
-        <module>cshop-user</module>
-        <module>cshop-order</module>
         <module>cshop-common</module>
-        <module>cshop-cart</module>
-        <module>cshop-search</module>
+        <module>cshop-admin</module>
+
+
+<!--        <module>cshop-item</module>-->
+<!--        <module>cshop-order</module>-->
+<!--        <module>cshop-cart</module>-->
+<!--        <module>cshop-search</module>-->
+<!--        <module>cshop-email</module>-->
     </modules>
 
     <dependencies>
@@ -98,6 +101,12 @@
             </dependency>
 
             <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson</artifactId>
+                <version>2.9.0</version>
+            </dependency>
+
+            <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>23.0</version>
@@ -137,8 +146,19 @@
     </dependencyManagement>
 
     <build>
-        <finalName>${project.artifactId}</finalName>
         <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>dockerfile-maven-plugin</artifactId>
@@ -159,7 +179,7 @@
         <repository>
             <id>nexus-releases</id>
             <name>Nexus Release Repository</name>
-            <url>http://192.168.56.100:8081/repository/nexus-releases/</url>
+            <url>http://192.168.56.100:4070/repository/nexus-releases/</url>
         </repository>
     </distributionManagement>
 
@@ -168,7 +188,7 @@
         <repository>
             <id>nexus-releases</id>
             <name>Nexus Repository</name>
-            <url>http://192.168.56.100:8081/repository/nexus-releases/</url>
+            <url>http://192.168.56.100:4070/repository/nexus-releases/</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
@@ -199,4 +219,23 @@
             </snapshots>
         </repository>
     </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>spring-milestone</id>
+            <name>Spring Milestone</name>
+            <url>https://repo.spring.io/milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>spring-snapshot</id>
+            <name>Spring Snapshot</name>
+            <url>https://repo.spring.io/snapshot</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
 </project>

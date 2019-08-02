@@ -1,16 +1,16 @@
-package com.javachen.cshop.service;
+package com.javachen.cshop.admin.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.javachen.cshop.common.json.JsonUtils;
+import com.javachen.cshop.api.*;
+import com.javachen.cshop.common.utils.JsonUtils;
 import com.javachen.cshop.common.model.response.RestResponse;
 import com.javachen.cshop.common.utils.NumberUtils;
 import com.javachen.cshop.domain.Item;
 import com.javachen.cshop.domain.SearchRequest;
 import com.javachen.cshop.domain.SearchResult;
 import com.javachen.cshop.entity.*;
-import com.javachen.cshop.feign.*;
 import com.javachen.cshop.model.vo.SpuBo;
-import com.javachen.cshop.repository.ItemRepository;
+import com.javachen.cshop.admin.repository.ItemRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.search.SearchResponse;
@@ -111,7 +111,7 @@ public class SearchServiceImpl implements SearchService {
             SpuDetail spuDetail =spuDetailRestResponse.getData();
             if(spuDetail!=null && spuDetail.getSpecifications()!=null){
                 //提取公共属性
-                List<Map<String, Object>> genericSpecs = JsonUtils.toObject(spuDetail.getSpecifications(), new TypeReference<List<Map<String, Object>>>() {
+                List<Map<String, Object>> genericSpecs = JsonUtils.fromJson(spuDetail.getSpecifications(), new TypeReference<List<Map<String, Object>>>() {
                 });
 
                 String searchable = "searchable";
@@ -280,7 +280,7 @@ public class SearchServiceImpl implements SearchService {
         //不管是全局参数还是sku参数，只要是搜索参数，都根据分类id查询出来
         Specification specification = this.specClient.findByCategoryId(id).getData();
         //1.将规格反序列化为集合
-        List<Map<String, Object>> specs = JsonUtils.toObject(specification.getSpecifications(), new TypeReference<List<Map<String, Object>>>() {
+        List<Map<String, Object>> specs = JsonUtils.fromJson(specification.getSpecifications(), new TypeReference<List<Map<String, Object>>>() {
         });
         //2.过滤出可以搜索的规格参数名称，分成数值类型、字符串类型
         Set<String> strSpec = new HashSet<>();

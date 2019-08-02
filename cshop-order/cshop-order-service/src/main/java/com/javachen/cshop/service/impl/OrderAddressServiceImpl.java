@@ -1,8 +1,8 @@
-package com.javachen.cshop.service.impl;
+package com.javachen.cshop.admin.service.impl;
 
 import com.javachen.cshop.entity.OrderAddress;
-import com.javachen.cshop.repository.OrderAddressRepository;
-import com.javachen.cshop.service.OrderAddressService;
+import com.javachen.cshop.admin.repository.OrderAddressRepository;
+import com.javachen.cshop.admin.service.OrderAddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

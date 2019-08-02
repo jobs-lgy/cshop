@@ -1,4 +1,4 @@
-package com.javachen.cshop.controller;
+package com.javachen.cshop.admin.controller;
 
 import com.javachen.cshop.common.exception.BusinessException;
 import com.javachen.cshop.common.exception.ErrorCode;
@@ -6,8 +6,8 @@ import com.javachen.cshop.common.model.response.PageResponse;
 import com.javachen.cshop.config.PayHelper;
 import com.javachen.cshop.entity.Order;
 import com.javachen.cshop.entity.OrderStatus;
-import com.javachen.cshop.service.OrderService;
-import com.javachen.cshop.service.OrderStatusService;
+import com.javachen.cshop.admin.service.OrderService;
+import com.javachen.cshop.admin.service.OrderStatusService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

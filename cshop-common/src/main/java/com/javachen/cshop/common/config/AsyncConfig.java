@@ -1,6 +1,6 @@
 package com.javachen.cshop.common.config;
 
-import com.javachen.cshop.common.logging.DefaultAsyncExceptionHandler;
+import com.javachen.cshop.common.utils.logging.DefaultAsyncExceptionHandler;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

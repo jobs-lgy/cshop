@@ -11,11 +11,10 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>cshop-image-server</module>
         <module>cshop-sms</module>
         <module>cshop-cache</module>
-        <module>cshop-email</module>
         <module>cshop-skywalking</module>
         <module>cshop-gateway</module>
+        <module>cshop-auth</module>
     </modules>
 </project>

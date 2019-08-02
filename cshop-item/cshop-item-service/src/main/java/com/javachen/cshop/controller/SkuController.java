@@ -1,8 +1,8 @@
-package com.javachen.cshop.controller;
+package com.javachen.cshop.admin.controller;
 
 import com.javachen.cshop.common.model.response.RestResponse;
 import com.javachen.cshop.entity.Sku;
-import com.javachen.cshop.service.SkuService;
+import com.javachen.cshop.admin.service.SkuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

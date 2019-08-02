@@ -1,4 +1,4 @@
-package com.javachen.cshop.repository;
+package com.javachen.cshop.admin.repository;
 
 import com.javachen.cshop.entity.OrderStatus;
 import org.springframework.data.jpa.repository.JpaRepository;

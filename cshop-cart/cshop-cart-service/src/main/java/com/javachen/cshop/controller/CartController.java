@@ -1,7 +1,7 @@
-package com.javachen.cshop.controller;
+package com.javachen.cshop.admin.controller;
 
 import com.javachen.cshop.pojo.Cart;
-import com.javachen.cshop.service.CartService;
+import com.javachen.cshop.admin.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

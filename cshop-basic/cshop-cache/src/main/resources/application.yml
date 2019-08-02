@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: cshop-cache
+  main:
+    allow-bean-definition-overriding: true
   cloud:
     ignoredInterfaces:  #禁用网卡
       - docker0

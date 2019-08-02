@@ -1,4 +1,4 @@
-package com.javachen.cshop.service.impl;
+package com.javachen.cshop.admin.service.impl;
 
 import com.javachen.cshop.common.exception.BusinessException;
 import com.javachen.cshop.common.exception.ErrorCode;
@@ -6,7 +6,7 @@ import com.javachen.cshop.entity.Sku;
 import com.javachen.cshop.entity.Stock;
 import com.javachen.cshop.reposity.SkuRepository;
 import com.javachen.cshop.reposity.StockRepository;
-import com.javachen.cshop.service.SkuService;
+import com.javachen.cshop.admin.service.SkuService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

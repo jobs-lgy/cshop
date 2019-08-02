@@ -24,7 +24,7 @@
         </dependency>
         <dependency>
             <groupId>com.javachen.cshop</groupId>
-            <artifactId>cshop-user-api</artifactId>
+            <artifactId>cshop-admin-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -87,19 +87,4 @@
         </dependency>
     </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 </project>

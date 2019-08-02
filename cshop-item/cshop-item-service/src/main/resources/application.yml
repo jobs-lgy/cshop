@@ -31,6 +31,17 @@ spring:
       time-between-eviction-runs-millis: 60000 #空闲连接检查时间间隔
       min-evictable-idle-time-millis: 300000 #空闲连接最小空闲时间
 
+security:
+  oauth2:
+    client:
+      client-id: client
+      client-secret: secret
+      access-token-uri: http://localhost:7060/oauth/token
+      user-authorization-uri: http://localhost:7060/oauth/authorize
+      grant-type: refresh_token,password
+    resource:
+      token-info-uri: http://localhost:7060/oauth/check_token
+      user-info-uri: http://localhost:7060/oauth/me
 
 management:
   endpoints:

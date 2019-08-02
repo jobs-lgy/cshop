@@ -1,14 +1,14 @@
-package com.javachen.cshop.service.impl;
+package com.javachen.cshop.admin.service.impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.javachen.cshop.common.exception.BusinessException;
 import com.javachen.cshop.common.exception.ErrorCode;
-import com.javachen.cshop.common.json.JsonUtils;
+import com.javachen.cshop.common.utils.JsonUtils;
 import com.javachen.cshop.common.model.response.PageResponse;
 import com.javachen.cshop.entity.*;
 import com.javachen.cshop.model.vo.SpuBo;
 import com.javachen.cshop.reposity.*;
-import com.javachen.cshop.service.SpuService;
+import com.javachen.cshop.admin.service.SpuService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -189,7 +189,7 @@ public class SpuServiceImpl implements SpuService {
 
         //获取所有规格参数，然后封装成为id和name形式的数据
         String allSpecJson = spuDetail.getSpecifications();
-        List<Map<String, Object>> allSpecs = JsonUtils.toObject(allSpecJson, new TypeReference<List<Map<String, Object>>>() {
+        List<Map<String, Object>> allSpecs = JsonUtils.fromJson(allSpecJson, new TypeReference<List<Map<String, Object>>>() {
         });
         Map<Integer, String> specName = new HashMap<>();
         Map<Integer, Object> specValue = new HashMap<>();
@@ -197,7 +197,7 @@ public class SpuServiceImpl implements SpuService {
 
         //获取特有规格参数
         String specTJson = spuDetail.getSpecTemplate();
-        Map<String, String[]> specs = JsonUtils.toObject(specTJson, new TypeReference<Map<String, String[]>>() {
+        Map<String, String[]> specs = JsonUtils.fromJson(specTJson, new TypeReference<Map<String, String[]>>() {
         });
         Map<Integer, String> specialParamName = new HashMap<>();
         Map<Integer, String[]> specialParamValue = new HashMap<>();

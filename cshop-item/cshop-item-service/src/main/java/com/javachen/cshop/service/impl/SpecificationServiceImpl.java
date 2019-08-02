@@ -1,10 +1,10 @@
-package com.javachen.cshop.service.impl;
+package com.javachen.cshop.admin.service.impl;
 
 import com.javachen.cshop.common.exception.BusinessException;
 import com.javachen.cshop.common.exception.ErrorCode;
 import com.javachen.cshop.entity.Specification;
 import com.javachen.cshop.reposity.SpecificationRepository;
-import com.javachen.cshop.service.SpecificationService;
+import com.javachen.cshop.admin.service.SpecificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

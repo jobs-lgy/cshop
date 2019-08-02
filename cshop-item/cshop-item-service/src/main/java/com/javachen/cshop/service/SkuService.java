@@ -1,4 +1,4 @@
-package com.javachen.cshop.service;
+package com.javachen.cshop.admin.service;
 
 import com.javachen.cshop.entity.Sku;
 

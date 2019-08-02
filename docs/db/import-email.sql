@@ -1,7 +1,7 @@
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
-create database email;
+create database com.javachen.cshop.email;
 
 DROP TABLE IF EXISTS `email_record`;
 CREATE TABLE `email_record`

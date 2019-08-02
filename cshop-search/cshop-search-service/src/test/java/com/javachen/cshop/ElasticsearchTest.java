@@ -2,10 +2,10 @@ package com.javachen.cshop;
 
 import com.javachen.cshop.common.model.response.PageResponse;
 import com.javachen.cshop.domain.Item;
-import com.javachen.cshop.feign.SpuClient;
+import com.javachen.cshop.api.SpuClient;
 import com.javachen.cshop.model.vo.SpuBo;
-import com.javachen.cshop.repository.ItemRepository;
-import com.javachen.cshop.service.SearchServiceImpl;
+import com.javachen.cshop.admin.repository.ItemRepository;
+import com.javachen.cshop.admin.service.SearchServiceImpl;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.junit.Test;
 import org.junit.runner.RunWith;

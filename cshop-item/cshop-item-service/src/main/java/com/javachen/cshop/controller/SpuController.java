@@ -1,10 +1,10 @@
-package com.javachen.cshop.controller;
+package com.javachen.cshop.admin.controller;
 
 import com.javachen.cshop.common.model.response.PageResponse;
 import com.javachen.cshop.common.model.response.RestResponse;
 import com.javachen.cshop.entity.Spu;
 import com.javachen.cshop.model.vo.SpuBo;
-import com.javachen.cshop.service.SpuService;
+import com.javachen.cshop.admin.service.SpuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

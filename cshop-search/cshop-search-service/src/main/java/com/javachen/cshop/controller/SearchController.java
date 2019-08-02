@@ -1,14 +1,14 @@
-package com.javachen.cshop.controller;
+package com.javachen.cshop.admin.controller;
 
 import com.javachen.cshop.common.model.response.PageResponse;
 import com.javachen.cshop.common.model.response.RestResponse;
 import com.javachen.cshop.domain.Item;
 import com.javachen.cshop.domain.SearchRequest;
 import com.javachen.cshop.domain.SearchResult;
-import com.javachen.cshop.feign.SpuClient;
+import com.javachen.cshop.api.SpuClient;
 import com.javachen.cshop.model.vo.SpuBo;
-import com.javachen.cshop.repository.ItemRepository;
-import com.javachen.cshop.service.SearchService;
+import com.javachen.cshop.admin.repository.ItemRepository;
+import com.javachen.cshop.admin.service.SearchService;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;

@@ -1,4 +1,4 @@
-package com.javachen.cshop.service.impl;
+package com.javachen.cshop.admin.service.impl;
 
 import com.javachen.cshop.common.exception.BusinessException;
 import com.javachen.cshop.common.exception.ErrorCode;
@@ -6,7 +6,7 @@ import com.javachen.cshop.entity.Brand;
 import com.javachen.cshop.entity.CategoryBrand;
 import com.javachen.cshop.reposity.BrandReposity;
 import com.javachen.cshop.reposity.CategoryBrandRespository;
-import com.javachen.cshop.service.BrandService;
+import com.javachen.cshop.admin.service.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
