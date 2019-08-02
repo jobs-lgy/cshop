@@ -2,11 +2,10 @@ package com.javachen.cshop.auth.service.impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Maps;
+import com.javachen.cshop.admin.model.form.UserLogin;
+import com.javachen.cshop.auth.service.AuthService;
 import com.javachen.cshop.common.utils.JsonUtils;
 import com.javachen.cshop.common.utils.OkHttpClientUtil;
-import com.javachen.cshop.model.form.UserLogin;
-import com.javachen.cshop.model.vo.UserWithPassword;
-import com.javachen.cshop.auth.service.AuthService;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Response;
 import org.springframework.beans.factory.annotation.Value;
@@ -52,12 +51,13 @@ public class AuthServiceImpl implements AuthService {
         params.put("client_id", oauth2ClientId);
         params.put("client_secret", oauth2ClientSecret);
 
-        String token=null;
+        String token = null;
         try {
             // 解析响应结果封装并返回
             Response response = OkHttpClientUtil.getInstance().postData(URL_OAUTH_TOKEN, params);
             String jsonString = Objects.requireNonNull(response.body()).string();
-            Map<String, Object> jsonMap = JsonUtils.fromJson(jsonString, new TypeReference<Map<String, Object>>() {});
+            Map<String, Object> jsonMap = JsonUtils.fromJson(jsonString, new TypeReference<Map<String, Object>>() {
+            });
             token = String.valueOf(jsonMap.get("access_token"));
 
         } catch (Exception e) {
@@ -67,7 +67,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void logout(UserLogin userLogin,String token) {
+    public void logout(UserLogin userLogin, String token) {
         // 删除 token 以注销
         OAuth2AccessToken oAuth2AccessToken = tokenStore.readAccessToken(token);
         tokenStore.removeAccessToken(oAuth2AccessToken);

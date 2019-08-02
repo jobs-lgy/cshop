@@ -1,9 +1,9 @@
 package com.javachen.cshop.auth.oauth2;
 
 import com.google.common.collect.Lists;
-import com.javachen.cshop.common.model.response.RestResponse;
+import com.javachen.cshop.admin.entity.Admin;
 import com.javachen.cshop.auth.feign.AccountClient;
-import com.javachen.cshop.model.vo.UserWithPassword;
+import com.javachen.cshop.common.model.response.RestResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -28,20 +28,20 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // 查询用户
-        RestResponse<UserWithPassword> restResponse= accountClient.findByUsername(username);
+        RestResponse<Admin> restResponse= accountClient.findByUsername(username);
 
-        if(!restResponse.isSuccess() && restResponse.getData()==null){
+        if(restResponse.getCode()==0 && restResponse.getData()==null){
             log.error("feign client occur error:{}",restResponse.getMessage());
             throw new UsernameNotFoundException("用户不存在");
         }
 
-        UserWithPassword userWithPassword=restResponse.getData();
+        Admin admin=restResponse.getData();
 
         // 默认所有用户拥有 USER 权限
         List<GrantedAuthority> grantedAuthorities = Lists.newArrayList();
         GrantedAuthority grantedAuthority = new SimpleGrantedAuthority("USER");
         grantedAuthorities.add(grantedAuthority);
-        return new User(userWithPassword.getUsername(), userWithPassword.getPassword(), grantedAuthorities);
+        return new User(admin.getUsername(), admin.getPassword(), grantedAuthorities);
     }
 
 }

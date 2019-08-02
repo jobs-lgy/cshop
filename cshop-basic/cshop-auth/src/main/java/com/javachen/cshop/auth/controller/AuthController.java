@@ -1,9 +1,9 @@
 package com.javachen.cshop.auth.controller;
 
 import com.google.common.collect.Maps;
-import com.javachen.cshop.common.model.response.RestResponse;
-import com.javachen.cshop.model.form.UserLogin;
+import com.javachen.cshop.admin.model.form.UserLogin;
 import com.javachen.cshop.auth.service.AuthService;
+import com.javachen.cshop.common.model.response.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +23,7 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
-    @PostMapping(value = "/user/login")
+    @PostMapping(value = "/auth/login")
     public RestResponse<Void> processLogin(@Valid UserLogin userLogin) {
         Map<String, Object> result = Maps.newHashMap();
         result.put("token", authService.login(userLogin));
@@ -31,15 +31,15 @@ public class AuthController {
     }
 
     @PreAuthorize("hasAuthority('USER')")
-    @PostMapping(value = "/user/logout")
+    @PostMapping(value = "/auth/logout")
     public RestResponse<Void> processLogout(HttpServletRequest request) {
         String token = request.getParameter("access_token");
-        authService.logout(null,token);
+        authService.logout(null, token);
 
         return RestResponse.success();
     }
 
-    @GetMapping(value = "/user/info")
+    @GetMapping(value = "/auth/info")
     public RestResponse<Principal> user(Principal user) {
         return RestResponse.success(user);
     }

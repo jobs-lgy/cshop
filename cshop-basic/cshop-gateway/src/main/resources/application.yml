@@ -32,7 +32,7 @@ spring:
             # 路径匹配，以 api 开头，直接配置是不生效的，看 filters 配置
             - Path=/api/auth/**
           filters:
-            # 前缀过滤，默认配置下，我们的请求路径是 http://localhost:8888/business-oauth2/** 这时会路由到指定的服务
+            # 前缀过滤，默认配置下，我们的请求路径是 http://localhost:8888/cshop-auth/** 这时会路由到指定的服务
             # 此处配置去掉 1 个路径前缀，再配置上面的 Path=/api/**，就能按照 http://localhost:8888/api/** 的方式访问了
             - StripPrefix=1
         - id: CSHOP-ADMIN-SERVICE
@@ -54,4 +54,4 @@ management:
 # 配置日志级别，方别调试
 logging:
   level:
-    org.springframework.cloud.gateway: debug
+    org.springframework.cloud.gateway: info

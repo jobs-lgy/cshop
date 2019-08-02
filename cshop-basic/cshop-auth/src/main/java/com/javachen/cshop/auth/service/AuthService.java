@@ -1,6 +1,6 @@
 package com.javachen.cshop.auth.service;
 
-import com.javachen.cshop.model.form.UserLogin;
+import com.javachen.cshop.admin.model.form.UserLogin;
 
 /**
  * @author june

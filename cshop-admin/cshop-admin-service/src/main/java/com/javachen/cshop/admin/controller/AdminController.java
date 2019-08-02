@@ -58,7 +58,7 @@ public class AdminController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "username", value = "用户名", required = false, paramType = "query", dataType = "String")
     })
-    @GetMapping("/user/profile/{username}")
+    @GetMapping("/user/username/{username}")
     public RestResponse<Admin> findByUsername(@PathVariable String username) {
         return RestResponse.success(adminService.findByUsername(username));
     }
