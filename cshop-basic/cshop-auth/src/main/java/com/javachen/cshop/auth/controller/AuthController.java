@@ -3,7 +3,7 @@ package com.javachen.cshop.auth.controller;
 import com.google.common.collect.Maps;
 import com.javachen.cshop.admin.model.form.UserLogin;
 import com.javachen.cshop.auth.service.AuthService;
-import com.javachen.cshop.common.model.response.RestResponse;
+import com.javachen.cshop.common.domain.response.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;

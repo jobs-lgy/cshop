@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 /**
  * @author june
@@ -19,14 +20,12 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Province {
+public class Province implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;//名称
-    private String pinyin;
     private String abbr;//简称
-    private Boolean enable;//状态
-
-    private Integer priority;
+    private int status;
+    private int sort;
 }

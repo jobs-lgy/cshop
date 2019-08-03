@@ -21,6 +21,8 @@ public class UserLogin implements Serializable {
     @NotNull(message = "用户名不能为空")
     private String username;
 
+    private String captcha;
+
     @NotNull(message = "密码不能为空")
     @Length(min = 6, max = 25, message = "密码长度需要在6和25之间")
     private String password;

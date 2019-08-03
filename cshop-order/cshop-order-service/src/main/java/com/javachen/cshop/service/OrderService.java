@@ -1,6 +1,6 @@
 package com.javachen.cshop.admin.service;
 
-import com.javachen.cshop.common.model.response.PageResponse;
+import com.javachen.cshop.common.domain.response.PageResponse;
 import com.javachen.cshop.entity.Order;
 
 import java.util.List;

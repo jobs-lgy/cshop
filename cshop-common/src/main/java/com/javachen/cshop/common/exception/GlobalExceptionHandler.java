@@ -1,7 +1,7 @@
 package com.javachen.cshop.common.exception;
 
 import com.google.common.collect.ImmutableMap;
-import com.javachen.cshop.common.model.response.RestResponse;
+import com.javachen.cshop.common.domain.response.RestResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +61,7 @@ public class GlobalExceptionHandler {
 
         log.error("uri=[{}],message=[{}]", request.getRequestURI(), errors, ex);
 
-        return RestResponse.fail(errorCode);
+        return RestResponse.error(errorCode);
     }
 
 
@@ -77,7 +77,7 @@ public class GlobalExceptionHandler {
 
         log.error("uri=[{}],message=[{}]", request.getRequestURI(), errors, ex);
 
-        return RestResponse.fail(errorCode);
+        return RestResponse.error(errorCode);
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -90,6 +90,6 @@ public class GlobalExceptionHandler {
 //        String level = applicationContext.getEnvironment().getProperty(LOGGING_LEVEL_CSHOP);
 //        ExceptionResponse exceptionResponse = ExceptionResponse.withDetail(errorCode, message, ex.getStackTrace(), level);
 
-        return RestResponse.fail(errorCode, message);
+        return RestResponse.error(errorCode, message);
     }
 }

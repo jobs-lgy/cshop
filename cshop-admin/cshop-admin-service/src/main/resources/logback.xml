@@ -5,7 +5,7 @@
 
     <springProperty scope="context" name="springAppName" source="spring.application.name"/>
     <property name="LOG_DATEFORMAT_PATTERN" value="yyyy-MM-dd HH:mm:ss.SSS,Asia/Shanghai"/>
-    <property name="LOG_FILE" value="${admin.dir}/logs/${springAppName:-server}"/>​
+    <property name="LOG_FILE" value="${user.dir}/logs/${springAppName:-server}"/>​
     <property name="LOG_FILE_MAX_SIZE" value="50MB"/>
     <property name="LOG_FILE_MAX_HISTORY" value="10"/>
 

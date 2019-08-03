@@ -1,7 +1,7 @@
 package com.javachen.cshop.email.service.impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.javachen.cshop.common.json.JsonUtils;
+import com.javachen.cshop.common.utils.JsonUtils;
 import com.javachen.cshop.email.config.CoreEmailConfig;
 import com.javachen.cshop.email.domain.EmailInfo;
 import com.javachen.cshop.email.domain.EmailTarget;
@@ -74,7 +74,7 @@ public class EmailServiceImpl implements EmailService {
         String emailTo = null;
         EmailInfo emailInfo = null;
         try {
-            Map<String, Object> props = JsonUtils.toObject(message.getPayload(), new TypeReference<Map<String, Object>>() {
+            Map<String, Object> props = JsonUtils.fromJson(message.getPayload(), new TypeReference<Map<String, Object>>() {
             });
             if (props == null || !props.containsKey("emailType") || !props.containsKey("emailTo")) {
                 log.warn("Received msg not validated:{}", message.getPayload());

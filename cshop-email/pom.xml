@@ -13,10 +13,8 @@
     <artifactId>cshop-email</artifactId>
     <packaging>pom</packaging>
 
-
     <modules>
         <module>cshop-email-api</module>
         <module>cshop-email-service</module>
     </modules>
-
 </project>

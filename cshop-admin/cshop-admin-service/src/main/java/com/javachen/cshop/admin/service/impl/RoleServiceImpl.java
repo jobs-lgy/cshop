@@ -57,8 +57,8 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public List<Role> findAllByAdminId(Long adminId) {
-        return roleRepository.findAllByAdminId(adminId);
+    public List<Role> findAllByUserId(Long userId) {
+        return roleRepository.findAllByUserId(userId);
     }
 
 }

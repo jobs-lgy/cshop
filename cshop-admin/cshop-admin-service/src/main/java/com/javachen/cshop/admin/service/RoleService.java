@@ -25,7 +25,7 @@ import java.util.List;
 public interface RoleService {
     List<Role> findAll();
 
-    List<Role> findAllByAdminId(Long adminId);
+    List<Role> findAllByUserId(Long userId);
 
     Role findById(Long id);
 

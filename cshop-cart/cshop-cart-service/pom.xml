@@ -20,7 +20,7 @@
 
         <dependency>
             <groupId>com.javachen.cshop</groupId>
-            <artifactId>cshop-admin-api</artifactId>
+            <artifactId>cshop-user-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 

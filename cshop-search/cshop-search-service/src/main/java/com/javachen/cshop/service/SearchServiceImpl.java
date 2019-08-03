@@ -3,7 +3,7 @@ package com.javachen.cshop.admin.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.javachen.cshop.api.*;
 import com.javachen.cshop.common.utils.JsonUtils;
-import com.javachen.cshop.common.model.response.RestResponse;
+import com.javachen.cshop.common.domain.response.RestResponse;
 import com.javachen.cshop.common.utils.NumberUtils;
 import com.javachen.cshop.domain.Item;
 import com.javachen.cshop.domain.SearchRequest;

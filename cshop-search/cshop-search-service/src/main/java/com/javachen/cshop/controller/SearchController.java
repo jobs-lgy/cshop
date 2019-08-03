@@ -1,7 +1,7 @@
 package com.javachen.cshop.admin.controller;
 
-import com.javachen.cshop.common.model.response.PageResponse;
-import com.javachen.cshop.common.model.response.RestResponse;
+import com.javachen.cshop.common.domain.response.PageResponse;
+import com.javachen.cshop.common.domain.response.RestResponse;
 import com.javachen.cshop.domain.Item;
 import com.javachen.cshop.domain.SearchRequest;
 import com.javachen.cshop.domain.SearchResult;

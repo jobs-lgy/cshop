@@ -17,7 +17,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableAsync
 @EnableCaching
 @EnableSwagger2
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.javachen.cshop")
 @EnableDiscoveryClient
 public class AppAdmin {
     public static void main(String[] args) {

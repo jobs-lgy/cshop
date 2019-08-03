@@ -1,6 +1,6 @@
 package com.javachen.cshop.admin.controller;
 
-import com.javachen.cshop.common.model.response.RestResponse;
+import com.javachen.cshop.common.domain.response.RestResponse;
 import com.javachen.cshop.entity.Sku;
 import com.javachen.cshop.admin.service.SkuService;
 import org.springframework.beans.factory.annotation.Autowired;

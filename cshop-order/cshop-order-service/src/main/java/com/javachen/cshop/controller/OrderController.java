@@ -2,7 +2,7 @@ package com.javachen.cshop.admin.controller;
 
 import com.javachen.cshop.common.exception.BusinessException;
 import com.javachen.cshop.common.exception.ErrorCode;
-import com.javachen.cshop.common.model.response.PageResponse;
+import com.javachen.cshop.common.domain.response.PageResponse;
 import com.javachen.cshop.config.PayHelper;
 import com.javachen.cshop.entity.Order;
 import com.javachen.cshop.entity.OrderStatus;

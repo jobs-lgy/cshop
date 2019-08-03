@@ -1,7 +1,7 @@
 package com.javachen.cshop.admin.controller;
 
-import com.javachen.cshop.common.model.response.PageResponse;
-import com.javachen.cshop.common.model.response.RestResponse;
+import com.javachen.cshop.common.domain.response.PageResponse;
+import com.javachen.cshop.common.domain.response.RestResponse;
 import com.javachen.cshop.entity.Brand;
 import com.javachen.cshop.admin.service.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;

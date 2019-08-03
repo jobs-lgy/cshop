@@ -28,19 +28,20 @@
 
         <!-- Commons Settings -->
         <druid.version>1.1.18</druid.version>
+        <kaptcha.version>0.0.9</kaptcha.version>
     </properties>
 
     <modules>
         <module>cshop-basic</module>
         <module>cshop-common</module>
         <module>cshop-admin</module>
-
+        <module>cshop-email</module>
 
 <!--        <module>cshop-item</module>-->
 <!--        <module>cshop-order</module>-->
 <!--        <module>cshop-cart</module>-->
 <!--        <module>cshop-search</module>-->
-<!--        <module>cshop-email</module>-->
+
     </modules>
 
     <dependencies>
@@ -124,6 +125,12 @@
             </dependency>
 
             <dependency>
+                <groupId>com.github.axet</groupId>
+                <artifactId>kaptcha</artifactId>
+                <version>${kaptcha.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>com.aliyun</groupId>
                 <artifactId>aliyun-java-sdk-core</artifactId>
                 <version>3.3.1</version>
@@ -181,7 +188,6 @@
             <url>http://192.168.56.100:4070/repository/nexus-releases/</url>
         </repository>
     </distributionManagement>
-
 
     <repositories>
         <repository>

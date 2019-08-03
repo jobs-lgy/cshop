@@ -1,11 +1,11 @@
 package com.javachen.cshop.admin.service.impl;
 
-import com.javachen.cshop.admin.entity.Admin;
+import com.javachen.cshop.admin.entity.User;
 import com.javachen.cshop.admin.model.form.PasswordChange;
 import com.javachen.cshop.admin.model.form.PasswordReset;
 import com.javachen.cshop.admin.model.form.UserLogin;
 import com.javachen.cshop.admin.model.form.UserRegister;
-import com.javachen.cshop.admin.repository.AdminRepository;
+import com.javachen.cshop.admin.repository.UserRepository;
 import com.javachen.cshop.admin.service.AdminAccountService;
 import com.javachen.cshop.admin.service.MqService;
 import com.javachen.cshop.common.exception.BusinessException;
@@ -33,12 +33,10 @@ public class AdminAccountServiceImpl implements AdminAccountService {
     private static final String REGISTER_KEY_PREFIX = "cshop:register:";
     private static final String RESET_KEY_PREFIX = "cshop:reset:";
 
-
     private static int TEMP_PASSWORD_LENGTH = 12;
-    private static final int FULL_PASSWORD_LENGTH = 16;
 
     @Resource
-    protected AdminRepository adminRepository;
+    protected UserRepository userRepository;
 
     @Resource
     protected PasswordEncoder passwordEncoderBean;
@@ -55,10 +53,10 @@ public class AdminAccountServiceImpl implements AdminAccountService {
 
     @Override
     @Transactional
-    public Admin changePassword(PasswordChange passwordChange) {
-        Admin user = adminRepository.findByUsername(passwordChange.getUsername());
+    public User changePassword(PasswordChange passwordChange) {
+        User user = userRepository.findByUsername(passwordChange.getUsername());
         user.setPassword(passwordChange.getNewPassword());
-        user = adminRepository.save(user);
+        user = userRepository.save(user);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(passwordChange.getUsername(), passwordChange.getNewPassword(), auth.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authRequest);
@@ -90,22 +88,22 @@ public class AdminAccountServiceImpl implements AdminAccountService {
     }
 
     @Override
-    public Admin register(UserRegister userRegister) {
-        Admin admin = new Admin();
-        admin.setEmail(userRegister.getEmail());
-        admin.setPhone(userRegister.getPhone());
-        admin.setUsername(userRegister.getUsername());
-        admin.setNickName(userRegister.getNickName());
+    public User register(UserRegister userRegister) {
+        User user = new User();
+        user.setEmail(userRegister.getEmail());
+        user.setPhone(userRegister.getPhone());
+        user.setUsername(userRegister.getUsername());
+        user.setNickname(userRegister.getNickname());
 
-        if (adminRepository.findByPhone(admin.getPhone()) != null) {
+        if (userRepository.findByPhone(user.getPhone()) != null) {
             throw new BusinessException(ErrorCode.USER_PHONE_ALREADY_EXIST);
         }
 
-        if (adminRepository.findByUsername(admin.getUsername()) != null) {
+        if (userRepository.findByUsername(user.getUsername()) != null) {
             throw new BusinessException(ErrorCode.USER_USERNAME_ALREADY_EXIST);
         }
 
-        if (adminRepository.findByEmail(admin.getEmail()) != null) {
+        if (userRepository.findByEmail(user.getEmail()) != null) {
             throw new BusinessException(ErrorCode.USER_EMAIL_ALREADY_EXIST);
         }
 
@@ -119,37 +117,37 @@ public class AdminAccountServiceImpl implements AdminAccountService {
 //            throw new BusinessException(ErrorCode.USER_PHONE_CODE_ERROR);
 //        }
 
-        admin.setPassword(encodePassword(userRegister.getPassword()));
+        user.setPassword(encodePassword(userRegister.getPassword()));
 
         //FIXME 后去需要邮件激活
-        admin.setActive(true); //未激活
-        adminRepository.save(admin);
+        user.setStatus(1); //未激活
+        userRepository.save(user);
 
-        mqService.sendEmail("register",admin.getEmail(),null,admin.getId(),admin.getUsername());
+        mqService.sendEmail("register", user.getEmail(),null, user.getId(), user.getUsername());
 
         //清理redis
 //            this.stringRedisTemplate.delete(key);
-        return admin;
+        return user;
     }
 
     @Override
-    public Admin login(UserLogin userLogin) {
-        Admin admin = adminRepository.findByUsername(userLogin.getUsername());
-        if(admin==null){
-            admin = adminRepository.findByEmail(userLogin.getUsername());
+    public User login(UserLogin userLogin) {
+        User user = userRepository.findByUsername(userLogin.getUsername());
+        if(user ==null){
+            user = userRepository.findByEmail(userLogin.getUsername());
         }
 
-        checkUser(admin);
+        checkUser(user);
 
-        if(isPasswordValid(admin.getPassword(),userLogin.getPassword())){
-            return admin;
+        if(isPasswordValid(user.getPassword(),userLogin.getPassword())){
+            return user;
         }else{
             throw new BusinessException(ErrorCode.USER_LOGIN_ERROR);
         }
     }
 
     @Override
-    public Admin logout(PasswordChange passwordChange) {
+    public User logout(PasswordChange passwordChange) {
         return null;
     }
 
@@ -157,7 +155,7 @@ public class AdminAccountServiceImpl implements AdminAccountService {
     @Override
     @Transactional
     public void sendForgotUsernameNotification(String email) {
-        Admin user = adminRepository.findByEmail(email);
+        User user = userRepository.findByEmail(email);
         checkUser(user);
 
         HashMap<String, Object> vars = new HashMap<String, Object>();
@@ -169,17 +167,16 @@ public class AdminAccountServiceImpl implements AdminAccountService {
     @Override
     @Transactional
     public void sendResetPasswordNotification(String username) {
-        Admin user = null;
+        User user = null;
 
         if (username != null) {
-            user = adminRepository.findByUsername(username);
+            user = userRepository.findByUsername(username);
         }
 
         checkUser(user);
 
         String token = PasswordUtils.generateSecurePassword(TEMP_PASSWORD_LENGTH);
         token = token.toLowerCase();
-
 
         HashMap<String, Object> vars = new HashMap<String, Object>();
         vars.put("token", token);
@@ -197,8 +194,8 @@ public class AdminAccountServiceImpl implements AdminAccountService {
 
     @Override
     @Transactional
-    public Admin resetPassword(PasswordReset passwordReset) {
-        Admin user = adminRepository.findByUsername(passwordReset.getUsername());
+    public User resetPassword(PasswordReset passwordReset) {
+        User user = userRepository.findByUsername(passwordReset.getUsername());
         checkUser(user);
 
         String token = passwordReset.getToken().toLowerCase();
@@ -214,14 +211,14 @@ public class AdminAccountServiceImpl implements AdminAccountService {
         }
 
         user.setPassword(encodePassword(passwordReset.getNewPassword()));
-        adminRepository.save(user);
+        userRepository.save(user);
         return user;
     }
 
-    protected void checkUser(Admin user) {
+    protected void checkUser(User user) {
         if (user == null) {
             throw new BusinessException(ErrorCode.USER_NOT_EXIST);
-        }  else if (!user.isActive()) {
+        }  else if (user.getStatus()!=1) {
             throw new BusinessException(ErrorCode.USER_NOT_ACTIVE);
         }
     }

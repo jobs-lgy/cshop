@@ -19,7 +19,7 @@ public class UserRegister {
     @NotNull(message = "用户名不能为空")
     private String username;
 
-    private String nickName;
+    private String nickname;
 
     @NotNull(message = "手机号不能为空")
     @Pattern(regexp = "^1[35678]\\d{9}$", message = "手机号格式不正确")

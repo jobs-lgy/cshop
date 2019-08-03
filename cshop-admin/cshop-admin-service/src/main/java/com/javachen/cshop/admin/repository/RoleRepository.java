@@ -13,6 +13,6 @@ import java.util.List;
  * @since
  */
 public interface RoleRepository extends JpaRepository<Role, Long> {
-    @Query("SELECT r FROM AdminRoleRel a, Role r WHERE a.id.adminId = ?1 AND a.id.roleId = r.id")
-    List<Role> findAllByAdminId(Long adminId);
+    @Query("SELECT r FROM UserRoleRel a, Role r WHERE a.id.userId = ?1 AND a.id.roleId = r.id")
+    List<Role> findAllByUserId(Long userId);
 }
