@@ -30,8 +30,8 @@ public class Resource implements Serializable {
     private String name;
     private String abbr;
     private String icon;
-    private String url;
+    private String uri;
     private String type;
-    private int status;
+    private boolean enabled;
     private int sort;
 }

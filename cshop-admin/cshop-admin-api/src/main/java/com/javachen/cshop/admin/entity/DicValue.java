@@ -26,7 +26,7 @@ public class DicValue implements Serializable {
     protected Long id;
     protected String name;
     protected String abbr;
-    protected int status;
+    private boolean enabled;
 
     protected Long dicKeyId;
 

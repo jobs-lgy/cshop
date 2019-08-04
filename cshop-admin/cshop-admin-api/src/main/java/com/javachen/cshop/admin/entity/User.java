@@ -34,8 +34,7 @@ public class User implements Serializable {
 
     private Long deptId;
 
-    //状态  -1：已删除 ,0：禁用 ,  1：正常
-    private int status=0;
+    private boolean enabled;
 
     @CreationTimestamp
     private Date createTime;// 创建时间

@@ -26,7 +26,7 @@ public class District implements Serializable {
     private Long id;
     private String name;//名称
     private String abbr;//简称
-    private int status;
+    private boolean enabled;
     private int sort;
 
     private Long cityId;

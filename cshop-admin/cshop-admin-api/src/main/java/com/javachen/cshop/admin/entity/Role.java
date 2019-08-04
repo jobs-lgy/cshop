@@ -26,6 +26,6 @@ public class Role implements Serializable {
     private Long id;
     private String name;
     private String abbr;
-    private int status;
+    private boolean enabled;
     private int sort;
 }

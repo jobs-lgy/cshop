@@ -21,6 +21,8 @@ public class Dept implements Serializable {
 
     private String name;
 
+    private boolean enabled;
+
     private Integer sort;
 
 }
