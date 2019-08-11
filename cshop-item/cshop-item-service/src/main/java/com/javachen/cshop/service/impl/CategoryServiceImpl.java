@@ -1,7 +1,7 @@
 package com.javachen.cshop.admin.service.impl;
 
-import com.javachen.cshop.common.exception.BusinessException;
-import com.javachen.cshop.common.exception.ErrorCode;
+import com.javachen.cshop.common.web.advice.BusinessException;
+import com.javachen.cshop.common.web.advice.ErrorCode;
 import com.javachen.cshop.entity.Category;
 import com.javachen.cshop.reposity.CategoryBrandRespository;
 import com.javachen.cshop.reposity.CategoryReposity;

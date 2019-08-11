@@ -1,4 +1,66 @@
 
+-- ----------------------------
+-- Table structure for ums_member
+-- ----------------------------
+DROP TABLE IF EXISTS `member`;
+CREATE TABLE `member` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `member_level_id` bigint(20) DEFAULT NULL,
+  `username` varchar(64) DEFAULT NULL COMMENT '用户名',
+  `password` varchar(64) DEFAULT NULL COMMENT '密码',
+  `nickname` varchar(64) DEFAULT NULL COMMENT '昵称',
+  `phone` varchar(64) DEFAULT NULL COMMENT '手机号码',
+  `email` varchar(64) DEFAULT NULL COMMENT '邮箱',
+  `icon` varchar(500) DEFAULT NULL COMMENT '头像',
+  `gender` int(1) DEFAULT NULL COMMENT '性别：0->未知；1->男；2->女',
+  `birthday` date DEFAULT NULL COMMENT '生日',
+  `city` varchar(64) DEFAULT NULL COMMENT '所在城市',
+  `job` varchar(100) DEFAULT NULL COMMENT '职业',
+  `personalized_signature` varchar(200) DEFAULT NULL COMMENT '个性签名',
+  `source` int(1) DEFAULT NULL COMMENT '用户来源',
+
+  `integration` int(11) DEFAULT NULL COMMENT '积分',
+  `growth` int(11) DEFAULT NULL COMMENT '成长值',
+  `luckey_count` int(11) DEFAULT NULL COMMENT '剩余抽奖次数',
+  `history_integration` int(11) DEFAULT NULL COMMENT '历史积分数量',
+
+  `open_id` varchar(64) DEFAULT NULL COMMENT '所在城市',
+  `enable` int(1) DEFAULT NULL COMMENT '帐号启用状态:0->禁用；1->启用',
+  `create_time` datetime DEFAULT NULL COMMENT '注册时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_username` (`username`),
+  UNIQUE KEY `idx_phone` (`phone`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='会员表';
+
+INSERT INTO `member` VALUES ('1', '4', 'test', '$2a$10$NZ5o7r2E.ayT2ZoxgjlI.eJ6OEYqjH7INR/F.mXDbjZJi9HF0YCVG', 'windir', '18061581849', '1', '2018-08-02 10:35:44', null, '1', '2009-06-01', '上海', '学生', 'test', null, '5000', null, null, null);
+
+DROP TABLE IF EXISTS `member_level`;
+CREATE TABLE `member_level` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  `growth_point` int(11) DEFAULT NULL,
+  `default_status` int(1) DEFAULT NULL COMMENT '是否为默认等级：0->不是；1->是',
+  `free_freight_point` decimal(10,2) DEFAULT NULL COMMENT '免运费标准',
+  `comment_growth_point` int(11) DEFAULT NULL COMMENT '每次评价获取的成长值',
+  `priviledge_free_freight` int(1) DEFAULT NULL COMMENT '是否有免邮特权',
+  `priviledge_sign_in` int(1) DEFAULT NULL COMMENT '是否有签到特权',
+  `priviledge_comment` int(1) DEFAULT NULL COMMENT '是否有评论获奖励特权',
+  `priviledge_promotion` int(1) DEFAULT NULL COMMENT '是否有专享活动特权',
+  `priviledge_member_price` int(1) DEFAULT NULL COMMENT '是否有会员价格特权',
+  `priviledge_birthday` int(1) DEFAULT NULL COMMENT '是否有生日特权',
+  `description` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='会员等级表';
+
+-- ----------------------------
+-- Records of ums_member_level
+-- ----------------------------
+INSERT INTO `member_level` VALUES ('1', '黄金会员', '1000', '0', '199.00', '5', '1', '1', '1', '1', '1', '1', null);
+INSERT INTO `member_level` VALUES ('2', '白金会员', '5000', '0', '99.00', '10', '1', '1', '1', '1', '1', '1', null);
+INSERT INTO `member_level` VALUES ('3', '钻石会员', '15000', '0', '69.00', '15', '1', '1', '1', '1', '1', '1', null);
+INSERT INTO `member_level` VALUES ('4', '普通会员', '1', '1', '199.00', '20', '1', '1', '1', '1', '0', '0', null);
+
 
 DROP TABLE IF EXISTS `ums_growth_change_history`;
 CREATE TABLE `ums_growth_change_history` (
@@ -55,71 +117,6 @@ CREATE TABLE `ums_integration_consume_setting` (
 -- Records of ums_integration_consume_setting
 -- ----------------------------
 INSERT INTO `ums_integration_consume_setting` VALUES ('1', '100', '50', '100', '1');
-
--- ----------------------------
--- Table structure for ums_member
--- ----------------------------
-DROP TABLE IF EXISTS `member`;
-CREATE TABLE `member` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `member_level_id` bigint(20) DEFAULT NULL,
-  `username` varchar(64) DEFAULT NULL COMMENT '用户名',
-  `password` varchar(64) DEFAULT NULL COMMENT '密码',
-  `nickname` varchar(64) DEFAULT NULL COMMENT '昵称',
-  `phone` varchar(64) DEFAULT NULL COMMENT '手机号码',
-  `status` int(1) DEFAULT NULL COMMENT '帐号启用状态:0->禁用；1->启用',
-  `create_time` datetime DEFAULT NULL COMMENT '注册时间',
-  `icon` varchar(500) DEFAULT NULL COMMENT '头像',
-  `gender` int(1) DEFAULT NULL COMMENT '性别：0->未知；1->男；2->女',
-  `birthday` date DEFAULT NULL COMMENT '生日',
-  `city` varchar(64) DEFAULT NULL COMMENT '所做城市',
-  `job` varchar(100) DEFAULT NULL COMMENT '职业',
-  `personalized_signature` varchar(200) DEFAULT NULL COMMENT '个性签名',
-  `source_type` int(1) DEFAULT NULL COMMENT '用户来源',
-  `integration` int(11) DEFAULT NULL COMMENT '积分',
-  `growth` int(11) DEFAULT NULL COMMENT '成长值',
-  `luckey_count` int(11) DEFAULT NULL COMMENT '剩余抽奖次数',
-  `history_integration` int(11) DEFAULT NULL COMMENT '历史积分数量',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `idx_username` (`username`),
-  UNIQUE KEY `idx_phone` (`phone`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='会员表';
-
--- ----------------------------
--- Records of ums_member
--- ----------------------------
-INSERT INTO `member` VALUES ('1', '4', 'test', '$2a$10$NZ5o7r2E.ayT2ZoxgjlI.eJ6OEYqjH7INR/F.mXDbjZJi9HF0YCVG', 'windir', '18061581849', '1', '2018-08-02 10:35:44', null, '1', '2009-06-01', '上海', '学生', 'test', null, '5000', null, null, null);
-INSERT INTO `member` VALUES ('3', '4', 'windy', '$2a$10$NZ5o7r2E.ayT2ZoxgjlI.eJ6OEYqjH7INR/F.mXDbjZJi9HF0YCVG', 'windy', '18061581848', '1', '2018-08-03 16:46:38', null, null, null, null, null, null, null, null, null, null, null);
-INSERT INTO `member` VALUES ('4', '4', 'zhengsan', '$2a$10$NZ5o7r2E.ayT2ZoxgjlI.eJ6OEYqjH7INR/F.mXDbjZJi9HF0YCVG', 'zhengsan', '18061581847', '1', '2018-11-12 14:12:04', null, null, null, null, null, null, null, null, null, null, null);
-
--- ----------------------------
--- Table structure for ums_member_level
--- ----------------------------
-DROP TABLE IF EXISTS `member_level`;
-CREATE TABLE `member_level` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) DEFAULT NULL,
-  `growth_point` int(11) DEFAULT NULL,
-  `default_status` int(1) DEFAULT NULL COMMENT '是否为默认等级：0->不是；1->是',
-  `free_freight_point` decimal(10,2) DEFAULT NULL COMMENT '免运费标准',
-  `comment_growth_point` int(11) DEFAULT NULL COMMENT '每次评价获取的成长值',
-  `priviledge_free_freight` int(1) DEFAULT NULL COMMENT '是否有免邮特权',
-  `priviledge_sign_in` int(1) DEFAULT NULL COMMENT '是否有签到特权',
-  `priviledge_comment` int(1) DEFAULT NULL COMMENT '是否有评论获奖励特权',
-  `priviledge_promotion` int(1) DEFAULT NULL COMMENT '是否有专享活动特权',
-  `priviledge_member_price` int(1) DEFAULT NULL COMMENT '是否有会员价格特权',
-  `priviledge_birthday` int(1) DEFAULT NULL COMMENT '是否有生日特权',
-  `description` varchar(200) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='会员等级表';
-
--- ----------------------------
--- Records of ums_member_level
--- ----------------------------
-INSERT INTO `member_level` VALUES ('1', '黄金会员', '1000', '0', '199.00', '5', '1', '1', '1', '1', '1', '1', null);
-INSERT INTO `member_level` VALUES ('2', '白金会员', '5000', '0', '99.00', '10', '1', '1', '1', '1', '1', '1', null);
-INSERT INTO `member_level` VALUES ('3', '钻石会员', '15000', '0', '69.00', '15', '1', '1', '1', '1', '1', '1', null);
-INSERT INTO `member_level` VALUES ('4', '普通会员', '1', '1', '199.00', '20', '1', '1', '1', '1', '0', '0', null);
 
 -- ----------------------------
 -- Table structure for ums_member_login_log

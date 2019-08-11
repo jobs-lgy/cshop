@@ -1,8 +1,8 @@
 package com.javachen.cshop.admin.service.impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.javachen.cshop.common.exception.BusinessException;
-import com.javachen.cshop.common.exception.ErrorCode;
+import com.javachen.cshop.common.web.advice.BusinessException;
+import com.javachen.cshop.common.web.advice.ErrorCode;
 import com.javachen.cshop.common.utils.JsonUtils;
 import com.javachen.cshop.common.domain.response.PageResponse;
 import com.javachen.cshop.entity.*;

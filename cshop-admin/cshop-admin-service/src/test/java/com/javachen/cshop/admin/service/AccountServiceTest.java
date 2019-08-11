@@ -21,7 +21,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @ActiveProfiles("prod")
 public class AccountServiceTest {
     @Autowired
-    private AdminAccountService accountService;
+    private UserAccountService accountService;
 
     @Test
     public void testRegister() {

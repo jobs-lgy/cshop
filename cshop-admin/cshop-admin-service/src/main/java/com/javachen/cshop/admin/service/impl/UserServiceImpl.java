@@ -1,27 +1,10 @@
-/*
- * #%L
- * BroadleafCommerce Open Admin Platform
- * %%
- * Copyright (C) 2009 - 2016 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- *
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package com.javachen.cshop.admin.service.impl;
 
 import com.javachen.cshop.admin.entity.User;
 import com.javachen.cshop.admin.repository.UserRepository;
 import com.javachen.cshop.admin.service.MqService;
 import com.javachen.cshop.admin.service.UserService;
-import com.javachen.cshop.common.exception.BusinessException;
+import com.javachen.cshop.common.exception.BaseException;
 import com.javachen.cshop.common.exception.ErrorCode;
 import com.javachen.cshop.common.utils.PasswordUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -106,11 +89,11 @@ public class UserServiceImpl implements UserService {
 
     protected void checkUser(User user) {
         if (user == null) {
-            throw new BusinessException(ErrorCode.USER_NOT_EXIST);
+            throw new BaseException(ErrorCode.USER_NOT_EXIST);
         } else if (StringUtils.isBlank(user.getEmail())) {
-            throw new BusinessException(ErrorCode.USER_NOT_EXIST);
-        } else if (user.getStatus()!=1) {
-            throw new BusinessException(ErrorCode.USER_NOT_ACTIVE);
+            throw new BaseException(ErrorCode.USER_NOT_EXIST);
+        } else if (!user.isEnabled()) {
+            throw new BaseException(ErrorCode.USER_NOT_ACTIVE);
         }
     }
 

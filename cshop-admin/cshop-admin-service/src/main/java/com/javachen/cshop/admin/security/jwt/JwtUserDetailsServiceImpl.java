@@ -3,7 +3,7 @@ package com.javachen.cshop.admin.security.jwt;
 import com.javachen.cshop.admin.entity.Resource;
 import com.javachen.cshop.admin.entity.Role;
 import com.javachen.cshop.admin.entity.User;
-import com.javachen.cshop.admin.service.AdminSecurityHelper;
+import com.javachen.cshop.admin.service.UserSecurityHelper;
 import com.javachen.cshop.admin.service.ResourceService;
 import com.javachen.cshop.admin.service.RoleService;
 import com.javachen.cshop.admin.service.UserService;
@@ -31,7 +31,7 @@ public class JwtUserDetailsServiceImpl implements UserDetailsService {
     private ResourceService resourceService;
 
     @Autowired
-    protected AdminSecurityHelper adminSecurityHelper;
+    protected UserSecurityHelper userSecurityHelper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -62,14 +62,14 @@ public class JwtUserDetailsServiceImpl implements UserDetailsService {
         }
 
         List<Resource> resources = resourceService.findAllByRoleIds(roles.stream().map(role -> role.getId()).collect(Collectors.toList()));
-        adminSecurityHelper
+        userSecurityHelper
                 .addAllPermissionsToAuthorities(authorities, resources);
     }
 
     protected void addPermissions(final User user,
                                   final List<SimpleGrantedAuthority> authorities) {
         List<Resource> resources = resourceService.findAllByUserId(user.getId());
-        adminSecurityHelper
+        userSecurityHelper
                 .addAllPermissionsToAuthorities(authorities, resources);
     }
 

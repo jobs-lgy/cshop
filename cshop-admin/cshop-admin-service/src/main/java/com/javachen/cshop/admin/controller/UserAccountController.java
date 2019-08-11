@@ -5,7 +5,7 @@ import com.javachen.cshop.admin.model.form.PasswordChange;
 import com.javachen.cshop.admin.model.form.PasswordReset;
 import com.javachen.cshop.admin.model.form.UserLogin;
 import com.javachen.cshop.admin.model.form.UserRegister;
-import com.javachen.cshop.admin.service.AdminAccountService;
+import com.javachen.cshop.admin.service.UserAccountService;
 import com.javachen.cshop.common.domain.response.RestResponse;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -28,19 +28,19 @@ import javax.validation.constraints.NotNull;
 @RestController
 public class UserAccountController {
     @Autowired
-    private AdminAccountService adminAccountService;
+    private UserAccountService userAccountService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
 
     @GetMapping("/user/register")
     public RestResponse<String> senVerifyCode(@RequestParam("phone") String phone) {
-        return RestResponse.success(adminAccountService.sendVerifyCode(phone));
+        return RestResponse.success(userAccountService.sendVerifyCode(phone));
     }
 
     @PostMapping("/user/register")
     public RestResponse<User> register(@Valid UserRegister userRegister) {
-        return RestResponse.success(adminAccountService.register(userRegister));
+        return RestResponse.success(userAccountService.register(userRegister));
     }
 
     @ApiOperation(value = "修改密码", notes = "修改密码")
@@ -52,7 +52,7 @@ public class UserAccountController {
     })
     @PostMapping("/user/password")
     public RestResponse<User> processChangePassword(@Valid PasswordChange passwordChange) {
-        return RestResponse.success(adminAccountService.changePassword(passwordChange));
+        return RestResponse.success(userAccountService.changePassword(passwordChange));
     }
 
     /**
@@ -63,7 +63,7 @@ public class UserAccountController {
      */
     @GetMapping(value = "/user/password")
     public void processForgotPassword(@RequestParam("email") @NotNull String email) {
-        adminAccountService.sendResetPasswordNotification(email);
+        userAccountService.sendResetPasswordNotification(email);
     }
 
     /**
@@ -73,12 +73,12 @@ public class UserAccountController {
      */
     @PutMapping(value = "/user/password")
     public void processResetPassword(@Valid PasswordReset passwordReset) {
-        adminAccountService.resetPassword(passwordReset);
+        userAccountService.resetPassword(passwordReset);
     }
 
     @PostMapping(value = "/user/login")
     public RestResponse<User> processLogin(@Valid UserLogin userLogin) {
-        return RestResponse.success(adminAccountService.login(userLogin));
+        return RestResponse.success(userAccountService.login(userLogin));
     }
 
     @PostMapping(value = "/user/logout")
