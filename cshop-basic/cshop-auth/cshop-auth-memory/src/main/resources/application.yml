@@ -1,0 +1,8 @@
+server:
+  port: 7060
+
+spring:
+  application:
+    name: cshop-auth-memory
+  main:
+    allow-bean-definition-overriding: true

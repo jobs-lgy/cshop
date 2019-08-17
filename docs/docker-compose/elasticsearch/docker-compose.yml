@@ -8,7 +8,42 @@ services:
       - 9200:9200
       - 9300:9300
     environment:
-      cluster.name: elasticsearch
+      - ES_JAVA_OPTS="-Xms256m -Xmx256m"
+      - cluster.name=elasticsearch
+      - bootstrap.memory_lock=true
+      - http.cors.enabled=true
+      - http.cors.allow-origin=*
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
     volumes:
+      - /data/docker/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
       - /data/docker/elasticsearch/data:/usr/share/elasticsearch/data
       - /data/docker/elasticsearch/plugins:/usr/share/elasticsearch/plugins
+  kibana:
+    image: kibana:6.4.3
+      container_name: kibana
+      restart: always
+      environment:
+        - SERVER_NAME=kibana
+        - ELASTICSEARCH_URL=http://192.168.56.100:9200
+        - XPACK_MONITORING_ENABLED=true
+      ports:
+        - 5601:5601
+      volumes:
+        - /data/docker/kibana/data:/usr/share/kibana/data
+      depends_on:
+        - elasticsearch
+  logstash:
+    image: logstash:6.4.3
+      container_name: logstash
+      restart: always
+      environment:
+        - xpack.monitoring.elasticsearch.url=http://192.168.56.100:9200
+      ports:
+        - 3456:3456
+      volumes:
+        - /data/docker/logstash/data:/usr/share/logstash/data
+      depends_on:
+        - elasticsearch

@@ -1,9 +1,9 @@
-package com.javachen.cshop.admin.service;
+package com.javachen.cshop.service;
 
+import com.javachen.cshop.common.model.response.PagedResult;
 import com.javachen.cshop.domain.Item;
 import com.javachen.cshop.domain.SearchRequest;
-import com.javachen.cshop.domain.SearchResult;
-import com.javachen.cshop.model.vo.SpuBo;
+import com.javachen.cshop.item.model.vo.SpuBo;
 
 import java.io.IOException;
 
@@ -24,7 +24,7 @@ public interface SearchService {
      * @param searchRequest
      * @return
      */
-    SearchResult<Item> search(SearchRequest searchRequest);
+    PagedResult<Item> search(SearchRequest searchRequest);
 
 
     /**

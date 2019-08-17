@@ -1,6 +1,6 @@
-package com.javachen.cshop.admin.service;
+package com.javachen.cshop.service;
 
-import com.javachen.cshop.entity.Category;
+import com.javachen.cshop.item.entity.Category;
 
 import java.util.List;
 
@@ -22,13 +22,13 @@ public interface CategoryService {
 
     Category findByBrandyId(Long brandId);
 
-    Category findById(Long categoryId);
+    Category findById(Long id);
 
     Category update(Category category);
 
     Category add(Category category);
 
-    void delete(Long categoryId);
+    void delete(Long id);
 
     public List<Category> findAllByCid3(Long id);
 }

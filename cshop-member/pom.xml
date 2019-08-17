@@ -16,6 +16,7 @@
     <modules>
         <module>cshop-member-api</module>
         <module>cshop-member-service</module>
+        <module>cshop-member-weixin-service</module>
     </modules>
 
 

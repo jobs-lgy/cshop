@@ -21,9 +21,6 @@ import java.util.Map;
 @NoArgsConstructor
 @Document(indexName = "cshop", type = "docs", shards = 1, replicas = 0)
 public class Item {
-    /**
-     * spuId
-     */
     @Id
     private Long id;
 
@@ -43,14 +40,7 @@ public class Item {
      * 品牌id
      */
     private Long brandId;
-    /**
-     * 1级分类id
-     */
-    private Long cid1;
-    /**
-     * 2级分类id
-     */
-    private Long cid2;
+
     /**
      * 3级分类id
      */

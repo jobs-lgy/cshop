@@ -1,8 +1,8 @@
-package com.javachen.cshop.admin.controller;
+package com.javachen.cshop.controller;
 
-import com.javachen.cshop.common.domain.response.RestResponse;
-import com.javachen.cshop.entity.SpuDetail;
-import com.javachen.cshop.admin.service.SpuService;
+import com.javachen.cshop.common.model.response.RestResponse;
+import com.javachen.cshop.item.entity.SpuDetail;
+import com.javachen.cshop.service.SpuDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,16 +12,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class SpuDetailController {
 
     @Autowired
-    private SpuService spuService;
+    private SpuDetailService spuDetailService;
 
     /**
      * 按商品ID查询商品描述
      *
-     * @param id 商品ID
+     * @param spuId 商品ID
      * @return SpuDetail
      */
-    @GetMapping("spuDetail/{id}")
-    public RestResponse<SpuDetail> findById(@PathVariable("id") Long id) {
-        return RestResponse.success(spuService.findSpuDetailById(id));
+    @GetMapping("spuDetail/spuId/{spuId}")
+    public RestResponse<SpuDetail> findById(@PathVariable("spuId") Long spuId) {
+        return RestResponse.success(spuDetailService.findBySpuId(spuId));
     }
 }

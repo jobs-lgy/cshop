@@ -1,4 +1,4 @@
-package com.javachen.cshop.common.hystrix;
+package com.javachen.cshop.common.web.hystrix;
 
 /**
  * 通用的熔断方法

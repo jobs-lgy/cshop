@@ -1,12 +1,12 @@
-package com.javachen.cshop.admin.service.impl;
+package com.javachen.cshop.service.impl;
 
-import com.javachen.cshop.common.web.advice.BusinessException;
-import com.javachen.cshop.common.web.advice.ErrorCode;
-import com.javachen.cshop.entity.Sku;
-import com.javachen.cshop.entity.Stock;
+import com.javachen.cshop.common.exception.CustomException;
+import com.javachen.cshop.common.exception.ErrorCode;
+import com.javachen.cshop.item.entity.Sku;
+import com.javachen.cshop.item.entity.Stock;
 import com.javachen.cshop.reposity.SkuRepository;
 import com.javachen.cshop.reposity.StockRepository;
-import com.javachen.cshop.admin.service.SkuService;
+import com.javachen.cshop.service.SkuService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,7 +37,7 @@ public class SkuServiceImpl implements SkuService {
         // 将库存数量与skuId生成map
         Map<Long, Integer> stockMap = stockList.stream().collect(Collectors.toMap(Stock::getSkuId, Stock::getStock));
         // 设置库存数量
-        skuList.forEach(s -> s.setStock(stockMap.get(s.getId())));
+//        skuList.forEach(s -> s.setStock(stockMap.get(s.getId())));
 
         return skuList;
     }
@@ -55,6 +55,6 @@ public class SkuServiceImpl implements SkuService {
      */
     public Sku findById(Long id) {
         return skuRepository.findById(id)
-                .orElseThrow(() -> new BusinessException(ErrorCode.SKU_NOT_EXIST));
+                .orElseThrow(() -> new CustomException(ErrorCode.SKU_NOT_EXIST));
     }
 }

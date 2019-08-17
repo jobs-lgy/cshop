@@ -1,4 +1,4 @@
-package com.javachen.cshop.common.cache;
+package com.javachen.cshop.common.web.cache;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;

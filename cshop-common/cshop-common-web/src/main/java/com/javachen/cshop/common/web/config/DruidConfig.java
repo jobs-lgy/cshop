@@ -1,4 +1,4 @@
-package com.javachen.cshop.common.config;
+package com.javachen.cshop.common.web.config;
 
 import com.alibaba.druid.filter.stat.StatFilter;
 import com.alibaba.druid.pool.DruidDataSource;

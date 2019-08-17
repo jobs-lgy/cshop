@@ -1,9 +1,9 @@
-package com.javachen.cshop.admin.controller;
+package com.javachen.cshop.controller;
 
-import com.javachen.cshop.common.domain.response.PageResponse;
-import com.javachen.cshop.common.domain.response.RestResponse;
-import com.javachen.cshop.entity.Brand;
-import com.javachen.cshop.admin.service.BrandService;
+import com.javachen.cshop.common.model.response.PagedResult;
+import com.javachen.cshop.common.model.response.RestResponse;
+import com.javachen.cshop.item.entity.Brand;
+import com.javachen.cshop.service.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
@@ -17,22 +17,22 @@ public class BrandController {
     private BrandService brandService;
 
     @GetMapping("/brand")
-    public RestResponse<PageResponse<Brand>> findByPage(@RequestParam(value = "page", defaultValue = "1") int page,
-                                   @RequestParam(value = "size", defaultValue = "10") int size,
-                                   @RequestParam(value = "sortBy", defaultValue = "id") String sortBy,
-                                   @RequestParam(value = "desc", defaultValue = "false") Boolean desc,
-                                   @RequestParam(value = "key", required = false) String key) {
+    public RestResponse<PagedResult<Brand>> findByPage(@RequestParam(value = "page", defaultValue = "1") int page,
+                                                       @RequestParam(value = "size", defaultValue = "10") int size,
+                                                       @RequestParam(value = "sortBy", defaultValue = "id") String sortBy,
+                                                       @RequestParam(value = "desc", defaultValue = "false") Boolean desc,
+                                                       @RequestParam(value = "key", required = false) String key) {
         Page<Brand> result = brandService.findAllByPage(page, size, sortBy, desc, key);
-        return RestResponse.success(new PageResponse<Brand>(result.getTotalElements(), result.getTotalPages(), result.getContent()));
+        return RestResponse.success(new PagedResult<Brand>(result.getTotalElements(), page, size, result.getContent()));
     }
 
     @PostMapping("/brand")
-    public RestResponse<Brand> addBrand(@RequestBody Brand brand,@RequestParam("cids") List<Long> categories) {
+    public RestResponse<Brand> addBrand(@RequestBody Brand brand, @RequestParam("cids") List<Long> categories) {
         return RestResponse.success(brandService.add(brand, categories));
     }
 
     @PutMapping("/brand")
-    public RestResponse<Brand> updateBrand(@RequestBody Brand brand,@RequestParam("cids") List<Long> categories) {
+    public RestResponse<Brand> updateBrand(@RequestBody Brand brand, @RequestParam("cids") List<Long> categories) {
         return RestResponse.success(brandService.update(brand, categories));
     }
 

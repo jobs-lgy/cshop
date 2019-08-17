@@ -1,11 +1,11 @@
-package com.javachen.cshop.admin.service.impl;
+package com.javachen.cshop.service.impl;
 
-import com.javachen.cshop.common.web.advice.BusinessException;
-import com.javachen.cshop.common.web.advice.ErrorCode;
-import com.javachen.cshop.entity.Category;
+import com.javachen.cshop.common.exception.CustomException;
+import com.javachen.cshop.common.exception.ErrorCode;
+import com.javachen.cshop.item.entity.Category;
 import com.javachen.cshop.reposity.CategoryBrandRespository;
 import com.javachen.cshop.reposity.CategoryReposity;
-import com.javachen.cshop.admin.service.CategoryService;
+import com.javachen.cshop.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -62,7 +62,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     public Category findById(Long id) {
         return categoryReposity.findById(id)
-                .orElseThrow(() -> new BusinessException(ErrorCode.CATEGORY_NOT_EXIST));
+                .orElseThrow(() -> new CustomException(ErrorCode.CATEGORY_NOT_EXIST));
 
     }
 
@@ -87,7 +87,7 @@ public class CategoryServiceImpl implements CategoryService {
         // 判断该分类是否为父分类，父分类不能删除！！
         if (category.getIsParent()) {
             if (categoryReposity.findAllByParentId(categoryId).size() > 0) {
-                throw new BusinessException(ErrorCode.CATEGORY_PARENT_ID_EXIST);
+                throw new CustomException(ErrorCode.CATEGORY_PARENT_ID_EXIST);
             }
         } else {
             //1.查询此节点的父亲节点的孩子个数 ===> 查询还有几个兄弟

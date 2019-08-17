@@ -1,10 +1,10 @@
-package com.javachen.cshop.admin.controller;
+package com.javachen.cshop.controller;
 
-import com.javachen.cshop.common.domain.response.PageResponse;
-import com.javachen.cshop.common.domain.response.RestResponse;
-import com.javachen.cshop.entity.Spu;
-import com.javachen.cshop.model.vo.SpuBo;
-import com.javachen.cshop.admin.service.SpuService;
+import com.javachen.cshop.common.model.response.PagedResult;
+import com.javachen.cshop.common.model.response.RestResponse;
+import com.javachen.cshop.item.entity.Spu;
+import com.javachen.cshop.item.model.vo.SpuBo;
+import com.javachen.cshop.service.SpuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,13 +17,13 @@ public class SpuController {
     private SpuService spuService;
 
     @GetMapping("/spu")
-    public RestResponse<PageResponse<SpuBo>> findAllByPage(@RequestParam(value = "page", defaultValue = "1") int page,
-                                                                @RequestParam(value = "rows", defaultValue = "5") int rows,
-                                                                @RequestParam(value = "sortBy", required = false) String sortBy,
-                                                                @RequestParam(value = "desc", required = false, defaultValue = "false") Boolean desc,
-                                                                @RequestParam(value = "key", required = false) String key,
-                                                                @RequestParam(value = "saleable", required = false) Boolean saleable) {
-        return RestResponse.success(spuService.findAllByPage(page, rows, sortBy, desc, key, saleable));
+    public RestResponse<PagedResult<SpuBo>> findAllByPage(@RequestParam(value = "page", defaultValue = "0") int page,
+                                                          @RequestParam(value = "size", defaultValue = "5") int size,
+                                                          @RequestParam(value = "sortBy", required = false) String sortBy,
+                                                          @RequestParam(value = "desc", required = false, defaultValue = "false") Boolean desc,
+                                                          @RequestParam(value = "key", required = false) String key,
+                                                          @RequestParam(value = "saleable", required = false) Boolean saleable) {
+        return RestResponse.success(spuService.findAllByPage(page, size, sortBy, desc, key, saleable));
 
     }
 

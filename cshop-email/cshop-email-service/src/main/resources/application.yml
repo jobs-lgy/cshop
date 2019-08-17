@@ -9,16 +9,11 @@ server:
 
 spring:
   application:
-    name: cshop-com.javachen.cshop.email
+    name: cshop-email
   main:
     allow-bean-definition-overriding: true
 
   cloud:
-    ignoredInterfaces:  #禁用网卡
-      - docker0
-      - veth*
-      - en0
-      - br*
     nacos:
       discovery:
         server-addr: 192.168.56.100:8848
@@ -28,7 +23,7 @@ spring:
       defaultBinder: defaultRabbit
       bindings:
         emailInput:
-          destination: cshop.com.javachen.cshop.email
+          destination: cshop.email
           group: group-1  # 具体分组,对应队列名称,并且持久化队列
       binders:
         defaultRabbit:

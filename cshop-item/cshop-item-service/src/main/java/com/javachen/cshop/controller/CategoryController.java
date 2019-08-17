@@ -1,12 +1,11 @@
-package com.javachen.cshop.admin.controller;
+package com.javachen.cshop.controller;
 
-import com.javachen.cshop.common.domain.response.RestResponse;
-import com.javachen.cshop.entity.Category;
-import com.javachen.cshop.admin.service.CategoryService;
+import com.javachen.cshop.common.model.response.RestResponse;
+import com.javachen.cshop.item.entity.Category;
+import com.javachen.cshop.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -24,15 +23,12 @@ public class CategoryController {
     /**
      * 查询子子分类
      *
-     * @param id
+     * @param parentId
      * @return
      */
-    @GetMapping("/category/children/{id}")
-    public RestResponse<List<Category>> findAllByParentId(@RequestParam(value = "id", defaultValue = "0") Long id) {
-        if (id == -1) {
-            return RestResponse.success(Arrays.asList(this.categoryService.findTop()));
-        }
-        return RestResponse.success(categoryService.findAllByParentId(id));
+    @GetMapping("/category/parentId/{parentId}")
+    public RestResponse<List<Category>> findAllByParentId(@RequestParam(value = "parentId", defaultValue = "0") Long parentId) {
+        return RestResponse.success(categoryService.findAllByParentId(parentId));
     }
 
     /**
@@ -42,8 +38,13 @@ public class CategoryController {
      * @return
      */
     @GetMapping("category/cid3/{cid3}")
-    public RestResponse<List<Category>>  findAllByCid3(@PathVariable("cid3") Long id) {
+    public RestResponse<List<Category>> findAllByCid3(@PathVariable("cid3") Long id) {
         return RestResponse.success(categoryService.findAllByCid3(id));
+    }
+
+    @GetMapping("category/{id}")
+    public RestResponse<Category> findAllById(@PathVariable("id") Long id) {
+        return RestResponse.success(categoryService.findById(id));
     }
 
 
@@ -54,7 +55,7 @@ public class CategoryController {
      * @return 多个名称的集合
      */
     @GetMapping("/category/ids")
-    public RestResponse<List<Category>>  findAllByIdIn(@RequestParam("ids") List<Long> ids) {
+    public RestResponse<List<Category>> findAllByIdIn(@RequestParam("ids") List<Long> ids) {
         return RestResponse.success(categoryService.findAllByIdIn(ids));
     }
 

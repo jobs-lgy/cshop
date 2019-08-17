@@ -1,7 +1,7 @@
 package com.javachen.cshop.reposity;
 
 
-import com.javachen.cshop.entity.Sku;
+import com.javachen.cshop.item.entity.Sku;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

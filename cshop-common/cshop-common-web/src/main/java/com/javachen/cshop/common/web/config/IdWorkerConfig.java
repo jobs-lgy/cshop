@@ -1,4 +1,4 @@
-package com.javachen.cshop.common.config;
+package com.javachen.cshop.common.web.config;
 
 import com.javachen.cshop.common.utils.IdWorker;
 import lombok.Data;

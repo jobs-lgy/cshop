@@ -1,4 +1,4 @@
-package com.javachen.cshop.common.config;
+package com.javachen.cshop.common.web.config;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;

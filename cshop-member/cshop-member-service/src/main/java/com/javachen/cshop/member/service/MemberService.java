@@ -1,5 +1,6 @@
 package com.javachen.cshop.member.service;
 
+import com.javachen.cshop.common.model.response.RestResponse;
 import com.javachen.cshop.member.entity.Member;
 import com.javachen.cshop.member.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +14,17 @@ public class MemberService {
     private MemberRepository memberRepository;
 
     @GetMapping(value = "/member/{id}")
-    public Member findById(@PathVariable("id") Long id) {
-        return memberRepository.findById(id).orElse(null);
+    public RestResponse<Member> findById(@PathVariable("id") Long id) {
+        return RestResponse.success(memberRepository.findById(id).orElse(null));
     }
 
-    @GetMapping(value = "/member/wechat/{openId}")
-    public Member findByOpenId(@PathVariable("openId") String openId) {
-        return memberRepository.findByOpenId(openId);
+    @GetMapping(value = "/member/phone/{phone}")
+    public RestResponse<Member> findByPhone(@PathVariable("phone") String phone) {
+        return RestResponse.success(memberRepository.findByPhone(phone));
+    }
+
+    @GetMapping(value = "/member/openid/{openid}")
+    public Member findByOpenId(@PathVariable("openid") String openid) {
+        return memberRepository.findByOpenid(openid);
     }
 }

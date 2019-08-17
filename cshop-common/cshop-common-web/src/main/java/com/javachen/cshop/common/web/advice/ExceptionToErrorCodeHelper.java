@@ -1,14 +1,14 @@
 package com.javachen.cshop.common.web.advice;
 
 import com.google.common.collect.ImmutableMap;
-import com.javachen.cshop.common.exception.BaseException;
+import com.javachen.cshop.common.exception.CustomException;
 import com.javachen.cshop.common.exception.ErrorCode;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 
 public class ExceptionToErrorCodeHelper {
-    private static final ImmutableMap<Object, ErrorCode> MAP = ImmutableMap.<Object, ErrorCode>builder()
+    private static final ImmutableMap<Class<? extends Throwable>, ErrorCode> MAP = ImmutableMap.<Class<? extends Throwable>, ErrorCode>builder()
             .put(HttpMediaTypeNotSupportedException.class, ErrorCode.REQUEST_INVALID_ERROR)
             .put(HttpRequestMethodNotSupportedException.class, ErrorCode.REQUEST_INVALID_ERROR)
             .put(IllegalStateException.class, ErrorCode.PARAMETER_INVALID_ERROR)
@@ -19,8 +19,8 @@ public class ExceptionToErrorCodeHelper {
         if (throwable == null) {
             return errorCode;
         }
-        if (throwable instanceof BaseException) {
-            return (ErrorCode) ((BaseException) throwable).getErrorCodeAware();
+        if (throwable instanceof CustomException) {
+            return (ErrorCode) ((CustomException) throwable).getErrorCodeAware();
         } else {
             errorCode = MAP.get(throwable.getClass());
         }

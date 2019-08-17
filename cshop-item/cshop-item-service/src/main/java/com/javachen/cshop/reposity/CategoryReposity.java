@@ -1,6 +1,6 @@
 package com.javachen.cshop.reposity;
 
-import com.javachen.cshop.entity.Category;
+import com.javachen.cshop.item.entity.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -14,6 +14,9 @@ import java.util.List;
  */
 public interface CategoryReposity extends JpaRepository<Category, Long> {
     List<Category> findAllByParentId(Long parentId);
+
+//    List<Category> findAllByCid3(Long cid3);
+
 
     List<Category> findAllByIdIn(List<Long> ids);
 

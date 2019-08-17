@@ -1,5 +1,5 @@
 server:
-  port: 8020
+  port: 8030
 
 
 spring:
@@ -21,7 +21,7 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
-      url: jdbc:mysql://192.168.56.100:3306/item?useUnicode=true&characterEncoding=UTF-8
+      url: jdbc:mysql://192.168.56.100:3306/cshop?useUnicode=true&characterEncoding=UTF-8
       username: root
       password: 123456
       max-active: 30 #最大连接数
@@ -31,17 +31,17 @@ spring:
       time-between-eviction-runs-millis: 60000 #空闲连接检查时间间隔
       min-evictable-idle-time-millis: 300000 #空闲连接最小空闲时间
 
-security:
-  oauth2:
-    client:
-      client-id: client
-      client-secret: secret
-      access-token-uri: http://localhost:7060/oauth/token
-      user-authorization-uri: http://localhost:7060/oauth/authorize
-      grant-type: refresh_token,password
-    resource:
-      token-info-uri: http://localhost:7060/oauth/check_token
-      user-info-uri: http://localhost:7060/oauth/me
+#security:
+#  oauth2:
+#    client:
+#      client-id: client
+#      client-secret: secret
+#      access-token-uri: http://localhost:7060/oauth/token
+#      user-authorization-uri: http://localhost:7060/oauth/authorize
+#      grant-type: refresh_token,password
+#    resource:
+#      token-info-uri: http://localhost:7060/oauth/check_token
+#      user-info-uri: http://localhost:7060/oauth/me
 
 management:
   endpoints:

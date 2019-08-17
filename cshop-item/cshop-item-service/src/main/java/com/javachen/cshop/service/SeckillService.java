@@ -1,4 +1,4 @@
-package com.javachen.cshop.admin.service;
+package com.javachen.cshop.service;
 
 /**
  * @author june

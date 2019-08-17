@@ -71,10 +71,6 @@ spring:
     password: 123456
     port: 6379
 
-wechat:
-  appId:
-  secret:
-
 management:
   endpoints:
     web:

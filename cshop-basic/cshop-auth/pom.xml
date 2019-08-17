@@ -11,62 +11,12 @@
 
     <groupId>com.javachen.cshop</groupId>
     <artifactId>cshop-auth</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>cshop-auth-memory</module>
+        <module>cshop-auth-jdbc</module>
+        <module>cshop-auth-sso-client</module>
+    </modules>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.javachen.cshop</groupId>
-            <artifactId>cshop-common-domain</artifactId>
-            <version>${project.version}</version>
-        </dependency>
 
-        <dependency>
-            <groupId>com.javachen.cshop</groupId>
-            <artifactId>cshop-admin-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <!-- Spring Boot Begin -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <!-- Spring Boot End -->
-
-        <!-- Spring Cloud Begin -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-oauth2</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
-        </dependency>
-        <!-- Spring Cloud End -->
-
-        <!-- Commons Begin -->
-        <dependency>
-            <groupId>com.squareup.okhttp3</groupId>
-            <artifactId>okhttp</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.github.openfeign</groupId>
-            <artifactId>feign-okhttp</artifactId>
-        </dependency>
-        <!-- Commons End -->
-
-    </dependencies>
 </project>

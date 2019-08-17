@@ -1,7 +1,7 @@
 package com.javachen.cshop.admin.service.impl;
 
 import com.javachen.cshop.api.SpuClient;
-import com.javachen.cshop.common.domain.response.PageResponse;
+import com.javachen.cshop.common.model.response.PageResponse;
 import com.javachen.cshop.common.utils.IdWorker;
 import com.javachen.cshop.entity.Order;
 import com.javachen.cshop.entity.OrderDetail;

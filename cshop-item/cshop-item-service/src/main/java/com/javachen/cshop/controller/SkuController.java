@@ -1,8 +1,8 @@
-package com.javachen.cshop.admin.controller;
+package com.javachen.cshop.controller;
 
-import com.javachen.cshop.common.domain.response.RestResponse;
-import com.javachen.cshop.entity.Sku;
-import com.javachen.cshop.admin.service.SkuService;
+import com.javachen.cshop.common.model.response.RestResponse;
+import com.javachen.cshop.item.entity.Sku;
+import com.javachen.cshop.service.SkuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,7 +25,7 @@ public class SkuController {
      */
     @GetMapping("sku")
     public RestResponse<List<Sku>> findAllBySpuId(@RequestParam("spuId") Long spuId) {
-        if(spuId==null){
+        if (spuId == null) {
             return RestResponse.success(skuService.findAll());
         }
         return RestResponse.success(skuService.findAllBySpuId(spuId));

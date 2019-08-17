@@ -14,7 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>com.javachen.cshop</groupId>
-            <artifactId>cshop-common</artifactId>
+            <artifactId>cshop-common-domain</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

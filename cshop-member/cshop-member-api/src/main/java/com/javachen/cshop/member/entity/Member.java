@@ -1,5 +1,6 @@
 package com.javachen.cshop.member.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -7,7 +8,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -23,6 +23,7 @@ public class Member {
 
     private String nickname;
 
+    @JsonIgnore
     private String password;
 
     private String phone;
@@ -33,8 +34,7 @@ public class Member {
 
     private Integer gender;
 
-    @ElementCollection
-    private List<String> hobbies;
+    private String hobbies;
 
     @Temporal(TemporalType.DATE)
     private Date birthday;
@@ -43,11 +43,13 @@ public class Member {
 
     private String job;
 
+    private String signature;
+
     private Integer source;
 
     private boolean enabled;
 
-    private String openId;
+    private String openid;
 
     @CreationTimestamp
     private Date createTime;// 创建时间

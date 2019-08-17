@@ -1,13 +1,11 @@
 package com.javachen.cshop.common.web.advice;
 
 import com.google.common.collect.ImmutableMap;
-import com.javachen.cshop.common.domain.response.RestResponse;
+import com.javachen.cshop.common.model.response.RestResponse;
 import com.javachen.cshop.common.exception.ErrorCode;
 import com.javachen.cshop.common.exception.ExceptionResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
@@ -33,13 +31,6 @@ import java.util.stream.Collectors;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    // 用于动态获取配置文件的属性值
-    private static final String LOGGING_LEVEL_CSHOP = "logging.level.com.javachen.cshop";
-
-    @Autowired
-    private ConfigurableApplicationContext applicationContext;
-
-
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public RestResponse<ExceptionResponse> handleValidationExceptions(HttpServletRequest request, MethodArgumentNotValidException ex) {
@@ -88,10 +79,6 @@ public class GlobalExceptionHandler {
         ErrorCode errorCode = ExceptionToErrorCodeHelper.getErrorCode(ex);
         String message = ExceptionUtils.getRootCause(ex).getMessage(); //最初的异常原因
         log.error("uri=[{}],message=[{}]", request.getRequestURI(), ex);
-
-//        String level = applicationContext.getEnvironment().getProperty(LOGGING_LEVEL_CSHOP);
-//        ExceptionResponse exceptionResponse = ExceptionResponse.withDetail(errorCode, message, ex.getStackTrace(), level);
-
         return RestResponse.error(errorCode, message);
     }
 }

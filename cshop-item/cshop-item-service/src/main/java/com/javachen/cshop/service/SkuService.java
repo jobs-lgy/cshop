@@ -1,6 +1,6 @@
-package com.javachen.cshop.admin.service;
+package com.javachen.cshop.service;
 
-import com.javachen.cshop.entity.Sku;
+import com.javachen.cshop.item.entity.Sku;
 
 import java.util.List;
 

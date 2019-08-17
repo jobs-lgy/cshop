@@ -78,8 +78,22 @@ public class CloseOrderTask {
         log.info("关闭订单定时任务结束");
     }
 
+    public void closeOrderTaskV4(String requestId) {
+        log.info("关闭订单定时任务启动");
+        long lockTimeout = Long.parseLong(System.getProperty("lock.timeout", "5000"));
+
+        //尝试获取分布式锁，requestId用于删除锁时判断所有者
+        String setnxResult = RedisShardedPoolUtil.setnx(CLOSE_ORDER_TASK_LOCK, requestId, lockTimeout);
+        if ("OK".equals(setnxResult)) {
+            closeOrder(CLOSE_ORDER_TASK_LOCK);
+        } else {
+            log.info("没有获取到分布式锁:{}", CLOSE_ORDER_TASK_LOCK);
+        }
+        log.info("关闭订单定时任务结束");
+    }
+
     //    @Scheduled(cron="0 */1 * * * ?")
-    public void closeOrderTaskV4() {
+    public void closeOrderTaskV5() {
         RLock lock = redissonManager.getRedisson().getLock(CLOSE_ORDER_TASK_LOCK);
         boolean getLock = false;
         try {

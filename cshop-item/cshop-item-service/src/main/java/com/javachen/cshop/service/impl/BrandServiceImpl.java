@@ -1,12 +1,12 @@
-package com.javachen.cshop.admin.service.impl;
+package com.javachen.cshop.service.impl;
 
-import com.javachen.cshop.common.web.advice.BusinessException;
-import com.javachen.cshop.common.web.advice.ErrorCode;
-import com.javachen.cshop.entity.Brand;
-import com.javachen.cshop.entity.CategoryBrand;
+import com.javachen.cshop.common.exception.CustomException;
+import com.javachen.cshop.common.exception.ErrorCode;
+import com.javachen.cshop.item.entity.Brand;
+import com.javachen.cshop.item.entity.CategoryBrand;
 import com.javachen.cshop.reposity.BrandReposity;
 import com.javachen.cshop.reposity.CategoryBrandRespository;
-import com.javachen.cshop.admin.service.BrandService;
+import com.javachen.cshop.service.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -119,7 +119,7 @@ public class BrandServiceImpl implements BrandService {
      */
     public Brand findById(Long id) {
         return brandReposity.findById(id)
-                .orElseThrow(() -> new BusinessException(ErrorCode.RRAND_NOT_EXIST));
+                .orElseThrow(() -> new CustomException(ErrorCode.RRAND_NOT_EXIST));
 
     }
 

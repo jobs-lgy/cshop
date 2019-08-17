@@ -5,11 +5,6 @@ spring:
   application:
     name: cshop-sms
   cloud:
-    ignoredInterfaces:  #禁用网卡
-      - docker0
-      - veth*
-      - en0
-      - br*
     nacos:
       discovery:
         server-addr: 192.168.56.100:8848

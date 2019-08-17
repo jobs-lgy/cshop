@@ -34,14 +34,14 @@
     <modules>
         <module>cshop-basic</module>
         <module>cshop-common</module>
-        <module>cshop-admin</module>
+        <module>cshop-user</module>
         <module>cshop-email</module>
         <module>cshop-member</module>
 
-        <!--        <module>cshop-item</module>-->
-<!--        <module>cshop-order</module>-->
-<!--        <module>cshop-cart</module>-->
-<!--        <module>cshop-search</module>-->
+        <module>cshop-item</module>
+        <!--        <module>cshop-order</module>-->
+        <!--        <module>cshop-cart</module>-->
+        <module>cshop-search</module>
 
     </modules>
 

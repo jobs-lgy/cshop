@@ -1,10 +1,7 @@
-package com.javachen.cshop.admin.service;
+package com.javachen.cshop.service;
 
-import com.javachen.cshop.entity.Brand;
+import com.javachen.cshop.item.entity.Brand;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 

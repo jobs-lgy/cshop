@@ -1,4 +1,4 @@
-package com.javachen.cshop.common.cache;
+package com.javachen.cshop.common.web.cache;
 
 //封装本地缓存操作类
 public interface CacheService {

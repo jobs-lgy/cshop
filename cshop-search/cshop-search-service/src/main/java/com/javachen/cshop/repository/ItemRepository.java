@@ -1,4 +1,4 @@
-package com.javachen.cshop.admin.repository;
+package com.javachen.cshop.repository;
 
 import com.javachen.cshop.domain.Item;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;

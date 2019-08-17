@@ -1,14 +1,13 @@
-package com.javachen.cshop.admin.controller;
+package com.javachen.cshop.controller;
 
-import com.javachen.cshop.common.domain.response.PageResponse;
-import com.javachen.cshop.common.domain.response.RestResponse;
+import com.javachen.cshop.common.model.response.PagedResult;
+import com.javachen.cshop.common.model.response.RestResponse;
 import com.javachen.cshop.domain.Item;
 import com.javachen.cshop.domain.SearchRequest;
-import com.javachen.cshop.domain.SearchResult;
-import com.javachen.cshop.api.SpuClient;
-import com.javachen.cshop.model.vo.SpuBo;
-import com.javachen.cshop.admin.repository.ItemRepository;
-import com.javachen.cshop.admin.service.SearchService;
+import com.javachen.cshop.feign.SpuClient;
+import com.javachen.cshop.item.model.vo.SpuBo;
+import com.javachen.cshop.repository.ItemRepository;
+import com.javachen.cshop.service.SearchService;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
@@ -23,7 +22,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping
-public class SearchController  implements InitializingBean {
+public class SearchController implements InitializingBean {
 
     @Autowired
     private SearchService searchService;
@@ -37,9 +36,9 @@ public class SearchController  implements InitializingBean {
     @Autowired
     private ElasticsearchTemplate elasticsearchTemplate;
 
-    @PostMapping("page")
-    public RestResponse<PageResponse<Item>> search(@RequestBody SearchRequest searchRequest) {
-        SearchResult<Item> result = this.searchService.search(searchRequest);
+    @PostMapping("search")
+    public RestResponse<PagedResult<Item>> search(@RequestBody SearchRequest searchRequest) {
+        PagedResult<Item> result = this.searchService.search(searchRequest);
         return RestResponse.success(result);
     }
 
@@ -53,12 +52,12 @@ public class SearchController  implements InitializingBean {
         List<SpuBo> list = new ArrayList<>();
         int page = 1;
         int row = 100;
-        int size=0;
+        int size = 0;
         do {
-            RestResponse<PageResponse<SpuBo>> response=this.spuClient.findAllByPage(page, row, null, true, null,false);
+            RestResponse<PagedResult<SpuBo>> response = this.spuClient.findAllByPage(page, row, null, true, null, false);
             //分页查询数据
-            if(response.isSuccess()){
-                PageResponse<SpuBo> result = response.getData();
+            if (response.isSuccess()) {
+                PagedResult<SpuBo> result = response.getData();
                 List<SpuBo> spus = result.getList();
                 size = spus.size();
                 page++;

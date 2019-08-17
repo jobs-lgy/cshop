@@ -1,0 +1,49 @@
+server:
+  port: 8020
+  #tomcat调优
+  tomcat:
+    accept-count: 100
+    max-connections: 10000
+    max-threads: 2000
+    min-spare-threads: 10
+
+spring:
+  application:
+    name: cshop-member-weixin-service
+  main:
+    allow-bean-definition-overriding: true
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.56.100:8848
+    sentinel:
+      transport:
+        port: 8719
+        dashboard: 192.168.56.100:7010
+
+  redis:
+    host: 192.168.56.100
+    password: 123456
+    port: 6379
+
+
+logging:
+  level:
+    org.springframework.web: INFO
+    com.github.binarywang.demo.wx.mp: DEBUG
+    me.chanjar.weixin: DEBUG
+wx:
+  mp:
+    configs:
+      - appId: wx5bf48c5968809052 #（一个公众号的appid）
+        secret: 070b6396996c7ce86612f391d5d7d7eb #（公众号的appsecret）
+        token: cshop #（接口配置里的Token值）
+    registration:
+      code:
+        message: 您的注册码为:%s
+        default: 您的消息，我们已经收到，会及时回复给您的!
+
+
+
+  

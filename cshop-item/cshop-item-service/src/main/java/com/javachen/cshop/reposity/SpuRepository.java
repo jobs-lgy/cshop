@@ -1,6 +1,6 @@
 package com.javachen.cshop.reposity;
 
-import com.javachen.cshop.entity.Spu;
+import com.javachen.cshop.item.entity.Spu;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;

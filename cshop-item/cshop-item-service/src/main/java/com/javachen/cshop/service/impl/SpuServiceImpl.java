@@ -1,14 +1,14 @@
-package com.javachen.cshop.admin.service.impl;
+package com.javachen.cshop.service.impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.javachen.cshop.common.web.advice.BusinessException;
-import com.javachen.cshop.common.web.advice.ErrorCode;
+import com.javachen.cshop.common.exception.CustomException;
+import com.javachen.cshop.common.exception.ErrorCode;
+import com.javachen.cshop.common.model.response.PagedResult;
 import com.javachen.cshop.common.utils.JsonUtils;
-import com.javachen.cshop.common.domain.response.PageResponse;
-import com.javachen.cshop.entity.*;
-import com.javachen.cshop.model.vo.SpuBo;
+import com.javachen.cshop.item.entity.*;
+import com.javachen.cshop.item.model.vo.SpuBo;
 import com.javachen.cshop.reposity.*;
-import com.javachen.cshop.admin.service.SpuService;
+import com.javachen.cshop.service.SpuService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,36 +47,33 @@ public class SpuServiceImpl implements SpuService {
 //    @Autowired
 //    private AmqpTemplate amqpTemplate;
 
-    public PageResponse<SpuBo> findAllByPage(int page, int rows, String sortBy, Boolean desc, String key, Boolean saleable) {
+    public PagedResult<SpuBo> findAllByPage(int page, int size, String sortBy, Boolean desc, String key, Boolean saleable) {
         Page<Spu> spuPage = null;
         if (StringUtils.isEmpty(key)) {
-            spuPage = spuRepository.findAll(new PageRequest(page, rows));
+            spuPage = spuRepository.findAll(new PageRequest(page, size));
         } else {
             Sort sort = new Sort(desc ? Sort.Direction.DESC : Sort.Direction.ASC, sortBy);
-            spuPage = spuRepository.findAllByTitleLikeOrSaleable(key, saleable, new PageRequest(page, rows, sort));
+            spuPage = spuRepository.findAllByTitleLikeOrSaleable(key, saleable, new PageRequest(page, size, sort));
         }
 
         // 使用spu集合 构造spuBO集合
-        List<SpuBo> spuBoList = spuPage.getContent().stream().map(spu -> {
-            return findSpuBo(spu);
-        }).collect(Collectors.toList());
+        List<SpuBo> spuBoList = spuPage.getContent().stream().map(spu -> findSpuBo(spu) ).collect(Collectors.toList());
 
-        return new PageResponse<SpuBo>(spuPage.getTotalElements(), spuPage.getTotalPages(), spuBoList);
+        return new PagedResult<SpuBo>(spuPage.getTotalElements(), page, size, spuBoList);
     }
 
-    private SpuBo findSpuBo(Spu spu){
+    private SpuBo findSpuBo(Spu spu) {
+//        // 查询分类名称列表并处理成字符串
+//        Optional<String> categoryNameString = categoryReposity.findAllById(Arrays.asList(spu.getCategoryId()))
+//                .stream()
+//                .map(Category::getName)
+//                .reduce((name1, name2) -> name1 + "/" + name2);
         SpuBo spuBo = new SpuBo();
         BeanUtils.copyProperties(spu, spuBo);
-        // 查询分类名称列表并处理成字符串
-        Optional<String> categoryNameString = categoryReposity.findAllById(Arrays.asList(spu.getCid1(), spu.getCid2(), spu.getCid3()))
-                .stream()
-                .map(Category::getName)
-                .reduce((name1, name2) -> name1 + "/" + name2);
-        // 查询品牌名称
         Brand brand = brandReposity.findById(spu.getBrandId()).orElse(null);
-        // 设置分类以及品牌名称
-        spuBo.setBname(brand.getName());
-        spuBo.setCname(categoryNameString.get());
+        Category category = categoryReposity.findById(spu.getCategoryId()).orElse(null);
+        if (brand != null) spuBo.setBrandName(brand.getName());
+        if (category != null) spuBo.setCategoryName(category.getName());
 
         return spuBo;
     }
@@ -117,7 +114,6 @@ public class SpuServiceImpl implements SpuService {
                 // 保存库存信息
                 Stock stock = new Stock();
                 stock.setSkuId(sku.getId());
-                stock.setStock(sku.getStock());
                 stockRepository.save(stock);
             }
         });
@@ -170,12 +166,12 @@ public class SpuServiceImpl implements SpuService {
      */
     public Map<String, Object> findMapById(Long spuId) {
         Spu spu = findById(spuId);
-        List<Category> categoryList = categoryReposity.findAllById(Arrays.asList(spu.getCid1(), spu.getCid2(), spu.getCid3()));
+        List<Category> categoryList = categoryReposity.findAllById(Arrays.asList(spu.getCategoryId()));
         Brand brand = brandReposity.findById(spu.getBrandId())
-                .orElseThrow(() -> new BusinessException(ErrorCode.RRAND_NOT_EXIST));
+                .orElseThrow(() -> new CustomException(ErrorCode.RRAND_NOT_EXIST));
 
         // 查询商品描述信息
-        SpuDetail spuDetail = spuDetailRepository.findById(spuId).orElseThrow(() -> new BusinessException(ErrorCode.SPU_NOT_EXIST));
+        SpuDetail spuDetail = spuDetailRepository.findById(spuId).orElseThrow(() -> new CustomException(ErrorCode.SPU_NOT_EXIST));
         // 查询商品SKU列表
         List<Sku> skuList = skuRepository.findAllBySpuId(spuId);
 
@@ -188,23 +184,21 @@ public class SpuServiceImpl implements SpuService {
          */
 
         //获取所有规格参数，然后封装成为id和name形式的数据
-        String allSpecJson = spuDetail.getSpecifications();
-        List<Map<String, Object>> allSpecs = JsonUtils.fromJson(allSpecJson, new TypeReference<List<Map<String, Object>>>() {
+        List<Map<String, Object>> globalSpec = JsonUtils.fromJson(spuDetail.getGlobalSpec(), new TypeReference<List<Map<String, Object>>>() {
         });
-        Map<Integer, String> specName = new HashMap<>();
-        Map<Integer, Object> specValue = new HashMap<>();
-        this.getAllSpecifications(allSpecs, specName, specValue);
+        Map<Integer, String> globalSpecName = new HashMap<>();
+        Map<Integer, Object> globalSpecValue = new HashMap<>();
+        this.getGlobalSpec(globalSpec, globalSpecName, globalSpecValue);
 
         //获取特有规格参数
-        String specTJson = spuDetail.getSpecTemplate();
-        Map<String, String[]> specs = JsonUtils.fromJson(specTJson, new TypeReference<Map<String, String[]>>() {
+        Map<String, String[]> spec = JsonUtils.fromJson(spuDetail.getSpecTemplate(), new TypeReference<Map<String, String[]>>() {
         });
-        Map<Integer, String> specialParamName = new HashMap<>();
-        Map<Integer, String[]> specialParamValue = new HashMap<>();
-        this.getSpecialSpec(specs, specName, specValue, specialParamName, specialParamValue);
+        Map<Integer, String> specParamName = new HashMap<>();
+        Map<Integer, String[]> specParamValue = new HashMap<>();
+        this.getSpecialSpec(spec, globalSpecName, globalSpecValue, specParamName, specParamValue);
 
         //按照组构造规格参数
-        List<Map<String, Object>> groups = this.getGroupsSpec(allSpecs, specName, specValue);
+        List<Map<String, Object>> groups = this.getGroupsSpec(globalSpec, globalSpecName, globalSpecValue);
 
         Map<String, Object> map = new HashMap<>();
         map.put("spu", spu);
@@ -212,19 +206,19 @@ public class SpuServiceImpl implements SpuService {
         map.put("skuList", skuList);
         map.put("brand", brand);
         map.put("categoryList", categoryList);
-        map.put("specName", specName);
-        map.put("specValue", specValue);
+        map.put("globalSpecName", globalSpecName);
+        map.put("globalSpecValue", globalSpecValue);
         map.put("groups", groups);
-        map.put("specialParamName", specialParamName);
-        map.put("specialParamValue", specialParamValue);
+        map.put("specParamName", specParamName);
+        map.put("specParamValue", specParamValue);
 
         return map;
     }
 
     @Override
     public SpuBo findById(Long spuId) {
-        Spu spu = this.spuRepository.findById(spuId).orElseThrow(() -> new BusinessException(ErrorCode.SPU_NOT_EXIST));
-        SpuDetail spuDetail = spuDetailRepository.findById(spuId).orElseThrow(() -> new BusinessException(ErrorCode.SPU_NOT_EXIST));
+        Spu spu = this.spuRepository.findById(spuId).orElseThrow(() -> new CustomException(ErrorCode.SPU_NOT_EXIST));
+        SpuDetail spuDetail = spuDetailRepository.findById(spuId).orElseThrow(() -> new CustomException(ErrorCode.SPU_NOT_EXIST));
 
         List<Sku> skuList = skuRepository.findAllBySpuId(spuId);
 
@@ -233,7 +227,7 @@ public class SpuServiceImpl implements SpuService {
         for (Sku sku : skuList) {
             for (Stock stock : stocks) {
                 if (sku.getId().equals(stock.getSkuId())) {
-                    sku.setStock(stock.getStock());
+//                    sku.setStock(stock.getStock());
                 }
             }
         }
@@ -288,7 +282,7 @@ public class SpuServiceImpl implements SpuService {
         }
     }
 
-    private void getAllSpecifications(List<Map<String, Object>> allSpecs, Map<Integer, String> specName, Map<Integer, Object> specValue) {
+    private void getGlobalSpec(List<Map<String, Object>> allSpecs, Map<Integer, String> specName, Map<Integer, Object> specValue) {
         String k = "k";
         String v = "v";
         String unit = "unit";
@@ -327,11 +321,6 @@ public class SpuServiceImpl implements SpuService {
                 }
             }
         }
-    }
-
-    public SpuDetail findSpuDetailById(Long spuId) {
-        //商品明细可以为空
-        return spuDetailRepository.findById(spuId).orElse(null);
     }
 
     /**

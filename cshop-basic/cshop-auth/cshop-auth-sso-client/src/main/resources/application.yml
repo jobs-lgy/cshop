@@ -1,0 +1,20 @@
+server:
+  port: 7060
+
+spring:
+  application:
+    name: cshop-auth-memory
+  main:
+    allow-bean-definition-overriding: true
+
+security:
+  oauth2:
+    resource:
+      token-info-uri: http://localhost:7060/oauth/check_token
+    client:
+      access-token-uri: http://localhost:7060/oauth/token
+      user-authorization-uri: http://localhost:7060/oauth/authorize
+      client-secret: secret
+      client-id: client
+    sso:
+      login-path: /login

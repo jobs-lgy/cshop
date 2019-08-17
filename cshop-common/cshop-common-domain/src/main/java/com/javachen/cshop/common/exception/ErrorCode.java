@@ -62,5 +62,4 @@ public enum ErrorCode implements ErrorCodeAware {
     public String getMessage() {
         return message;
     }
-
 }

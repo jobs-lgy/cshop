@@ -1,6 +1,6 @@
 package com.javachen.cshop.feign;
 
-import com.javachen.cshop.common.domain.response.PageResponse;
+import com.javachen.cshop.common.model.response.PageResponse;
 import com.javachen.cshop.model.vo.SpuBo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
