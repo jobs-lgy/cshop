@@ -1,10 +1,8 @@
 package com.javachen.cshop.service.impl;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.javachen.cshop.common.exception.CustomException;
 import com.javachen.cshop.common.exception.ErrorCode;
 import com.javachen.cshop.common.model.response.PagedResult;
-import com.javachen.cshop.common.utils.JsonUtils;
 import com.javachen.cshop.item.entity.*;
 import com.javachen.cshop.item.model.vo.SpuBo;
 import com.javachen.cshop.reposity.*;
@@ -37,9 +35,6 @@ public class SpuServiceImpl implements SpuService {
 
     @Autowired
     private SkuRepository skuRepository;
-
-    @Autowired
-    private SpuDetailRepository spuDetailRepository;
 
     @Autowired
     private StockRepository stockRepository;
@@ -87,13 +82,8 @@ public class SpuServiceImpl implements SpuService {
     @Transactional
     public Spu add(SpuBo spu) {
         spu.setEnable(true);
-        spu.setSaleable(true); // 上架
+        spu.setStatus(3); // 上架
         spuRepository.save(spu);
-
-        // 保存SPU描述
-        SpuDetail spuDetail = spu.getSpuDetail();
-        spuDetail.setSpuId(spu.getId()); // 设置ID
-        spuDetailRepository.save(spuDetail);
 
         // 保存SKU列表
         saveSkuAndStock(spu);
@@ -128,14 +118,8 @@ public class SpuServiceImpl implements SpuService {
     @Transactional
     public Spu update(SpuBo spu) {
         // 保存SPU
-        spu.setSaleable(true); // 上架
         spu.setEnable(true);
         spuRepository.save(spu);
-
-        // 保存SPU描述
-        SpuDetail spuDetail = spu.getSpuDetail();
-        spuDetail.setSpuId(spu.getId());
-        spuDetailRepository.save(spuDetail);
 
         deleteSkuAndStockBySpuId(spu.getId());
 
@@ -170,8 +154,6 @@ public class SpuServiceImpl implements SpuService {
         Brand brand = brandReposity.findById(spu.getBrandId())
                 .orElseThrow(() -> new CustomException(ErrorCode.RRAND_NOT_EXIST));
 
-        // 查询商品描述信息
-        SpuDetail spuDetail = spuDetailRepository.findById(spuId).orElseThrow(() -> new CustomException(ErrorCode.SPU_NOT_EXIST));
         // 查询商品SKU列表
         List<Sku> skuList = skuRepository.findAllBySpuId(spuId);
 
@@ -184,31 +166,24 @@ public class SpuServiceImpl implements SpuService {
          */
 
         //获取所有规格参数，然后封装成为id和name形式的数据
-        List<Map<String, Object>> globalSpec = JsonUtils.fromJson(spuDetail.getGlobalSpec(), new TypeReference<List<Map<String, Object>>>() {
-        });
+
         Map<Integer, String> globalSpecName = new HashMap<>();
         Map<Integer, Object> globalSpecValue = new HashMap<>();
-        this.getGlobalSpec(globalSpec, globalSpecName, globalSpecValue);
 
         //获取特有规格参数
-        Map<String, String[]> spec = JsonUtils.fromJson(spuDetail.getSpecTemplate(), new TypeReference<Map<String, String[]>>() {
-        });
         Map<Integer, String> specParamName = new HashMap<>();
         Map<Integer, String[]> specParamValue = new HashMap<>();
-        this.getSpecialSpec(spec, globalSpecName, globalSpecValue, specParamName, specParamValue);
 
         //按照组构造规格参数
-        List<Map<String, Object>> groups = this.getGroupsSpec(globalSpec, globalSpecName, globalSpecValue);
 
         Map<String, Object> map = new HashMap<>();
         map.put("spu", spu);
-        map.put("spuDetail", spuDetail);
         map.put("skuList", skuList);
         map.put("brand", brand);
         map.put("categoryList", categoryList);
         map.put("globalSpecName", globalSpecName);
         map.put("globalSpecValue", globalSpecValue);
-        map.put("groups", groups);
+//        map.put("groups", groups);
         map.put("specParamName", specParamName);
         map.put("specParamValue", specParamValue);
 
@@ -218,8 +193,6 @@ public class SpuServiceImpl implements SpuService {
     @Override
     public SpuBo findById(Long spuId) {
         Spu spu = this.spuRepository.findById(spuId).orElseThrow(() -> new CustomException(ErrorCode.SPU_NOT_EXIST));
-        SpuDetail spuDetail = spuDetailRepository.findById(spuId).orElseThrow(() -> new CustomException(ErrorCode.SPU_NOT_EXIST));
-
         List<Sku> skuList = skuRepository.findAllBySpuId(spuId);
 
         List<Stock> stocks = stockRepository.findAllBySkuIdIn(skuList.stream().map(Sku::getId).collect(Collectors.toList()));
@@ -232,7 +205,6 @@ public class SpuServiceImpl implements SpuService {
             }
         }
         SpuBo spuBo = findSpuBo(spu);
-        spuBo.setSpuDetail(spuDetail);
         spuBo.setSkuList(skuList);
         return spuBo;
     }
@@ -332,9 +304,9 @@ public class SpuServiceImpl implements SpuService {
     public void soldOut(Long spuId) {
         Spu oldSpu = this.findById(spuId);
         List<Sku> skuList = this.skuRepository.findAllBySpuId(spuId);
-        if (oldSpu.getSaleable()) {
+        if (oldSpu.getStatus()==1) {
             //下架
-            oldSpu.setSaleable(false);
+            oldSpu.setStatus(0);
             spuRepository.save(oldSpu);
 
             //下架sku中的具体商品
@@ -344,7 +316,7 @@ public class SpuServiceImpl implements SpuService {
             }
         } else {
             //下架
-            oldSpu.setSaleable(true);
+            oldSpu.setStatus(0);
             spuRepository.save(oldSpu);
 
             //下架sku中的具体商品
@@ -365,7 +337,6 @@ public class SpuServiceImpl implements SpuService {
     public void delete(Long spuId) {
         // 删除spu和spuDetail
         spuRepository.deleteById(spuId);
-        spuDetailRepository.deleteById(spuId);
 
         // 删除sku stock列表
         deleteSkuAndStockBySpuId(spuId);

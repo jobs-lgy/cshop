@@ -9,20 +9,25 @@ import java.io.Serializable;
 
 /**
  * @author june
- * @createTime 2019-06-17 19:55
+ * @createTime 2019-06-17 23:30
  * @see
  * @since
  */
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "tb_category_brand")
 @Entity
-@Table(name = "tb_category")
-public class Category implements Serializable {
+public class CategoryBrandXef implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private Long parentId;
-    private Integer sort;
+
+    private Long categoryId;
+    private Long brandId;
+
+    public CategoryBrandXef(Long categoryId, Long brandId) {
+        this.categoryId = categoryId;
+        this.brandId = brandId;
+    }
 }

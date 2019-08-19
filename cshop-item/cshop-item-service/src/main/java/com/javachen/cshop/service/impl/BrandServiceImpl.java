@@ -3,7 +3,7 @@ package com.javachen.cshop.service.impl;
 import com.javachen.cshop.common.exception.CustomException;
 import com.javachen.cshop.common.exception.ErrorCode;
 import com.javachen.cshop.item.entity.Brand;
-import com.javachen.cshop.item.entity.CategoryBrand;
+import com.javachen.cshop.item.entity.CategoryBrandXef;
 import com.javachen.cshop.reposity.BrandReposity;
 import com.javachen.cshop.reposity.CategoryBrandRespository;
 import com.javachen.cshop.service.BrandService;
@@ -89,7 +89,7 @@ public class BrandServiceImpl implements BrandService {
      */
     private void addCategoryBrand(Brand brand, List<Long> categories) {
         categories.forEach(categoryId -> {
-            categoryBrandRespository.save((new CategoryBrand(categoryId, brand.getId())));
+            categoryBrandRespository.save(new CategoryBrandXef(categoryId, brand.getId()));
         });
     }
 

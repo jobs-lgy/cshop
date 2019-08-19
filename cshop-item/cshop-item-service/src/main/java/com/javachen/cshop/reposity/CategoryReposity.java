@@ -20,7 +20,7 @@ public interface CategoryReposity extends JpaRepository<Category, Long> {
 
     List<Category> findAllByIdIn(List<Long> ids);
 
-    @Query("SELECT c FROM CategoryBrand cb, Category c WHERE cb.brandId = ?1 AND cb.categoryId = c.id")
+    @Query("SELECT c FROM CategoryBrandXef cb, Category c WHERE cb.brandId = ?1 AND cb.categoryId = c.id")
     Category findByBrandId(Long brandId);
 
 

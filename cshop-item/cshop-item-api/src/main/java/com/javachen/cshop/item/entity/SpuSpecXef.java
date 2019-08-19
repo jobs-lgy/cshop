@@ -7,18 +7,22 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.io.Serializable;
 
+/**
+ * @author june
+ * @createTime 2019-06-17 23:30
+ * @see
+ * @since
+ */
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "tb_stock")
+@NoArgsConstructor
+@Table(name = "tb_spu_spec")
 @Entity
-public class Stock implements Serializable {
+public class SpuSpecXef implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long skuId;
-    private Integer seckillStock;// 可秒杀库存
-    private Integer seckillTotal;// 秒杀总数量
-    private Integer stock;// 正常库存
+    private Long spuId;
+    private Long specId;
 }

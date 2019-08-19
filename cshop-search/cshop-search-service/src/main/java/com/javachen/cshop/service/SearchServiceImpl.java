@@ -69,9 +69,6 @@ public class SearchServiceImpl implements SearchService {
     @Autowired
     private SpuClient spuClient;
 
-    @Autowired
-    private SpuDetailClient spuDetailClient;
-
     public Item buildItem(SpuBo spuBo) throws IOException {
         Item item = new Item();
 
@@ -103,37 +100,36 @@ public class SearchServiceImpl implements SearchService {
             });
         }
         //3.查询详情
-
-        RestResponse<SpuDetail> spuDetailRestResponse = this.spuDetailClient.findById(spuBo.getId());
-        //过滤规格模板，把所有可搜索的信息保存到Map中
-        Map<String, Object> specMap = new HashMap<>();
-        if (response.isSuccess()) {
-            SpuDetail spuDetail = spuDetailRestResponse.getData();
-            if (spuDetail != null && spuDetail.getGlobalSpec() != null) {
-                //提取公共属性
-                List<Map<String, Object>> genericSpecs = JsonUtils.fromJson(spuDetail.getGlobalSpec(), new TypeReference<List<Map<String, Object>>>() {
-                });
-
-                String searchable = "searchable";
-                String v = "v";
-                String k = "k";
-                String options = "options";
-                genericSpecs.forEach(m -> {
-                    List<Map<String, Object>> params = (List<Map<String, Object>>) m.get("params");
-                    params.forEach(spe -> {
-                        if ((boolean) spe.get(searchable)) {
-                            if (spe.get(v) != null) {
-                                specMap.put(spe.get(k).toString(), spe.get(v));
-                            } else if (spe.get(options) != null) {
-                                specMap.put(spe.get(k).toString(), spe.get(options));
-                            }
-                        }
-                    });
-                });
-            } else {
-                log.warn("商品明细不存在，spuid={}", spuBo.getId());
-            }
-        }
+//        RestResponse<SpuDetail> spuDetailRestResponse = this.spuDetailClient.findById(spuBo.getId());
+//        //过滤规格模板，把所有可搜索的信息保存到Map中
+//        Map<String, Object> specMap = new HashMap<>();
+//        if (response.isSuccess()) {
+//            SpuDetail spuDetail = spuDetailRestResponse.getData();
+//            if (spuDetail != null && spuDetail.getGlobalSpec() != null) {
+//                //提取公共属性
+//                List<Map<String, Object>> genericSpecs = JsonUtils.fromJson(spuDetail.getGlobalSpec(), new TypeReference<List<Map<String, Object>>>() {
+//                });
+//
+//                String searchable = "searchable";
+//                String v = "v";
+//                String k = "k";
+//                String options = "options";
+//                genericSpecs.forEach(m -> {
+//                    List<Map<String, Object>> params = (List<Map<String, Object>>) m.get("params");
+//                    params.forEach(spe -> {
+//                        if ((boolean) spe.get(searchable)) {
+//                            if (spe.get(v) != null) {
+//                                specMap.put(spe.get(k).toString(), spe.get(v));
+//                            } else if (spe.get(options) != null) {
+//                                specMap.put(spe.get(k).toString(), spe.get(options));
+//                            }
+//                        }
+//                    });
+//                });
+//            } else {
+//                log.warn("商品明细不存在，spuid={}", spuBo.getId());
+//            }
+//        }
 
         item.setId(spuBo.getId());
         item.setSubTitle(spuBo.getSubTitle());
@@ -143,7 +139,7 @@ public class SearchServiceImpl implements SearchService {
         item.setAll(spuBo.getTitle() + " " + names.replaceAll("/", " "));
         item.setPrice(prices);
         item.setSkus(JsonUtils.toJson(skuLists));
-        item.setSpecs(specMap);
+//        item.setSpecs(specMap);
         return item;
     }
 
@@ -278,7 +274,7 @@ public class SearchServiceImpl implements SearchService {
         //不管是全局参数还是sku参数，只要是搜索参数，都根据分类id查询出来
         Spec specification = this.specClient.findByCategoryId(id).getData();
         //1.将规格反序列化为集合
-        List<Map<String, Object>> specs = JsonUtils.fromJson(specification.getTemplate(), new TypeReference<List<Map<String, Object>>>() {
+        List<Map<String, Object>> specs = JsonUtils.fromJson(null, new TypeReference<List<Map<String, Object>>>() {
         });
         //2.过滤出可以搜索的规格参数名称，分成数值类型、字符串类型
         Set<String> strSpec = new HashSet<>();

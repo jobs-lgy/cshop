@@ -14,7 +14,7 @@ public interface BrandReposity extends JpaRepository<Brand, Long> {
 
     Page<Brand> findAllByNameLike(String name, Pageable pageable);
 
-    @Query("SELECT b FROM CategoryBrand cb, Brand b WHERE cb.id.categoryId = ?1 AND cb.id.brandId = b.id")
+    @Query("SELECT b FROM CategoryBrandXef cb, Brand b WHERE cb.id.categoryId = ?1 AND cb.id.brandId = b.id")
     List<Brand> findAllByCategoryId(Long categoryId);
 
     List<Brand> findAllByIdIn(List<Long> ids);

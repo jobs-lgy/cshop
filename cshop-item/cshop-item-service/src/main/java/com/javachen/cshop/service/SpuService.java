@@ -2,7 +2,6 @@ package com.javachen.cshop.service;
 
 import com.javachen.cshop.common.model.response.PagedResult;
 import com.javachen.cshop.item.entity.Spu;
-import com.javachen.cshop.item.entity.SpuDetail;
 import com.javachen.cshop.item.model.vo.SpuBo;
 
 import java.util.Map;

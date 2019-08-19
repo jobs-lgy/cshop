@@ -44,20 +44,7 @@ public class CategoryServiceImpl implements CategoryService {
      * @return 分类
      */
     public Category add(Category category) {
-        // 判断其父节点是否为父节点
-        if (category.getParentId() != FIRST_CATEGORY_PARENT_ID) {
-            Category pCategory = findById(category.getParentId());
-            // 判断是否已经是父菜单
-            if (!pCategory.getIsParent()) {// 不为父菜单
-                // 设置为父菜单并保存
-                pCategory.setIsParent(true);
-                categoryReposity.save(pCategory);
-            }
-        } else {
-            categoryReposity.save(category);
-        }
-
-        return category;
+        return categoryReposity.save(category);
     }
 
     public Category findById(Long id) {
@@ -85,26 +72,23 @@ public class CategoryServiceImpl implements CategoryService {
     public void delete(Long categoryId) {
         Category category = findById(categoryId);
         // 判断该分类是否为父分类，父分类不能删除！！
-        if (category.getIsParent()) {
-            if (categoryReposity.findAllByParentId(categoryId).size() > 0) {
-                throw new CustomException(ErrorCode.CATEGORY_PARENT_ID_EXIST);
-            }
-        } else {
-            //1.查询此节点的父亲节点的孩子个数 ===> 查询还有几个兄弟
-            List<Category> brothers = categoryReposity.findAllByParentId(category.getParentId());
-            if (brothers.size() > 1) {
-                //有兄弟,直接删除自己
-                categoryReposity.deleteById(categoryId);
-            } else {
-                //没有兄弟了，更新父节点
-                Category parent = new Category();
-                parent.setId(category.getParentId());
-                parent.setIsParent(false);
-                categoryReposity.save(category);
-            }
-            //删除关联表
-            categoryBrandRespository.deleteByCategoryId(categoryId);
+        if (categoryReposity.findAllByParentId(categoryId).size() > 0) {
+            throw new CustomException(ErrorCode.CATEGORY_PARENT_ID_EXIST);
         }
+
+        //1.查询此节点的父亲节点的孩子个数 ===> 查询还有几个兄弟
+        List<Category> brothers = categoryReposity.findAllByParentId(category.getParentId());
+        if (brothers.size() > 1) {
+            //有兄弟,直接删除自己
+            categoryReposity.deleteById(categoryId);
+        } else {
+            //没有兄弟了，更新父节点
+            Category parent = new Category();
+            parent.setId(category.getParentId());
+            categoryReposity.save(category);
+        }
+        //删除关联表
+        categoryBrandRespository.deleteByCategoryId(categoryId);
 
     }
 

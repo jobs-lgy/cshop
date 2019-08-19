@@ -50,13 +50,4 @@ public class SpecServiceImpl implements SpecService {
     public void delete(Long id) {
         specRepository.deleteById(id);
     }
-
-//    public List<SpecParam> querySpecParams(Long gid, Long cid, Boolean searching, Boolean generic) {
-//        SpecParam param = new SpecParam();
-//        param.setGroupId(gid);
-//        param.setCid(cid);
-//        param.setSearching(searching);
-//        param.setGeneric(generic);
-//        return this.specParamMapper.select(param);
-//    }
 }
