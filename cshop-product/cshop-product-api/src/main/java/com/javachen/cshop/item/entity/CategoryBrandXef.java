@@ -4,7 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
@@ -16,18 +19,21 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@IdClass(CategoryBrandXef.CategoryBrandPk.class)
 @Table(name = "tb_category_brand")
 @Entity
 public class CategoryBrandXef implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     private Long categoryId;
+
+    @Id
     private Long brandId;
 
-    public CategoryBrandXef(Long categoryId, Long brandId) {
-        this.categoryId = categoryId;
-        this.brandId = brandId;
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Data
+    public static class CategoryBrandPk implements Serializable {
+        private Long categoryId;
+        private Long brandId;
     }
 }

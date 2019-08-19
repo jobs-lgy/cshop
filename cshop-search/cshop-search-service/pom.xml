@@ -21,7 +21,7 @@
 
         <dependency>
             <groupId>com.javachen.cshop</groupId>
-            <artifactId>cshop-item-api</artifactId>
+            <artifactId>cshop-product-api</artifactId>
             <version>${project.version}</version>
             <exclusions>
                 <exclusion>

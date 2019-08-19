@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.Query;
  * @see
  * @since
  */
-public interface CategoryBrandRespository extends JpaRepository<CategoryBrandXef, Long> {
+public interface CategoryBrandRespository extends JpaRepository<CategoryBrandXef, CategoryBrandXef.CategoryBrandPk> {
     @Modifying
     @Query("delete from CategoryBrandXef cb where cb.brandId=?1")
     int deleteByBrandId(Long brandId);

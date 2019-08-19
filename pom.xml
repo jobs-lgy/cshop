@@ -37,8 +37,7 @@
         <module>cshop-user</module>
         <module>cshop-email</module>
         <module>cshop-member</module>
-
-        <module>cshop-item</module>
+        <module>cshop-product</module>
         <!--        <module>cshop-order</module>-->
         <!--        <module>cshop-cart</module>-->
         <module>cshop-search</module>

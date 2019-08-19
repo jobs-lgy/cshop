@@ -9,11 +9,11 @@
         <version>2.0.0-SNAPSHOT</version>
     </parent>
     <groupId>com.javachen.cshop</groupId>
-    <artifactId>cshop-item</artifactId>
+    <artifactId>cshop-product</artifactId>
     <packaging>pom</packaging>
 
     <modules>
-        <module>cshop-item-api</module>
-        <module>cshop-item-service</module>
+        <module>cshop-product-api</module>
+        <module>cshop-product-service</module>
     </modules>
 </project>

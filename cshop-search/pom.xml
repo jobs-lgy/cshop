@@ -17,6 +17,4 @@
         <module>cshop-search-api</module>
         <module>cshop-search-service</module>
     </modules>
-
-
 </project>
